@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ghidra Advanced Development Class</title>
+<style>body { font-family: sans-serif; } a { color: #5dade2; }</style>
+</head>
+<body class="loaded" style="margin: 0px; padding: 0px; overflow-y: auto !important; background-color: rgb(17, 17, 17) !important; color: rgb(238, 238, 238) !important; height: auto !important;"><div style="max-width: 900px; margin: 0px auto; padding: 20px; font-family: sans-serif;"><section aria-selected="true" style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#1" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 1</a></div>
+<h2>Ghidra Advanced Development Class</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#2" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 2</a></div>
+<header>Topics</header>
+<br>
+<ul class="medium">
+  <li>Ghidra and Eclipse Background</li>
+  <li>Development and Extensions</li>
+  <li>Program API vs Flat Program API</li>
+  <li>Scripting</li>
+  <li>Plugins</li>
+  <li>Ghidra GUI Components</li>
+  <li>Handling Binary Formats</li>
+  <li>Writing Analyzers</li>
+  <li>Writing Binary Loaders</li>
+  <li>Writing File System Loaders</li>
+  <li>Writing Languages: Sleigh</li>
+  <li>Building your Extension</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#3" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 3</a></div>
+<h2>What is Ghidra?</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#4" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 4</a></div>
+<header>What is Ghidra?</header>
+<br>
+<ul>
+  <li>Integrated environment for software reverse engineering ("IDE" for SRE)</li>
+  <li>Developed by NSA Research</li>
+  <li>Written almost entirely in Java</li>
+  <li>Some native code (C/C++, Objective-C, Assembly)</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#5" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 5</a></div>
+<header>What is Ghidra?</header>
+<br>
+<ul>
+  <li>Consists of six major parts</li>
+  <ul>
+    <li>Programs</li>
+    <li>Plugins</li>
+    <li>Scripts</li>
+    <li>Tools</li>
+    <li>Project Manager</li>
+    <li>Server</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#6" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 6</a></div>
+<header>Programs</header>
+<br>
+<ul>
+  <li>Information stored about a binary/executable in a Ghidra database</li>
+  <ul>
+    <li>Symbols</li>
+    <li>Bytes / Memory</li>
+    <li>References</li>
+    <li>Instructions / Data</li>
+    <li>Comments</li>
+    <li>...etc.</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#7" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 7</a></div>
+<header>Plugins</header>
+<br>
+<ul>
+  <li>Each plugin provides a specific functionality</li>
+  <li>All plugins communicate within the tool</li>
+  <li>Users can choose which plugins are active</li>
+  <li>Users can write their own plugins</li>
+  <li>Written in Java</li>
+  <li>Preferred IDE is Eclipse with GhidraDev</li>
+  <ul>
+    <li>Others possible, but not supported</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#8" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 8</a></div>
+<header>Scripts</header>
+<br>
+<ul>
+  <li>Can be written in Java or Python</li>
+  <li>Extensible to other JVM-based languages</li>
+  <li>Simplifies Ghidra programming API</li>
+  <li>Full API is still available</li>
+  <li>Run-time compilation for fast dev cycles</li>
+  <li>Preferred IDE is Eclipse with GhidraDev</li>
+  <ul>
+    <li>Ghidra provides very basic editor without Eclipse</li>
+    <li>Others possible, but not supported</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#9" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 9</a></div>
+<header>Tools</header>
+<br>
+<ul>
+  <li>Collection of plugins and state</li>
+  <li>Ghidra includes pre-configured tools</li>
+  <ul>
+    <li>Code Browser</li>
+    <li>Version Tracker</li>
+  </ul>
+  <li>Extensions may provide more</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#10" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 10</a></div>
+<header>Project Manager</header>
+<br><br>
+<ul>
+  <li>Manages projects, tools, and data for a particular group of programs</li>
+  <li>Programs must be imported into a project before work can be done</li>
+  <li>Project configurations are saved for future use</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#11" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 11</a></div>
+<header>Server</header>
+<br>
+<ul>
+  <li>Used when multiple users want to collaborate on the same project</li>
+  <li>Provides network shared repository</li>
+  <li>Provides user access control</li>
+  <li>Keeps revision history (like Subversion)</li>
+  <li>Supports check-in, check-out, history</li>
+  <li>Does not support branching</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#12" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 12</a></div>
+<header>Why Use Ghidra?</header>
+<br>
+<ul>
+  <li>Tools can dynamically share data</li>
+  <li>Designed to handle large data sets</li>
+  <li>Supports teaming</li>
+  <li>Highly configurable environment</li>
+  <li>Highly extensible via plugins and scripts</li>
+  <li>Multi-platform (Linux, Mac, Windows)</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#13" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 13</a></div>
+<header>How to Install Ghidra</header>
+<br>
+<ul>
+  <li>Install the required version of Java</li>
+  <li>Extract the Ghidra distribution <file>.zip</file></li>
+  <li>For development, install a supported version of Eclipse</li>
+  <br>
+  <li>See the documentation for version requirements</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#14" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 14</a></div>
+<h2>What is Eclipse?</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#15" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 15</a></div>
+<header>Eclipse</header>
+<br><br>
+<ul>
+  <li>Integrated Development Environment (IDE)</li>
+  <ul>
+    <li>Java, C/C++, Python, and more!</li>
+  </ul>
+  <li>Can be used for script development</li>
+  <li>Can be used for extension development</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#16" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 16</a></div>
+<header>Eclipse</header>
+<br><br>
+<ul>
+  <li>To integrate with Ghidra:</li>
+  <ul>
+    <li>Install the GhidraDev plugin</li>
+    <li>Connect Ghidra to GhidraDev/Eclipse</li>
+    <br>
+    <li>GhidraDev is distributed with Ghidra</li>
+    <li>See <span style="font-family:monospace;">"GhidraDev_README.html"</span></li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#17" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 17</a></div>
+<header>Eclipse</header>
+<ul>
+  <li>Eclipse Java Editor Tips and Tricks (1/3)</li>
+  <ul>
+    <li>Open Type: <keys><k>Ctrl</k> <k>Shift</k> <k>T</k></keys></li>
+    <ul>
+      <li>Allows you to find a class without knowing the package</li>
+    </ul>
+    <li>Organize Imports: <keys><k>Ctrl</k> <k>Shift</k> <k>O</k></keys></li>
+    <ul>
+      <li>Automatically fixes import statements</li>
+    </ul>
+    <li>Navigate to: <keys><k>F3</k></keys></li>
+    <ul>
+      <li>Navigate to the class, method, variable, etc., at the current cursor location</li>
+    </ul>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#18" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 18</a></div>
+<header>Eclipse</header>
+<ul>
+  <li>Eclipse Java Editor Tips and Tricks (2/3)</li>
+  <ul>
+    <li>Type Hierarchy: <keys><k>F4</k></keys></li>
+    <ul>
+      <li>Show inheritance hierarchy of current class/interface</li>
+    </ul>
+    <li>Find References to: <keys><k>Ctrl</k> <k>Shift</k> <k>G</k></keys></li>
+    <ul>
+      <li>Finds all references to the item at current cursor location</li>
+    </ul>
+    <li>Toggle Comments: <keys><k>Ctrl</k> <k>/</k></keys></li>
+    <ul>
+      <li>Comment or uncomment the selection</li>
+    </ul>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#19" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 19</a></div>
+<header>Eclipse</header>
+<ul>
+  <li>Eclipse Java Editor Tips and Tricks (3/3)</li>
+  <ul>
+    <li>Outline View: <keys><k>Ctrl</k> <k>O</k></keys></li>
+    <ul>
+      <li>Lists members of the class</li>
+    </ul>
+    <li>Code Completion: <keys><k>Ctrl</k> <k>Space</k></keys></li>
+    <ul>
+      <li>Displays a list of matches to complete the current expression</li>
+    </ul>
+    <li>Quick Fix: <keys><k>Ctrl</k> <k>1</k></keys></li>
+    <ul>
+      <li>Offer corrections to most problems (errors, warnings, etc.)</li>
+    </ul>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#20" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 20</a></div>
+  <header>Eclipse</header>
+  <br>
+  <ul>
+    <li>Provides templates and common tasks for Ghidra development</li>
+    <br>
+    <li><menus><m>GhidraDev</m><m>New</m><m>Ghidra Module Project</m></menus></li>
+    <li><menus><m>GhidraDev</m><m>New</m><m>Ghidra Script</m></menus></li>
+    <li><menus><m>GhidraDev</m><m>Export</m><m>Ghidra Module Extension</m></menus></li>
+  </ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#21" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 21</a></div>
+<header>Lab 1</header>
+<br><br>
+<ul>
+  <li>Launch Ghidra through Eclipse in debug mode</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#22" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 22</a></div>
+<h2>Development</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#23" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 23</a></div>
+<header>Development</header>
+<br>
+<ul class="medium">
+  <li>Every piece of Ghidra is extensible</li>
+  <ul>
+    <li>Plugins, Scripts, Analyzers, Fields, Importers, Exporters, etc.</li>
+  </ul>
+  <li>Extensible components implement <cls>ExtensionPoint</cls></li>
+  <ul>
+    <li>List suffix in <file>ExtensionPoint.manifest</file></li>
+  </ul>
+  <br>
+  <li>Create a New Ghidra Module Project...</li>
+  <ul>
+    <li>You may be prompted to locate Ghidra</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#24" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 24</a></div>
+<h2>Anatomy of an Extension Project</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#25" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 25</a></div>
+<header>Extension Project</header>
+<br>
+<ul class="bare medium">
+  <li><folder class="icon">MyExtension/</folder></li>
+  <ul class="bare">
+    <li><folder class="icon">src/main/java/</folder></li>
+    <li><folder class="icon">src/main/help/</folder></li>
+    <li><folder class="icon">src/main/resources/</folder></li>
+    <li><folder class="icon">ghidra_scripts/</folder></li>
+    <li><folder class="icon">data/</folder></li>
+    <li><folder class="icon">lib/</folder></li>
+    <li><folder class="icon">os/</folder></li>
+    <li><file class="icon">extension.properties</file></li>
+    <li><file class="icon">Module.manifest</file></li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#26" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 26</a></div>
+<header>Extension Project</header>
+<br>
+<br>
+<folder class="icon">src/main/java/</folder>
+<br>
+<folder class="icon">src/main/resoures/</folder>
+<ul>
+  <li>Hold the Java source for this extension</li>
+  <li>Packaged into a <file>.jar</file> file</li>
+  <li>Add <folder>src/test/java/</folder> manually to include unit tests</li>
+  <ul>
+    <li>Unit tests are not included in the <file>.jar</file> file</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#27" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 27</a></div>
+<header>Extension Project</header>
+<br><br>
+<folder class="icon">src/main/help/</folder>
+<ul>
+  <li>Holds online help for this extension</li>
+  <li>Contains the table of contents to append</li>
+  <li>Contains the CSS and HTML contents</li>
+  <li>Java help does not support the latest HTML/CSS. Please preview using the help viewer rather than your browser.</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#28" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 28</a></div>
+<header>Extension Project</header>
+<br><br>
+<folder class="icon">ghidra_scripts/</folder>
+<ul>
+  <li>Holds scripts for this extension</li>
+  <li>Expect the user to copy and modify scripts</li>
+  <li>Unpacked as source to the file system on installation</li>
+  <li>May provide examples to use an extension's API</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#29" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 29</a></div>
+<header>Extension Project</header>
+<br>
+<folder class="icon">data/</folder>
+<ul>
+  <li>Holds data files for this extension</li>
+  <li>Will not end up inside the <file>.jar</file> file</li>
+  <li>Will be present in the distribution <file>.zip</file> file</li>
+  <li>Unpacked to the file system on installation</li>
+  <li>Allows user to easily edit or append data compared to resources in the <file>.jar</file></li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#30" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 30</a></div>
+<header>Extension Project</header>
+<br>
+<folder class="icon">lib/</folder>
+<ul>
+  <li>Holds external Java dependencies for this extension</li>
+  <li>When working in Eclipse, the contents of this directory must be manually added to the class path of the Eclipse project</li>
+  <li>Optional</li>
+  <ul>
+    <li>This directory may be deleted if there are no external dependencies</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#31" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 31</a></div>
+<header>Extension Project</header>
+<br>
+<folder class="icon">os/</folder>
+<ul>
+  <li>Holds native components for this extension</li>
+  <li>Optional</li>
+  <ul>
+    <li>This directory may be deleted if there are no native components</li>
+  </ul>
+  <li>NEVER EVER USE JNI!</li>
+  <ul>
+    <li>Communicate with a native process using sockets, I/O stream, etc.</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#32" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 32</a></div>
+<header>Extension Project</header>
+<br>
+<ul class="bare">
+  <li><folder class="icon">os/</folder>
+  <ul class="bare">
+    <li><folder class="icon">linux64/</folder></li>
+    <ul>
+      <li>Linux x86_64 natives</li>
+    </ul>
+    <li><folder class="icon">osx64/</folder></li>
+    <ul>
+      <li>Mac OSX x86_64 natives</li>
+    </ul>
+    <li><folder class="icon">win64/</folder></li>
+    <ul>
+      <li>Windows x64 natives</li>
+    </ul>
+  </ul>
+</li></ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#33" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 33</a></div>
+  <header>Lab 2</header>
+  <br>
+  <ul>
+    <li>Create a new Ghidra module project</li>
+    <li>From the Eclipse menu bar, select:</li>
+    <ul>
+      <li><menus><m>GhidraDev</m><m>New</m><m>Ghidra Module Project</m></menus></li>
+    </ul>
+    <li>In the "Module name" field, enter "gadc"</li>
+    <li>Click the "Finish" button to complete</li>
+  </ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#34" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 34</a></div>
+<h2>Program API</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#35" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 35</a></div>
+<header>High-Level Classes</header>
+<br>
+<img width="95%" src="Images/highLevelClasses.png" style="vertical-align:middle">
+<br>
+<ul><ul>
+<span style="font-size:25px"><i>Note: this diagram is not complete.</i></span>
+</ul></ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#36" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 36</a></div>
+<h2>Flat vs. Program API</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#37" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 37</a></div>
+<header>Program API</header>
+<br>
+<div style="width:55%;display:inline-block;vertical-align:middle;">
+  <ul class="medium">
+    <li>Ghidra Program API</li>
+    <ul>
+      <li>Object-Oriented</li>
+      <li>Very deep</li>
+      <li>Can change from version to version</li>
+    </ul>
+  </ul>
+</div><div style="width:45%;display:inline-block;vertical-align:middle;">
+  <ul class="tiny">
+    <li><cls>Program</cls></li>
+    <ul>
+      <li><cls>Listing</cls></li>
+      <ul>
+        <li><cls>Instructions</cls></li>
+        <li><cls>Data</cls></li>
+        <li><cls>Functions</cls></li>
+        <li><cls>Comments</cls></li>
+      </ul>
+      <li><cls>Memory</cls></li>
+      <ul>
+        <li><cls>Memory Blocks</cls></li>
+        <li><cls>Bytes</cls></li>
+      </ul>
+      <li><cls>Symbol Table</cls></li>
+      <ul>
+        <li><cls>Symbols</cls></li>
+      </ul>
+      <li><cls>Reference Manager</cls></li>
+      <ul>
+        <li><cls>References</cls></li>
+        <ul>
+          <li><cls>Memory</cls></li>
+          <li><cls>Stack</cls></li>
+          <li><cls>External</cls></li>
+        </ul>
+      </ul>
+      <li>...etc.</li>
+    </ul>
+  </ul>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#38" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 38</a></div>
+<header>Flat Program API</header>
+<br><br>
+<ul>
+  <li>Flat</li>
+  <li>Provides access to most common features</li>
+  <li>Is not complete</li>
+  <li>Will not change on you*</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#39" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 39</a></div>
+<header>Flat Program API</header>
+<codeblock class="smaller"><kw>public</kw> <kw>class</kw> FlatProgramAPI {
+    FlatProgramAPI(<if>Program</if>)
+
+    analyze()
+    clear...()
+    create...()
+    find...()
+    get...()
+    remove...()
+    save()
+    set...()
+    to...()
+}</codeblock>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#40" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 40</a></div>
+<h2>Scripting</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#41" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 41</a></div>
+<header>Scripting</header>
+<br><br>
+<ul class="medium">
+  <li>Script Manager</li>
+  <ul>
+    <li>Script Category Tree</li>
+    <ul>
+      <li>Displays dynamic tree of categories</li>
+    </ul>
+    <li>Script Table</li>
+    <ul>
+      <li>Displays name, description, key binding</li>
+    </ul>
+    <li>Filter</li>
+    <ul>
+      <li>Matches filter to name or description</li>
+      <li>Wildcard and case-insensitive</li>
+    </ul>
+</ul>
+</ul></section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#42" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 42</a></div>
+<header>Scripting</header>
+<br>
+<ul>
+  <li>Script Directories</li>
+  <ul>
+    <li>Allows management of script directories</li>
+    <li>Default directories</li>
+    <ul class="bare small">
+      <li><folder class="icon"><vardir>HOME</vardir>/ghidra_scripts/</folder></li>
+      <li><folder class="icon"><vardir>INSTALL</vardir>/Features/Base/ghidra_scripts/</folder></li>
+      <li><folder class="icon"><vardir>Each other module</vardir>/ghidra_scripts/</folder></li>
+    </ul>
+    <li>Useful for sharing scripts in multi-user</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#43" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 43</a></div>
+<header>Scripting</header>
+<br>
+<ul>
+  <li>GhidraScript API</li>
+</ul>
+<codeblock class="smaller"><kw>public</kw> <kw>abstract</kw> <kw>class</kw> GhidraScript
+      <kw>extends</kw> FlatProgramAPI {
+
+    ask...()
+    create...()
+    get...()
+    goto...()
+    print...()
+    run...()
+    to...()
+}</codeblock>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#44" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 44</a></div>
+<header>Scripting</header>
+<ul>
+  <li>Sample script template in Java</li>
+  <ul>
+    <li>Must fill in the TODO areas</li>
+    <li>Create a description</li>
+    <li>Fill in the <tt>run()</tt> method</li>
+  </ul>
+</ul>
+<codeblock class="small"><com>//TODO add description here</com>
+<com>//TODO add metadata here</com>
+<kw>public</kw> <kw>class</kw> MyScript <kw>extends</kw> GhidraScript {
+    <kw>public</kw> <kw>void</kw> run() <kw>throws</kw> Exception {
+        <com>//TODO add code here</com>
+    }
+}
+</codeblock>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#45" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 45</a></div>
+<header>Scripting</header>
+<br>
+<ul>
+  <li>Script Meta-data</li>
+  <ul>
+    <li>Special tags in header comment</li>
+    <li>Describe the script</li>
+    <li>All are optional</li>
+    <li>Handle all the messy Java GUI stuff (buttons, menus, etc.)</li>
+    <li>Do not insert blank lines between meta-data</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#46" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 46</a></div>
+<header>Scripting</header>
+<br><br>
+<ul>
+  <li>Script Meta-data</li>
+  <ul>
+    <li><tt>@category</tt></li>
+    <ul>
+      <li>The category path for the script</li>
+      <li>Levels are separated by "."</li>
+      <li>Example</li>
+      <ul>
+        <li><tt>@category A.B.C</tt></li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#47" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 47</a></div>
+<header>Scripting</header>
+<br>
+<ul>
+  <li>Script Meta-data</li>
+  <ul class="medium">
+    <li><tt>@keybinding</tt></li>
+    <ul>
+      <li>Default key binding for a script</li>
+      <li>Format is <tt>[ctrl] [alt] [shift] [A-Z,0-9,F1-F12]</tt> and is case-sensitive</li>
+      <li>Examples</li>
+      <ul>
+        <li><tt>@keybinding L</tt></li>
+        <li><tt>@keybinding ctrl alt shift F1</tt></li>
+        <li><tt>@keybinding ctrl shift COMMA</tt></li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#48" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 48</a></div>
+<header>Scripting</header>
+<br><br>
+<ul>
+  <li>Script Meta-data</li>
+  <ul class="medium">
+    <li><tt>@menupath</tt></li>
+    <ul>
+      <li>Top-level menu path for a script</li>
+      <li>Use with caution!</li>
+      <ul>
+        <li>Overcrowded menu</li>
+        <li>Collide with system action</li>
+      </ul>
+      <li>Example</li>
+      <ul>
+        <li><tt>@menupath File.Run.My Script</tt></li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#49" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 49</a></div>
+<header>Scripting</header>
+<br>
+<ul class="medium">
+  <li>Script Meta-data</li>
+  <ul>
+    <li><tt>@toolbar</tt></li>
+    <ul>
+      <li>Image for top-level toolbar button to launch this script</li>
+      <li>Searches for image in script directories and then Ghidra installation directory</li>
+      <li>Also use with caution! (same issues as <tt>@menupath</tt>)</li>
+      <li>Example</li>
+      <ul>
+        <li><tt>@toolbar myScriptImage.gif</tt></li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#50" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 50</a></div>
+<header>Scripting</header>
+<br>
+<ul>
+  <li>Script State (1/3)</li>
+  <ul class="medium">
+    <li><tt>currentProgram</tt></li>
+    <ul>
+      <li>The current active open program</li>
+    </ul>
+    <li><tt>currentAddress</tt></li>
+    <ul>
+      <li>The current address of the location of the cursor</li>
+    </ul>
+    <li><tt>currentLocation</tt></li>
+    <ul>
+      <li>The program location of the cursor</li>
+    </ul>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#51" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 51</a></div>
+<header>Scripting</header>
+<br>
+<ul>
+  <li>Script State (2/3)</li>
+  <ul class="medium">
+    <li><tt>currentSelection</tt></li>
+    <ul>
+      <li>The current <span style="color:#7CFC00">selection</span> or <tt>null</tt> if no selection exists</li>
+    </ul>
+    <li><tt>currentHighlight</tt></li>
+    <ul>
+      <li>The current <span style="color:#F0E68C">highlight</span> or <tt>null</tt> if no highlight exists</li>
+    </ul>
+    <li><tt>state</tt></li>
+    <ul>
+      <li>Provides place to store environment variables</li>
+      <li>Static and non-static</li>
+    </ul>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#52" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 52</a></div>
+<header>Scripting</header>
+<br>
+<ul>
+  <li>Script State (3/3)</li>
+  <ul class="medium">
+    <li><tt>monitor</tt></li>
+    <ul>
+      <li>Allows script writer to inform user</li>
+      <ul>
+        <li>messages and progress</li>
+      </ul>
+      <li>Allows user to cancel script</li>
+      <li>Always use inside loops</li>
+    </ul>
+  </ul>
+</ul>
+<codeblock class="smaller"><kw>while</kw> (!<fld>monitor</fld>.isCancelled()) {
+    ...
+}</codeblock>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#53" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 53</a></div>
+<header>Console</header>
+<br><br>
+<ul>
+  <li>Provides a place to dump information</li>
+  <li>Any text representing a symbol or address can be navigated by double-clicking</li>
+  <li>Example</li>
+  <ul class="small">
+    <li>Run <file>PropagateExternalParametersScript.java</file></li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#54" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 54</a></div>
+<h2>Scripting Lab</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#55" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 55</a></div>
+<header>Lab 3</header>
+<br>
+<ul class="medium">
+  <li>Create a new Java script: <file><im>Lab3Script.java</im></file></li>
+  <li>Set the description</li>
+  <li>Set category: <im>Category A.Category B</im></li>
+  <li>Set key binding: <im><keys><k>Alt</k> <k>Shift</k> <k>6</k></keys></im></li>
+  <li>Set menu path: <im><menus><m>Script</m><m>My Class Script</m></menus></im></li>
+  <li>Set toolbar button: <im><file>Info.png</file></im></li>
+  <li>Change the body of the <tt>run()</tt> method to:
+  <codeblock class="small">println(<strlit>"Hello class"</strlit>);</codeblock></li>
+  <li>Save it </li>
+  <li>Run it </li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#56" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 56</a></div>
+<header>Lab 3 Answer</header>
+<codeblock class="small"><com>//It prints "Hello class" to the console.
+//<annot>@category</annot> Category A.Category B
+//<annot>@keybinding</annot> alt shift 6
+//<annot>@menupath</annot> Script.My Class Script
+//<annot>@toolbar</annot> Info.png</com>
+
+<kw>import</kw> ghidra.app.script.GhidraScript;
+
+<kw>public</kw> <kw>class</kw> Lab3Script <kw>extends</kw> GhidraScript {
+
+    <annot>@Override</annot>
+    <kw>public</kw> <kw>void</kw> run() <kw>throws</kw> Exception {
+        println(<strlit>"Hello class"</strlit>);
+    }
+}</codeblock>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#57" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 57</a></div>
+<header>Lab 4</header>
+<br>
+<ul>
+  <li>Create new script that will ask for an integer and print the current program's name that many times to the console</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#58" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 58</a></div>
+<header>Lab 4 Answer</header>
+<codeblock class="reallysmall"><com>//Ask for an integer and print the current</com>
+<com>//program’s name that many times to the console</com>
+<com>//<annot>@category</annot> GADC</com>
+
+<kw>import</kw> ghidra.app.script.GhidraScript;
+
+<kw>public</kw> <kw>class</kw> Lab4Script <kw>extends</kw> GhidraScript {
+    <annot>@Override</annot>
+    <kw>public</kw> <kw>void</kw> run() <kw>throws</kw> Exception {
+        <kw>int</kw> <loc>n</loc> = askInt(<strlit>"How Many Times?"</strlit>, <strlit>"N"</strlit>);
+        <kw>for</kw> (<kw>int</kw> <loc>i</loc> = <lit>0</lit>; <loc>i</loc> &lt; <loc>n</loc>; ++<loc>i</loc>) {
+            <kw>if</kw> (<fld>monitor</fld>.isCancelled()) {
+                <kw>break</kw>;
+            } 
+            println(<loc>i</loc> + <strlit>". "</strlit> + <fld>currentProgram</fld>.getName());
+            Thread.<stat>sleep</stat>(<lit>1000</lit>);
+        }
+    }
+}</codeblock>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#59" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 59</a></div>
+<header>Lab 5</header>
+<br>
+<ul>
+  <li>Write a script that will search for instructions that move a scalar into a register</li>
+  <li>Pull the scalar from the instruction and create an EOL comment in the form:</li>
+  <ul class="bare">
+    <li><im>setting [register] = [value]</im></li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#60" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 60</a></div>
+<header>Lab 5 Answer</header>
+<codeblock class="supersmall"><com>//This script searches through all instructions that are</com>
+<com>//moving a scalar into a register</com>
+<com>//and sets an EOL comment in the form "[register] = [value]"</com>
+<com>//<annot>@category</annot> GADC</com>
+
+<kw>import</kw> ghidra.app.script.GhidraScript;
+<kw>import</kw> ghidra.program.model.lang.Register;
+<kw>import</kw> ghidra.program.model.listing.Instruction;
+<kw>import</kw> ghidra.program.model.scalar.Scalar;
+
+<kw>public</kw> <kw>class</kw> Lab5Script <kw>extends</kw> GhidraScript {
+
+    <annot>@Override</annot>
+    <kw>public</kw> <kw>void</kw> run() <kw>throws</kw> Exception {
+        <kw>for</kw> (<if>Instruction</if> <loc>instruction</loc> = getFirstInstruction(); <loc>instruction</loc> != <kw>null</kw>; <loc>instruction</loc> = getInstructionAfter(<loc>instruction</loc>)) {
+            <kw>if</kw> ( <fld>monitor</fld>.isCancelled() ) {
+                <kw>break</kw>;
+            }
+            if (<loc>instruction</loc>.getNumOperands() != <lit>2</lit>) {
+                <kw>continue</kw>;
+            }
+
+            Object[] <loc>opObjects0</loc> = <loc>instruction</loc>.getOpObjects(<lit>0</lit>);
+            <kw>if</kw> (<loc>opObjects0</loc>.<fld>length</fld> != <lit>1</lit> || !(<loc>opObjects0</loc>[<lit>0</lit>] <kw>instanceof</kw> <if>Register</if>)) {
+                <kw>continue</kw>;
+            }
+
+            Object[] <loc>opObjects1</loc> = <loc>instruction</loc>.getOpObjects(<lit>1</lit>);
+            <kw>if</kw> (<loc>opObjects1</loc>.<fld>length</fld> != <lit>1</lit> || !(<loc>opObjects1</loc>[<lit>0</lit>] <kw>instanceof</kw> Scalar)) {
+                <kw>continue</kw>;
+            }
+
+            Register <loc>register</loc> = (Register) <loc>opObjects0</loc>[<lit>0</lit>];
+            Scalar <loc>scalar</loc> = (Scalar) <loc>opObjects1</loc>[<lit>0</lit>];
+            String <loc>comment</loc> = <strlit>"["</strlit> + <loc>register</loc>.getName() + <strlit>"]=["</strlit> + <loc>scalar</loc>.toString(<lit>16</lit>, <kw>false</kw>, <kw>false</kw>, <stlrit>"", <strlit>""</strlit>) + <strlit>"]"</strlit>;
+            setEOLComment(<loc>instruction</loc>.getMinAddress(), <loc>comment</loc>);
+        }
+    }
+}</stlrit></codeblock>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#61" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 61</a></div>
+<h2>Headless Scripting</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#62" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 62</a></div>
+<header>Headless Scripting</header>
+<br>
+<ul>
+  <li>Ghidra can be run from the command line without invoking the user interface</li>
+  <li>Can be run on one or more programs</li>
+  <li>Any script that does not invoke the GUI can be run in headless mode</li>
+  <li>See <file>analyzeHeadlessREADME.html</file></li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#63" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 63</a></div>
+<h2>Plugins</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#64" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 64</a></div>
+<header>Plugins</header>
+<br>
+<ul>
+  <li>Must extend <cls>Plugin</cls> class</li>
+  <li>Can provide and consume services</li>
+  <li>Can provide actions</li>
+  <ul>
+    <li>Extend <cls>DockingAction</cls></li>
+  </ul>
+  <li>Can provide GUIs</li>
+  <ul>
+    <li>Extend <cls>ComponentProvider</cls></li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#65" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 65</a></div>
+<header>Plugins</header>
+<ul>
+  <li>Must provide a plugin description</li>
+  <ul>
+    <li>Use the <cls>@PluginInfo</cls> annotation</li>
+  </ul>
+  <li>In constructor</li>
+  <ul>
+    <li>Register provided service implementations</li>
+  </ul>
+  <li>In <tt>init()</tt></li>
+  <ul>
+    <li>Retrieve services consumed</li>
+    <li>Create actions</li>
+  </ul>
+  <li>In <tt>dispose()</tt></li>
+  <ul>
+    <li>Release resources</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#66" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 66</a></div>
+<header><cls>ProgramPlugin</cls></header>
+<br>
+<ul>
+  <li>Extends <cls>Plugin</cls> class </li>
+  <li>Adds helper methods for events</li>
+  <ul>
+    <li>Program activated/deactivated</li>
+    <li>Location changes</li>
+    <li>Selection changes</li>
+    <li>Highlight changes</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#67" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 67</a></div>
+<header>Lab 6</header>
+<br>
+<ul>
+  <li>Create a plugin: <im><cls>AdvancedGhidraClassPlugin</cls></im></li>
+  <li>Extend <cls>ProgramPlugin</cls></li>
+  <li>Apply the <cls>@PluginInfo</cls> annotation</li>
+  <li>Restart Ghidra</li>
+  <li>Verify plugin displays in the "Configure" dialog</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#68" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 68</a></div>
+<h2>Docking Windows</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#69" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 69</a></div>
+<header>GUIs</header>
+<ul>
+  <li>Ghidra has custom docking window components</li>
+  <li>We recommend you use our components</li>
+  <ul>
+    <li><cls>GTable</cls>, <cls>GTree</cls>, <cls>GComboBox</cls></li>
+    <li>Provide:</li>
+    <ol class="decimal">
+      <li>Custom filtering</li>
+      <li>Event handling</li>
+      <li>Threaded models</li>
+      <li>Navigation</li>
+      <li>Look-and-feel</li>
+    </ol>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#70" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 70</a></div>
+<header>Docking Windows</header>
+<ul>
+  <li>Allow users to customize the layout of components within a tool</li>
+  <li>Title bar</li>
+  <li>Local toolbar</li>
+  <li>Menu icon</li>
+  <li>Close button</li>
+  <li>Arranging components</li>
+  <ul>
+    <li>Mouse cursor provides feedback</li>
+    <li>Components can be stacked, docked, or floating</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#71" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 71</a></div>
+<header>Actions</header>
+<br>
+<ul>
+  <li>Right mouse actions are context sensitive</li>
+  <ul>
+    <li>This is determined by the plugin author</li>
+  </ul>
+  <li>List of actions that appear will change based on where the cursor is located</li>
+  <li>User can assign/override key bindings</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#72" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 72</a></div>
+<header>Tables</header>
+<br>
+<ul>
+  <li>Use <cls>GTable</cls></li>
+  <li>Filters</li>
+  <li>Columns</li>
+  <li>Export to CSV</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#73" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 73</a></div>
+<header>Trees</header>
+<br>
+<ul>
+  <li>Use <cls>GTree</cls></li>
+  <li>Filters</li>
+  <li>Lazy loading to support large data</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#74" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 74</a></div>
+<header>Lab 7</header>
+<br>
+<ul>
+  <li>Add a global action to the plugin</li>
+  <li>Make the action popup a dialog message</li>
+  <li>Use Ghidra’s dialog class <cls>OptionDialog</cls></li>
+</ul>  
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#75" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 75</a></div>
+<h2>Component Provider</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#76" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 76</a></div>
+<header><cls>ComponentProvider</cls></header>
+<br>
+<ul class="medium">
+  <li>Managed GUI component in the tool</li>
+  <li>Created and added to the tool by the plugin
+    <codeblock class="small"><fld>myComponent</fld> = <kw>new</kw> MyComponent(...);
+<fld>tool</fld>.addComponent(<kw>this</kw>, <fld>myComponent</fld>);</codeblock>
+  </li>
+  <li>Components can be <i>permanent</i> or <i>transient</i></li>
+  <ul>
+    <li><im>Permanent</im> - are always available in Window menu and closing just hides them (e.g., Listing)</li>
+    <li><im>Transient</im> - created on the fly and when closed are destroyed and removed from Window menu (e.g., Search Results) </li>
+  </ul>
+  <li>See <cls>ComponentProviderAdapter</cls> class</li>
+</ul>  
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#77" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 77</a></div>
+<header>Lab 8</header>
+<br>
+<ul>
+  <li>Create a <cls>ComponentProvider</cls> that contains only a <cls>JLabel</cls></li>
+  <li>Update your previously-created plugin to add this component to the tool</li>
+  <li>Override the <tt>programActivated()</tt> method to update the label with the name of the active program</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#78" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 78</a></div>
+<header>Lab 9</header>
+<br>
+<ul>
+  <li>Add a local action to the component provider</li>
+  <li>Make the action toggle the label's background color between red and blue</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#79" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 79</a></div>
+<header>Lab 10 (Optional)</header>
+<br>
+<ul>
+  <li>Add a <cls>GTable</cls> to the component</li>
+  <li>Change the global action to search for instructions that move a scalar into a register</li>
+  <li>Populate the table with the search results (include an address column at minimum)</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#80" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 80</a></div>
+<h2>Handling Binary Formats</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#81" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 81</a></div>
+<header>Binary Formats</header>
+<br>
+<ul>
+  <li>Included formats:</li>
+  <ul>
+    <li>ELF, PE, Mach-O, and more!</li>
+  </ul>
+  <li>What is needed for a new format?</li>
+  <ul>
+    <li>Data structure to parse the format</li>
+    <li>Analyzers to annotate the binary format</li>
+    <li>Loader for Ghidra's importer</li>
+    <li>Language, if not currently supported</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#82" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 82</a></div>
+<header>A Toy Format</header>
+<br>
+The "Ghidra Format" (see <file>ghidra.h</file>):
+<codeblock class="verysmall"><kw>struct</kw> ghidra_header { 
+  <kw>char</kw> magic[<lit>6</lit>];            <com>// magic number identifier</com>
+  <kw>unsigned byte</kw> cputype;    <com>// cpu specifier</com>
+  <kw>unsigned short</kw> nsections; <com>// number of sections</com>
+  <kw>unsigned short</kw> nsymbols;  <com>// number of symbols</com>
+  <kw>unsigned int</kw> flags;       <com>// flags</com>
+};
+
+<kw>struct</kw> ghidra_section { <com>// for 32-bit architectures</com>
+  <kw>char</kw> name[<lit>16</lit>];            <com>// name of this section</com>
+  <kw>unsigned int</kw> addr;        <com>// memory address of this section</com>
+  <kw>unsigned int</kw> size;        <com>// size in bytes of this section</com>
+  <kw>unsigned int</kw> offset;      <com>// file offset of this section</com>
+  <kw>unsigned int</kw> flags;       <com>// flags (section type and attributes</com>
+};
+
+<kw>struct</kw> ghidra_symbol {  <com>// for 32-bit architectures</com> 
+  <kw>char</kw> name[<lit>25</lit>];            <com>// name of this symbol</com>
+  <kw>unsigned int</kw> addr;        <com>// memory address of this symbol</com>
+  <kw>unsigned short</kw> type;      <com>// type of this symbol</com>
+};</codeblock>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#83" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 83</a></div>
+<header>Lab 11</header>
+<ul class="medium">
+  <br>
+  <li>Create classes to parse Ghidra format binaries</li>
+  <li>Each class must have a constructor that takes a <cls>BinaryReader</cls> parameter</li>
+  <li>Each class must implement <cls class="if">StructConverter</cls></li>
+  <li>In this lab, you will need to create:</li>
+  <ol class="decimal small">
+    <li>class <im><cls>GhidraFormatHeader</cls></im></li>
+    <li>class <im><cls>GhidraFormatSection</cls></im></li>
+    <li>class <im><cls>GhidraFormatSymbol</cls></im></li>
+    <li>class <im><cls>GhidraFormatConstants</cls></im></li>
+    
+  </ol>
+  <li>See <file>ghidra.h</file> for detailed definitions</li>
+  <li>For examples, see <cls>Img3</cls>* classes</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#84" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 84</a></div>
+<h2>Analyzers for Raw Binary Files</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#85" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 85</a></div>
+<header>Analyzers</header>
+<br>
+<ul>
+  <li>Must implement the <cls class="if">Analyzer</cls> interface</li>
+</ul>
+<codeblock class="small"><com>// Display name, input type, priority</com>
+String getName();
+AnalyzerType getAnalysisType();
+AnalysisPriority getPriority();
+
+<com>// Called for changes to analyzer inputs</com>
+<kw>boolean</kw> added(...);
+<kw>boolean</kw> removed(...);
+
+<com>// Register and react to user options</com>
+<kw>void</kw> registerOptions(...);
+<kw>void</kw> optionsChanged(...);</codeblock>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#86" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 86</a></div>
+<header>Lab 12</header>
+<br>
+<ul>
+  <li>Create an analyzer to annotate a raw Ghidra format binary</li>
+  <ul>
+    <li>Place header data structures in listing</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#87" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 87</a></div>
+<h2>Loaders</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#88" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 88</a></div>
+<header>Loaders</header>
+<ul>
+  <li>Must implement <cls class="if">Loader</cls> interface</li>
+  <ul>
+    <li>Consider <cls>AbstractProgramLoader</cls></li>
+  </ul>
+</ul>
+<codeblock class="small"><kw>package</kw> ghidra.app.util.opinion; <com>// By convention</com>
+
+<kw>public</kw> <kw>class</kw> MyLoader <kw>implements</kw> <if>Loader</if> {
+  <if>Collection</if>&lt;LoadSpec&gt; findSupportedLoadSpecs(...);
+  <if>List</if>&lt;<if>DomainObject</if>&gt; load(...);
+  ...
+}</codeblock>
+<ul>
+  <li>Must update the <file>.opinion</file> file for each processor supported by the format</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#89" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 89</a></div>
+<header>Lab 13</header>
+<br>
+<ul>
+  <li>Create a loader for Ghidra format binaries</li>
+  <li>Be sure to update the <file>.opinion</file> files:</li>
+  <ul>
+    <li><im><file>x86.opinion</file></im></li>
+    <li><im><file>PowerPC.opinion</file></im></li>
+    <li><im><file>ARM.opinion</file></im></li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#90" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 90</a></div>
+<header>Lab 14</header>
+<br>
+<ul>
+  <li>Write an analyzer that searches for instructions that move a scalar into a register</li>
+  <li>Pull the scalar from the instruction and create an EOL comment in the form:</li>
+  <ul class="bare">
+    <li><im>setting [register] = [value]</im></li>
+  </ul>
+  <li><i>Note: you already did this in a script! </i></li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#91" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 91</a></div>
+<h2>File System Loaders</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#92" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 92</a></div>
+<header>File System Viewer</header>
+<br>
+<ul>
+  <li>Provides an alternative importer</li>
+  <li>Allows importing many programs from a single archive or image</li>
+  <li>Extensible using <cls class="if">GFileSystem</cls> interface</li>
+  <ul>
+    <li>Consider <cls>GFileSystemBase</cls> class</li>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#93" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 93</a></div>
+<header>File System Viewer</header>
+<br>
+<ul>
+  <li>Drills down into file systems, including nested file systems</li>
+  <li>Extract files</li>
+  <li>Import binaries</li>
+  <li>Perform static analysis</li>
+  <li>View as text</li>
+  <li>View as image (i.e., picture)</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#94" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 94</a></div>
+<header>Lab 15</header>
+<br>
+<ul>
+  <li>Create a <cls class="if">GFileSystem</cls> for OSX Universal Binary (UBI), also known as Fat Binary</li>
+  <ul>
+    <li>See <cls>FatHeader</cls></li>
+  </ul>
+  <li>Ghidra already contains code to parse this format </li>
+  <li>Use these parser classes to implement a <cls class="if">GFileSystem</cls> to open universal binary files</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#95" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 95</a></div>
+<header>Lab 16</header>
+<br>
+<ul>
+  <li>Put several universal binaries into a <file>.zip</file> file</li>
+  <li>Verify the File System Browser plugin can handle nested universal binaries</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#96" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 96</a></div>
+<h2>Sleigh</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#97" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 97</a></div>
+<header>Sleigh</header>
+<ul>
+  <li>Used to disassemble binary into assembly</li>
+  <li>Used to decompile assembly into C</li>
+  <li>Decompiler optimizes</li>
+  <li>Can be applied to any binary, assuming:</li>
+  <ul>
+    <li>Sleigh language with pCode exists</li>
+    <li>See <folder><vardir>GhidraInstall</vardir>/Ghidra/Processors</folder></li>
+  </ul>
+  <li>Performs data type propagation</li>
+  <li>Commit parameter / return types</li>
+  <li>Decompiler Parameter ID analyzer</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#98" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 98</a></div>
+<header>Lab 17</header>
+<br>
+<ul>
+  <li>Change <tt>R2</tt> in the 8051 language to <tt>R2D2</tt></li>
+  <ul class="bare">
+    <li><file class="icon"><vardir>GhidraInstall</vardir>/Ghidra/Processors/8051/data/languages/8051_main.sinc</file></li>
+  </ul>
+  <li>Restart Ghidra</li>
+  <li>Import any program as a raw binary and select 8051 as the language</li>
+  <li>Verify the register is changed</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#99" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 99</a></div>
+<h2>Making a Build of Your Extension</h2>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#100" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 100</a></div>
+<header>Making a Build</header>
+<br>
+<ul>
+  <li>From Eclipse:</li>
+  <ul class="medium">
+    <li>Select <menus><m>GhidraDev</m><m>Export</m><m>Ghidra Module Extension</m> in the menu bar</menus></li>
+    <li>Select your module from the "Ghidra module project" drop-down</li>
+    <li>Click the "Finish" button</li>
+  </ul>
+</ul></section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#101" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 101</a></div>
+<header>Making a Build (alt)</header>
+<ul class="medium">
+  <li>You must have a compatible version of Gradle installed</li>
+  <li>From the command line (bash):
+</li></ul>
+<commandblock class="small">cd <var>/path/to/extension</var>
+export GHIDRA_INSTALL_DIR=<var>/path/to/ghidra</var> 
+gradle <var>extension</var>DistZip <com>#Substitute extension name</com></commandblock>
+<ul class="medium">
+  <li>Output goes into <folder>build/distributions/</folder></li>
+  <li>Gradle supports incremental builds: It only rebuilds what has changed since last build</li>
+  <li>Use the <tt>clean</tt> task first if you want to rebuild everything</li>
+</ul></section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="3-Ghidra_Advanced.html#102" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 102</a></div>
+<header>Lab 18</header>
+<br>
+<ul>
+  <li>Build your extension!</li>
+</ul>
+</section></div></body>
+</html>

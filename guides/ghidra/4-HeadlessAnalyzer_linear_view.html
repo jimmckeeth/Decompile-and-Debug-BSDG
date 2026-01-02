@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Headless Analyzer</title>
+<style>body { font-family: sans-serif; } a { color: #5dade2; }</style>
+</head>
+<body class="loaded" style="margin: 0px; padding: 0px; overflow-y: auto !important; background-color: rgb(17, 17, 17) !important; color: rgb(238, 238, 238) !important; height: auto !important;"><div style="max-width: 900px; margin: 0px auto; padding: 20px; font-family: sans-serif;"><section aria-selected="true" style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#1" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 1</a></div>
+<header>Headless Analyzer</header>
+<br>
+<ul>
+  <li>Ghidra's Headless Analyzer allows users to run Ghidra from the command line without invoking the user interface.</li>
+  <li>Can be run on one file or a directory of files (including subdirectories).</li>
+  <li>Can either import programs to a project or process programs in an existing project.</li>
+  <li>Any Ghidra script including those that invoke the GUI can be run in headless mode.</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#2" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 2</a></div>
+<header><span style="font-size:43px">How to Run the Headless Analyzer</span></header>
+<br>
+<ul class="medium">
+  <li>ghidra_&lt;version&gt;/support/analyzeHeadless.bat|sh</li>
+  <br>
+  <span style="font-size:18px; color:#FFD700">
+  <pre>  analyzeHeadless [&lt;project_location&gt; &lt;project_name&gt;[/&lt;folder_path&gt;]] |
+    [ghidra://&lt;server&gt;[:&lt;port&gt;]/&lt;repository_name&gt;[/&lt;folder_path&gt;]]
+       [[-import [&lt;directory&gt;|&lt;file&gt;]+] | [-process [&lt;project_file&gt;]]]
+       [-preScript &lt;ScriptName&gt; [&lt;arg&gt;]*]
+       [-postScript &lt;ScriptName&gt; [&lt;arg&gt;]*]
+       [-scriptPath "&lt;path1&gt;[;&lt;path2&gt;...]"]
+       [-propertiesPath "&lt;path1&gt;[;&lt;path2&gt;...]"]
+       [-log &lt;path to log file&gt;] [-scriptlog &lt;path to script log file&gt;]
+       [-overwrite] [-recursive [&lt;depth&gt;]] [-readOnly] [-deleteProject]
+       [-noanalysis]
+       [-processor &lt;languageID&gt;] [-cspec &lt;compilerSpecID&gt;]
+       [-analysisTimeoutPerFile &lt;timeout in seconds&gt;]
+       [-keystore &lt;KeystorePath&gt;] [-connect [&lt;userID&gt;]]
+       [-p] [-commit ["&lt;comment&gt;"]] [-okToDelete]
+       [-max-cpu &lt;max cpu cores to use&gt;] [-loader &lt;desired loader name&gt;]
+  </pre>
+  </span>
+  <li>NOTE: The analyzeHeadlessREADME.html has many more details and examples.</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#3" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 3</a></div>
+<header><span style="color:#FFD700">&lt;project_location&gt;</span></header>
+<br><br>
+<ul>
+  <li>The directory that either contains a current Ghidra project or will contain a newly-created project.</li>
+  <br><br>
+  <span style="color:#FFD700">NOTE: This directory must already exist; it will not be created for you.</span>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#4" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 4</a></div>
+<header><span style="font-size:45px; color:#FFD700">&lt;project_name&gt;[/&lt;folder_path&gt;]</span></header>
+<br><br>
+<ul>
+  <li>The name of either an existing project or new project you wish to create in the <span style="color:#FFD700">&lt;project_location&gt;</span> directory.</li>
+  <li>If the optional folder path is included, import(s) will be rooted under this project folder.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>In the normal case, if you don't have an existing project of the name "project_name", then one will be created by the Headless Analyzer.</p>
+  <p>In the server case, a project must already exist.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#5" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 5</a></div>
+<header><span style="font-size:35px; color:#FFD700">ghidra://&lt;server&gt;[:&lt;port&gt;]/<br>&lt;repository_name&gt;[/&lt;folder_path&gt;]</span></header>
+<ul class="medium">
+  <br>
+  <li>Used to specify a Ghidra Server repository URL and folder path instead of a local project_location and project_name.</li>
+  <li>If the optional folder path is used, imports will be rooted under this directory (subfolders will be created if they don't already exist).</li>
+  <li>The named repository must already exist on the Ghidra Server. </li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>In the normal case, if you don't have an existing project of the name "project_name", then one will be created by the Headless Analyzer.</p>
+  <p>In the server case, a project must already exist.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#6" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 6</a></div>
+<header><span style="color:#FFD700">-import [&lt;directory&gt;|&lt;file&gt;]+</span></header>
+<br>
+<ul>
+  <li>Specifies one or more executables (or directories of executables) to import.</li>
+  <li>May use wildcard characters to specify a directory or file (valid characters and behavior subject to the host OS interpretation of wildcards).</li>
+  <li>This option may be repeated to specify additional imports.</li>
+  <li>NOTE: -import and -process can not both be present in the parameters list.
+</li></ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <ul>
+    <li>If importing a directory:</li>
+    <ul>
+      <li>Creates directory folder in project if it doesn't already exist.</li>
+      <li>When using -recursive, imports files in subdirectories as well; directory structure will be recreated in the Ghidra project.</li>
+    </ul>
+    <br>
+    <li>Wildcard characters can be used to specify multiple files (i.e., "-import /home/files/n*"). Valid wildcard characters are determined by the host OS.  For example:</li>
+    <ul>
+      <li>Linux:</li>
+      <ul>
+	<li>Allows * and ?</li>
+	<li>Allows ranges of characters:  [a-z] or [!a-z]</li>
+	<li>Wildcards can expand to either directories or files</li>
+      </ul>
+      <li>Windows:</li>
+      <ul>
+	<li>Allows * and ?</li>
+	<li>Wildcards can only expand to files</li>
+      </ul>
+    </ul>
+    <br>
+    <li>Can specify multiple imports two ways:</li>
+    <ul>
+      <li>Space-separated paths:</li>
+      <ul>
+	<li>-import [directory or file] [directory or file] [directory or file]</li>
+      </ul>
+      <li>Repeating the "-import" parameter</li>
+      <ul>
+	<li>-import [directory or file] –import [directory or file]</li>
+      </ul>
+    </ul>
+  </ul>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#7" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 7</a></div>
+<header><span style="color:#FFD700">-process [&lt;project_file&gt;]</span></header>
+<br>
+<ul class="medium">
+  <li>Runs scripts and/or analysis on existing project file(s).</li>
+  <li>When <span style="color:#FFD700">[project_file]</span> is included, it specifies existing project executable(s).</li>
+  <li>When <span style="color:#FFD700">[project_file]</span> is omitted, runs on all the files in the project <span style="color:#FFD700">&lt;folder_path&gt;</span>.</li>
+  <li>May use '*' and '?' wildcards (wildcard string must be surrounded by single quotes)</li>
+  <li>Unlike -import, -process may only be used once.</li>
+  </ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <ul>
+    <li>[project_file] specifies a file only (can not contain a path to a file).  Use &lt;folder_path&gt; in the "&lt;project_name&gt;[/&lt;folder_path&gt;]" specification to identify the path to the file.</li>
+    <br>
+    <li>Wildcard characters are limited to "?" and "*", and strings should be surrounded by single quotes (to prevent host OS from prematurely expanding the wildcard before it is passed to the Headless Analyzer).</li>
+    <br>
+    <li>Can use -recursive to run scripts/analysis over subfolders of a directory.</li>
+    <br>
+    <li>Using -recursive with wildcard string searches subfolders for files that match the wildcard string.</li>
+    <br>
+    <li>Examples:</li>
+    <ul>
+      <li>Find all .exe files starting with 'a' in the root directory</li>
+      analyzeHeadless /home/usr/ghidra/projects TestProj -process 'a*.exe'
+      <br>
+      <li>Find all .exe files starting with 'a' in the root directory and child dirs</li>
+      analyzeHeadless /home/usr/ghidra/projects TestProj -process 'a*.exe' -recursive
+    </ul>
+    <br>
+  </ul>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#8" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 8</a></div>
+<header><span style="color:#FFD700">-preScript &lt;ScriptName.ext&gt; [&lt;arg&gt;]* </span></header>
+<br><br>
+<ul>
+  <li>Identifies the name of a script (including file extension, such as <span style="font-family:'Courier New';font-size:35px">MyScript.java</span>) that will execute before analysis. No path is necessary (script locations are specified using -scriptPath).</li>
+  <li>Parameters to the script may be passed to the script.</li>
+  <li>This option must be repeated to specify additional pre-scripts.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Headless Analyzer will look for script in default script directories and those specified by -scriptPath</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#9" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 9</a></div>
+<header><span style="color:#FFD700">-postScript &lt;ScriptName&gt; [&lt;arg&gt;]* </span></header>
+<br><br>
+<ul>
+  <li>Identifies the name of a script (including file extension, such as <span style="font-family:'Courier New';font-size:35px">MyScript.java</span>) that will execute after analysis. No path is necessary (script locations are specified using -scriptPath).</li>
+  <li>Parameters to the script may be passed to the script.</li>
+  <li>This option must be repeated to specify additional post-scripts.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Headless Analyzer will look for script in default script directories and those specified by -scriptPath</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#10" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 10</a></div>
+<header><span style="font-size:40px; color:#FFD700">-scriptPath "&lt;path1&gt;[;&lt;path2&gt;...]"</span></header>
+<ul class="small">
+  <li>Specifies script search path(s).</li>
+  <li>A path may start with <span style="font-family:'Courier New'; font-size:30px">$GHIDRA_SCRIPT</span> (the Ghidra installation directory) or <span style="font-family:'Courier New'; font-size:30px">$USER_HOME</span> (the user's home directory).</li>
+  <ul>
+    <li>On Unix systems, these home variables must be escaped with a '\' character.</li>
+  </ul>
+  <li>Examples:</li>
+  <ul>
+    <li>Windows:</li>
+    <div style="word-wrap:break-word"><span style="color:#FFD700;font-size:28px">&nbsp;&nbsp;&nbsp;-scriptPath "$GHIDRA_HOME/Ghidra/Features/Base/ghidra_scripts;/myscripts"</span></div>
+    <br>
+    <li>Unix:</li>
+    <div style="word-wrap:break-word"><span style="color:#FFD700;font-size:28px">&nbsp;&nbsp;&nbsp;-scriptPath "\$GHIDRA_HOME/Ghidra/Features/Base/ghidra_scripts;/myscripts"</span></div>
+  </ul>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+<p>Specifies script paths for all these types of scripts: Pre, post, primary, and secondary</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#11" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 11</a></div>
+<header><span style="font-size:35px;color:#FFD700">-propertiesPath "&lt;path1&gt;[;&lt;path2&gt;...]"</span></header>
+<br>
+<ul>
+  <li>Specifies <span style="color:#FFD700">*.properties</span> file search path(s).</li>
+  <li><span style="color:#FFD700">.properties</span> files are used to pass parameters to scripts </li>
+  <li>A path may start with <span style="font-family:'Courier New'; font-size:32px">$GHIDRA_SCRIPT</span> (the Ghidra installation directory) or <span style="font-family:'Courier New'; font-size:32px">$USER_HOME</span> (the user's home directory).</li>
+  <li style="color:#FFD700">NOTE: .properties files are a legacy way to pass parameters to scripts. It is now preferred to pass arguments as mentioned on previous slides. </li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>More detail in later slide and analyzeHeadlessREADME.html file.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#12" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 12</a></div>
+<header><span style="color:#FFD700">-log &lt;path to log file&gt;</span></header>
+<br><br>
+<ul>
+  <li>Sets the location of the file that stores logging output from importing, processing, and analysis.</li>
+  <li>If not used, logging output is written to the "application.log" file in the user directory.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Captures general-purpose logging for Ghidra. Script outputs can be redirected using the "-scriptlog" parameter.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#13" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 13</a></div>
+<header><span style="font-size:40px; color:#FFD700">-scriptlog &lt;path to script log file&gt;</span></header>
+<br><br>
+<ul>
+  <li>Sets the location of the file that stores logging output from pre- and post-scripts.</li>
+  <li>If not used, script logging output is written to the "script.log" file in the user directory.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Captures script logging for Ghidra.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#14" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 14</a></div>
+<header><span style="color:#FFD700">-overwrite</span></header>
+<br><br>
+<ul>
+  <li>Overwrites existing project files that conflict with an import file.</li>
+  <li>If not used, conflicting import files are skipped.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Allows an existing project file to be overwritten if it shares the same name as the imported binary.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#15" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 15</a></div>
+<header><span style="color:#FFD700">-recursive [&lt;depth&gt;]</span></header>
+<br><br>
+<ul>
+  <li>Enables recursive descent into directories and project sub-folders when a directory has been specified in -import or -process mode.</li>
+  <li>If not used, only the immediate files contained within the specified directory are imported or processed.</li>
+  <li>Specify a value for the optional depth argument to recurse into various levels of nested supported container files (e.g., zip, tar, .a, etc.).</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Affects -import or -process modes – used for determining whether to process files in current directory or files in current directory + all its subfolders.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#16" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 16</a></div>
+<header><span style="color:#FFD700">-readOnly</span></header>
+<br><br>
+<ul>
+  <li>In -import mode, imported files are <u>not</u> saved to the project after scripts and/or analysis.</li>
+  <li>In -process mode, any changes made to files by scripts or analysis are discarded.</li>
+  <li>The -overwrite option will be ignored if this option is specified during import operations. </li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>For now, -readOnly must be used with -process when operating on a shared project.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#17" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 17</a></div>
+<header><span style="color:#FFD700">-deleteProject</span></header>
+<br><br>
+<ul>
+  <li>Deletes the Ghidra project after scripts and/or analysis have completed.</li>
+  <br>
+  <span style="color:#FFD700">NOTE: This only applies if the project has been created in the current session with -import; existing projects are never deleted!</span>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#18" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 18</a></div>
+<header><span style="color:#FFD700">-noanalysis</span></header>
+<br><br><br>
+<ul>
+  <li>Turns off analysis for executables.</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#19" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 19</a></div>
+<header><span style="color:#FFD700">-processor &lt;languageID&gt;</span></header>
+<br>
+<ul class="medium">
+  <li>Sets the processor information to be used in -import mode (and any subsequent analysis).</li>
+  <li>If not used, Ghidra uses header info (if available) to determine the processor.</li>
+  <li><i>languageID</i> can be found in the<br><div style="word-wrap:break-word"><span style="font-family:'Courier New'; font-size:22px">&nbsp;&nbsp;&nbsp;..ghidra_&lt;version&gt;\Ghidra\Processors\<i>proc_name</i>\data\languages\<i>proc_name</i>.ldefs</span> file</div></li>
+  <ul>
+    <li>Example (path for x86 processor):<br><div style="word-wrap:break-word"><span style="font-family:'Courier New'; font-size:22px">&nbsp;&nbsp;&nbsp;..ghidra_&lt;version&gt;\Ghidra\Processors\x86\data\languages\x86.ldefs</span></div></li>
+  </ul>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>If Ghidra recognizes processor it uses the recognized one, if no processor recognized it uses the one specified by -processor option.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#20" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 20</a></div>
+<header><span style="color:#FFD700">-processor &lt;languageID&gt;</span></header>
+<br><br>
+<img src="Images/Headless/languageExample.png" style="vertical-align:middle">
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Or, in Help -&gt; About &lt;name of program&gt;</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#21" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 21</a></div>
+<header><span style="color:#FFD700">-cspec &lt;compilerSpecID&gt;</span></header>
+<br><br>
+<ul class="medium">
+  <li>Sets the compiler specification to be used in -import mode (and any subsequent analysis).</li>
+  <li>'compilerSpecID' can be found in the <div style="word-wrap:break-word"><span style="font-family:'Courier New'; font-size:28px">&nbsp;&nbsp;&nbsp;..ghidra_&lt;version&gt;\Ghidra\Processors\<i>proc_name</i>\data\languages\<i>proc_name</i>.ldefs</span> file</div></li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>If Ghidra recognizes processor it uses the preferred or default cspec for the recognized processor spec, if no processor recognized it uses the one specified by combination –processor and –spec options</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#22" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 22</a></div>
+<header><span style="color:#FFD700">-cspec &lt;compilerSpecID&gt;</span></header>
+<br><br>
+<img src="Images/Headless/compilerExample.png" style="vertical-align:middle">
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#23" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 23</a></div>
+<header><span style="font-size:40px;color:#FFD700">-analysisTimeoutPerFile<br>&lt;timeout in seconds&gt;</span></header>
+<ul>
+  <li>Sets a timeout value, in seconds, for analysis</li>
+  <li>If analysis on a file exceeds the specified time, analysis is interrupted and processing continues as scheduled</li>
+  <li>Can use postScripts to detect if analysis has timed out (see <span style="font-family:'Courier New';font-size:35px">analysisHeadlessREADME.html</span>)</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#24" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 24</a></div>
+<header><span style="color:#FFD700">-keystore &lt;KeystorePath&gt;</span></header>
+<br><br>
+<ul>
+  <li>When using a Ghidra Server with PKI or SSH authentication, allows specification of a suitable private keystore file. The file should rely on file system protection only to avoid prompting for a password.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Better if you do it in the tool first to get it set up.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#25" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 25</a></div>
+<header><span style="color:#FFD700">-connect [&lt;userID&gt;]</span></header>
+<br><br>
+<ul>
+  <li>Allows the process owner's default userID to be overridden with the given &lt;userID&gt; when connecting to a Ghidra Server (provided the server has been configured to allow this).</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>You can configure the Ghidra server to specify a different user ID. Ex: people who log in locally as root – wanted way to specify different users on Ghidra server</p>
+  <p>If you use the URL project path this option is implied – you don’t need to use this option unless you want to change the user name</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#26" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 26</a></div>
+<header><span style="color:#FFD700">-p</span></header>
+<br><br>
+<ul>
+  <li>When connecting to a server, allows interactive prompting for a password via the console.</li>
+  <br>
+  <span style="color:#FFD700">NOTE: In rare cases, password text will be echoed to the console (warning will show at password prompt).</span>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Used when connecting to a server that needs a password.</p>
+  <p>This method of authentication is normally discouraged – but if not used, the server connection will likely fail authentication if a password is required.</p>
+  <p>In some cases, password text will be echoed back (NOT masked) when the user is typing (there will be a warning).  Password masking seems to work when using the Ghidra jarFile, but not when using analyzeHeadless.bat/sh or eclipse launcher.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#27" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 27</a></div>
+<header><span style="color:#FFD700">-commit ["&lt;comment&gt;"]</span></header>
+<br><br>
+<ul>
+  <li>Commits all imported/processed files in a shared project to the project's underlying repository.</li>
+  <li>The <span style="color:#FFD700">&lt;comment&gt;</span> is optional and is saved with all commits in the headless session.
+  </li><li>Commits do not apply when the -readOnly parameter has been enabled.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>If you use the URL project path, this option is implied – you don’t need to use this option unless you want to commit a comment when you commit.</p>
+  <p>Commits are currently not allowed for -process mode on shared projects (which must run in -readOnly mode).</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#28" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 28</a></div>
+<header><span style="color:#FFD700">-okToDelete</span></header>
+<br><br>
+<ul>
+  <li>When running in headless mode, some scripts exist that mark programs for deletion. This deletes all versions of a program in shared project mode and cannot be undone</li>
+  <li>Therefore, so that programs are not accidentally deleted, this option is required to be set if user wants program deleted in headless mode.</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#29" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 29</a></div>
+<header><span style="font-size:40px;color:#FFD700">-max-cpu &lt;max cpu cores to use&gt;</span></header>
+<br><br><br>
+<ul>
+  <li>Sets the maximum number of CPU cores to use during headless processing</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#30" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 30</a></div>
+<header><span style="font-size:40px;color:#FFD700">-loader &lt;desired loader name&gt;</span></header>
+<br><br><br>
+<ul>
+  <li>Forces the file to be imported using a specific loader. </li>
+  <li>Loaders can take additional arguments that they apply during the import process for things like block name, base address, file offset, length, etc... . See analyzeHeadlessREADME.html for full list.</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#31" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 31</a></div>
+<header>General Notes</header>
+<br>
+<ul>
+  <li>Make sure the specified project is not already open in the Ghidra GUI.</li>
+  <li>When importing in bulk (i.e., specifying a directory or wildcard string), files starting with '.' are ignored.</li>
+  <ul>
+    <li>Import can be forced by naming the file during import:</li>
+    <span style="font-family:'Courier New'; font-size:30px">-import /Users/user/.hidden.exe</span>
+  </ul>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#32" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 32</a></div>
+<header>Shared Project Notes</header>
+<br>
+<ul>
+  <li>Avoid using the script API method 'setServerCredentials'.
+  </li><li>Specify -connect with userID to override default userID (subject to server settings).</li>
+  <li>If server/keystore requires password, -connect will force prompting via stdin.</li>
+  <li>It is not possible to create a shared project via command line. See the GhidraProject class for a simple API that allows shared project creation using a script.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <ul>
+    <li>Why should setServerCredentials be avoided:</li>
+    <ul>
+      <li>Because the headless analyzer already does it for you; when you use setServerCredentials, the two actions conflict with each other</li>
+    </ul>
+    <br>
+    <li>Note: be careful with password – it will show up in the clear (except when using ghidra.jar).</li>
+  </ul>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#33" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 33</a></div>
+<header>Exercise 1</header>
+<ul class="small">
+  <li>Create a directory in your home directory called <span style="color:#FFD700">"MyPrograms"</span></li>
+  <li>Copy some of the class exercise programs to the <span style="color:#FFD700">"MyPrograms"</span> directory
+  </li><li>Run Ghidra in headless so that it:</li>
+  <ul>
+    <li>Analyzes the programs in the <span style="color:#FFD700">"MyPrograms"</span> directory</li>
+    <li>Creates a project called <span style="color:#FFD700">"&lt;<i>your_name</i>&gt;_HeadlessProj"</span> in your home directory that is saved after the script finishes.</li>
+    <li>Writes script output to a log called <span style="color:#FFD700">"myLog"</span> in your home directory.
+    </li><li>Calls the <span style="color:#FFD700">ReportPercentDisassembled.java</span> script on each program after analysis is finished.</li>
+  </ul>
+  <li>After the script finishes, verify that it created a project and log in the correct directory. Open the log and verify that the log contains lines that start with <span style="color:#FFD700">"REPORT DISASSEMBLY..."</span> for each program in your <span style="color:#FFD700">"MyPrograms"</span> directory. Open the project to verify that it contains analyzed programs from your <span style="color:#FFD700">"MyPrograms"</span> directory.
+</li></ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#34" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 34</a></div>
+<header><span style="font-size:46px">Headless Scripting Capabilities</span></header>
+<br>
+<ul>
+  <li>Can do just about anything you can do in normal scripts including GUI-dependent actions</li>
+  <li>Can make scripts behave correctly in both GUI and headless environment</li>
+  <li>Any number Ghidra scripts can be run before and/or after analysis.</li>
+  <li>For multiple pre/post-scripts, scripts are executed in the order specified on the command line.</li>
+
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>When running scripts without -import or -process, only the specified pre/post-scripts will be executed. In this case, all scripts must execute in a program-independent manner, or errors will occur. Use -process for scripts that are program-dependent.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#35" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 35</a></div>
+<header><span style="font-size:46px">Headless Scripting Capabilities</span></header>
+<ul>
+  <li>Selections made in scripts will carry through to following scripts unless changed/cleared.</li>
+  <li>When running in -import mode, any pre- or post-script may invoke the <span style="font-family:'Courier New'; font-size:35px">setTemporary()</span> method on currentProgram to prevent that import from being saved.</li>
+  <li>Advanced control for deleting programs or canceling future scripts is discussed in the "Control Follow-On Program Processing" section.</li>
+
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Why setTemporary() is useful: if you are using scripts to determine which binaries are interesting, you can save the interesting ones in your project and ditch the others.</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#36" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 36</a></div>
+<header><span style="font-size:46px">Headless Scripting Capabilities</span></header>
+<br>
+<ul class="medium">
+  <li>Some useful features...</li>
+  <ul>
+    <li>Run other scripts from a script</li>
+    <li>Get current and default analysis options</li>
+    <li>Set analysis options</li>
+    <ul>
+      <li>Also reset to default</li>
+    </ul>
+    <li>Create and use selections</li>
+    <li>Detect auto-analysis timeout</li>
+    <li>Pass parameter values to a script</li>
+    <li>Control follow-on processing of a program after the current script (whether to abort future processing and/or delete program from project).</li>
+
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>New in 6.0: build-in methods for getting/setting analysis options.</p>
+</div>
+</ul></section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#37" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 37</a></div>
+<header><span style="font-size:35px">Making a Script behave in<br>GUI and Headless environments</span></header>
+<br><br>
+<ul>
+  Use:
+  <br><br>
+  <span style="color:#FFD700;font-size:30px">
+<pre>   if ( isRunningHeadless() ) { }
+</pre>
+  </span>
+  <br>
+  to check whether running headless mode
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#38" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 38</a></div>
+<header>Calling a Script from a Script</header>
+<br><br>
+<ul>
+  Example:
+  <br><br>
+  <span style="color:#FFD700;font-size:30px">
+<pre>   runScript("HelloWorldScript.java");
+</pre>
+</span>
+  <li>(See analyzeHeadlessREADME.html for different runScript options)</li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#39" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 39</a></div>
+<header>Get Analyzer Information</header>
+<br>
+<ul>
+  <span style="font-size:20px">
+<pre>  <span style="color:#CD5C5C">
+  // Print analyzer names, their current values,
+  // and whether set to default value
+  </span>
+  <span style="color:#FFD700">
+  Map&lt;String, String&gt; analyzers =
+      getCurrentAnalysisOptionsAndValues(currentProgram);
+
+  for (String analyzer : analyzers.keySet()) {
+    String analyzerValue = analyzers.get(analyzer);
+    boolean isDefault =
+        isAnalysisOptionDefaultValue(currentProgram, analyzer,
+          analyzerValue);
+	println(analyzer + " : " + analyzerValue +
+          (isDefault ? " (default)" : ""));
+  }
+  </span>
+</pre>
+</span>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <ul>
+    <li>There are also built-in functions to:</li>
+    <ul>
+      <li>get option choices (for those analyzers that can only be set to certain values)</li>
+      <li>get descriptions for options (as provided by the analyzer)</li>
+      <li>reset some/all analysis options to default</li>
+      <li>get default values for analysis options</li>
+    </ul>
+  </ul>
+</div></section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#40" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 40</a></div>
+<header>Set Analysis Options</header>
+<br>
+<ul class="small">
+  &nbsp;&nbsp;&nbsp;Example (change one option):
+  <span style="font-size:22px">
+<pre>  <span style="color:#CD5C5C">
+  // Turn off Stack Analyzer</span>
+  <span style="color:#FFD700">
+  setAnalysisOption(currentProgram, "Stack", "false");
+  </span>
+</pre>
+  </span>
+  Example (change multiple options):
+  <span style="font-size:22px">
+  <pre><span style="color:#CD5C5C">
+  // Turn off Stack Analyzer,
+  // Turn on Decompiler Param ID</span>
+<span style="color:#FFD700">
+  Map&lt;String,String&gt; optionsToSet =
+           new HashMap&lt;String, String&gt;();
+  optionsToSet.put("Stack", "false");
+  optionsToSet.put("Decompiler Parameter ID", "true");
+  setAnalysisOptions(currentProgram, optionsToSet);
+</span>
+
+</pre></span></ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>Note that option names and values must be strings (code will attempt to convert the value to the correct type).</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#41" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 41</a></div>
+<header>Reset Analysis Options</header>
+<br>
+<ul class="small">
+  &nbsp;&nbsp;&nbsp;Example (reset all analysis options to default):
+  <span style="font-size:25px">
+<pre>  <span style="color:#FFD700">
+  resetAllAnalysisOptions(currentProgram);</span>
+</pre>
+  </span>
+  <br>
+  Example (reset some analysis options to default):
+  <span style="font-size:25px">
+  <pre><span style="color:#FFD700">
+  List&lt;String&gt; opts = Arrays.asList(new String[] {
+	"Stack", "Decompiler Parameter ID"});
+
+  resetAnalysisOption(currentProgram, opts);
+</span>
+
+</pre></span></ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#42" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 42</a></div>
+<header>Create a Selection</header>
+<br>
+<ul class="small">
+  &nbsp;&nbsp;&nbsp;Example:
+  <span style="font-size:25px">
+<pre>  <span style="color:#FFD700">
+  MemoryBlock block =
+     currentProgram.getMemory().getBlock(".data");
+
+  AddressSet set = createAddressSet();
+
+  set.addRange(block.getStart(),block.getEnd());
+
+  createSelection(set);</span></pre>
+  </span>
+  <br>
+  
+  This selection will stay set and can be used by subsequently-called scripts until it is changed or cleared.
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#43" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 43</a></div>
+<header><span style="font-size:35px">Control Follow-On Program<br>Processing from Scripts</span></header>
+<ul>
+  <span style="font-size:30px">&nbsp;&nbsp;&nbsp;Options (behavior after current script completes):</span>
+  <span style="font-size:22px">
+<pre>
+  <span style="color:#FFD700">CONTINUE</span>
+  <span style="color:#CD5C5C">// (default) Continue scheduled analysis/scripts,
+  // save program</span>
+
+  <span style="color:#FFD700">CONTINUE_THEN_DELETE</span>
+  <span style="color:#CD5C5C">// Continue scheduled analysis/scripts, do not
+  // import/save program</span>
+
+  <span style="color:#FFD700">ABORT</span>
+  <span style="color:#CD5C5C">// Abort scheduled analysis/scripts,
+  // save program</span>
+
+  <span style="color:#FFD700">ABORT_AND_DELETE</span>
+  <span style="color:#CD5C5C">// Abort scheduled analysis/scripts,
+  // do not import/save program</span>
+</pre>
+</span>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#44" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 44</a></div>
+<header><span style="font-size:35px">Control Follow-On Program<br>Processing from Scripts</span></header>
+<ul>
+  <span style="font-size:30px">&nbsp;&nbsp;&nbsp;Example:</span>
+  <span style="font-size:25px">
+<pre>  <span style="color:#CD5C5C">
+  // Abort processing for the current file
+  // because its version number is older than 8.1</span>
+  <span style="color:#FFD700">
+  GhidraState currState = getState();
+
+  if ( !getGhidraVersion().startsWith("8.1") ) {
+      currState.addEnvironmentVar(
+          SCRIPT_SET_CONTINUATION_STATUS,
+          HeadlessContinuationOption.ABORT);
+  }
+</span>
+</pre>
+</span>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>More specifics on usage in analyzeHeadlessREADME.html</p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#45" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 45</a></div>
+<header>How to write a Headless Script</header>
+<br>
+<ul class="medium">
+  <li>Exactly the same as writing any Ghidra script!</li>
+  <li>Best way: Use Eclipse Framework + GhidraDev plugin</li>
+  <li>GhidraDev plugin provides Headless Ghidra run configuration (requires customization of program arguments)</li>
+  <li>See <span style="font-family:'Courier New';font-size:30px">ghidra_&lt;version&gt;/Extensions/Eclipse/GhidraDev/GhidraDev_README.html</span> for more info.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+ <nl>There are two ways to install the GhidraDev plugin into your Eclipse:
+	<li>Link Ghidra with an Eclipse in Front-End tool options and edit a script from the Ghidra script manager.  Ghidra will offer to install GhidraDev for you if not present.</li>
+	<li>Install directly into Eclipse using the file found at <span style="font-family:'Courier New';font-size:30px">ghidra_&lt;version&gt;/Extensions/Eclipse/GhidraDev/GhidraDev-x.x.x.zip</span></li>
+</nl>
+ See the GhidraDev_README.html for pros and cons of each.
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#46" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 46</a></div>
+<header>(Optional) Exercise 2</header>
+<br>
+<ul>
+  <li>Repeat the same exercise as in Exercise 1 but instead of using the -import to run against a non-shared project, run it against all programs in a shared project. </li>
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://elhacker.info/Cursos/CEHv13/CEHv13%20Module%2007%20Malware%20Threats/Malware%20Analysis%20Tools/Static%20Malware%20Analysis%20Tools/Disassembling%20and%20Debugging%20Tools/Ghidra/docs/GhidraClass/Intermediate/HeadlessAnalyzer.html#47" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 47</a></div>
+<header>More Headless Information</header>
+<br><br>
+<ul>
+  <li><span style="font-family:'Courier New';font-size:30px">analyzeHeadlessREADME.html</span> in the <span style="font-family:'Courier New';font-size:30px">ghidra_&lt;version&gt;/support/</span> folder contains many more details, lots of examples, and is usually more up to date than these slides!</li>
+</ul>
+</section></div></body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<!-- saved from url=(0093)https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html -->
+<html style="overflow: auto; height: auto;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Intermediate Ghidra</title>
+
+<!-- Your Slides -->
+<!-- One section is one slide -->
+
+<!-- This is the first slide -->
+</head><body class="loaded" style="margin: 0px; padding: 0px; overflow-y: auto !important; background-color: rgb(17, 17, 17) !important; color: rgb(238, 238, 238) !important; height: auto !important;"><div style="max-width: 900px; margin: 0px auto; padding: 20px; font-family: sans-serif;"><section aria-selected="true" style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#1" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 1</a></div>
+<h1>Intermediate Ghidra</h1>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b>STUDENT GUIDE</b>
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#2" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 2</a></div>
+<header>How to Use Slides</header>
+<ul class="medium">
+  <li>Use Arrow keys to go to next/previous slide</li>
+  <li>Double click page number to edit/jump to specific page</li>
+  <li>"withNotes" slide deck contains detailed notes below slides and can be used as a tutorial.</li>
+  <li>Click "Pop-up" to launch presentation slides</li>
+<li>Should display correctly in modern versions of all browsers. </li>
+  <li>Microsoft Edge displays incorrectly at first. To fix, go to Edge options (...) and click zoom once. </li>
+
+</ul>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#3" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 3</a></div>
+<header>Installing Ghidra</header>
+<br>
+<ul class="medium">
+  <li>To install Ghidra unzip the Ghidra installation file: </li>
+  <ul>
+    <li>ghidra_&lt;version&gt;_&lt;release&gt;_&lt;date&gt;.zip</li>
+</ul>
+<br>
+<ul>
+      <li>&lt;version&gt;  is the version number of the release</li>
+      <li>&lt;release&gt; is the name of the release</li>
+      <li>&lt;date&gt; is the date the release was built</li>
+    </ul>
+<br>
+<li>Platforms Supported:</li>
+<ul>
+  <li>Microsoft Windows 10 or later (64-bit)</li>
+  <li>Linux (64-bit)</li>
+  <li>macOS 10.13 or later</li>
+</ul>
+
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#4" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 4</a></div>
+<header>Exercise Files</header>
+<br>
+<ul class="medium">
+<li>Referenced exercise files are located in ghidra_&lt;version&gt;/docs/GhidraClass/ExerciseFiles</li>
+<br>
+<li>If an exercise file is not specifically listed then do the exercise with your choice of program.</li>
+<br>
+</ul>
+
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#5" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 5</a></div>
+<header>Course Objectives</header>
+<ul>
+  <li>By the end of this course you will be able to:</li>
+  <ul>
+    <li>Use some of the more advanced Ghidra features including creating data types, memory map, multi-user projects, comparing programs, and version tracking</li>    
+    <li>Setup Ghidra development environment and write Ghidra scripts</li> 
+	<li>Run Ghidra in headless mode</li>
+  </ul>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p><u><b>Notes:</b></u>
+</p></div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#6" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 6</a></div>
+<header>Course Topics</header>
+<table style="width:100%; border-spacing:0px;">
+  <tbody><tr>
+    <td style="vertical-align:top">
+      <br>
+      <ul class="medium">
+	<li>Creating data types</li>
+	<li>Memory Map</li>
+	<li>Multi-user projects</li>
+	<li>Comparing programs</li>
+	<li>Version tracking</li>
+      </ul>
+    </td>
+    <td style="vertical-align:top">
+      <br>
+      <ul class="medium ">
+	<li>Scripting Development</li>
+	<li>Running Ghidra in headless mode</li>
+	<li>Optional topics if time allows</li>
+      </ul>
+    </td>
+  </tr>
+</tbody></table>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <u><b>Notes:</b></u>
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#7" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 7</a></div>
+<header>Advanced Data Types<br>Creating Structures and Arrays</header>
+<br>
+<ul class="medium">
+  <li>Create data in Listing first, then make a structure or array from it</li>
+  <span style="color:#FFFF00;font-size:30px">&nbsp;&nbsp;&nbsp;&nbsp;OR</span>
+  <li>Create structure or array first then apply it</li>
+  <ul>
+    <li>Right mouse menu –&gt; Data-&gt;Create Array</li>
+    <li>Right mouse menu –&gt; Data-&gt;Create Structure</li>
+    <li>Data Type Manager -&gt; Create Structure</li>
+  </ul>
+  <br>
+  <span style="font-size:30px"><span style="color:#FFFF00">NOTE:</span> If you edit structure later, the edits will take effect in all places where that structure has been defined.</span>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  </p><ul>
+    <li>There are two ways to create your own structures. You can create structures from the Listing or From the Data Type Manager.</li>
+    <li><b>If creating a structure from the Listing:</b></li>
+    <ul>
+      <li>You can create data in the Listing before or after creating the structure</li>
+      <li>Make selection then choose Data-&gt;Create Structure</li>
+      <li>If you already had data created, the field types in the Structure Editor will be pre-populated – you just have to edit the field names</li>
+      <li>If you didn't have data created you need to fill in the field types and names in the editor</li>
+    </ul>
+    <li><b>If creating a structure from the Data Type Manager:</b></li>
+    <ul>
+      <li>In the &lt;<i>program name</i>&gt; folder, right click and choose New-&gt;Create Structure</li>
+    </ul>
+    <li><b>Creating your own Arrays</b></li>
+    <ul>
+      <li>You can create data in the Listing before or after creating the array. If you are creating an array from the Listing, make a selection, then choose Data -&gt; Create Array</li>
+    </ul>
+  </ul>
+  <p></p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#8" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 8</a></div>
+<header>Exercise 1<br>Create and Apply Structure</header>
+<br>
+<ul class="small">
+  <li>Import and analyze docs\GhidraClass\ExerciseFiles\WinhelloCPP\winhelloCPP.exe</li>
+  <li>Go to address 0040e4a8 and make a label "topErrorNumber"</li>
+  <li>Go to address 0040e4ac and make a label "topPtrErrorMsg"</li>
+  <li>Create a structure that contains the following elements:</li>
+  <ul>
+    <li>Int  - named errorNumber</li>
+    <li>Char * - named ptrErrorMsg</li>
+  </ul>
+  <li>Make a selection from 0040e4a8 to 40e55f and clear the data that is there</li>
+  <li>Apply your structure to this selection with one apply action. This should make all the structures in the selection at once.</li>
+  </ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#9" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 9</a></div>
+<header>Advanced Data Types</header>
+<ul>
+  <br>
+  <br>
+  <li>Creating Enums</li>
+  <li>Function Definitions</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes</u></b>
+  </p><ul>
+    <li><b>Enums:</b></li>
+    <ul>
+      <li>Users can create their own Enums data types by choosing New-&gt;Enum... from the Data Type Manager right mouse menu.</li>
+      <li>Users can create Enum data types by selecting a group of Enums in the Data Type Manager and selecting Create Enum From Selection.</li>
+    </ul>
+    <br>
+    <li><b>Function Definitions:</b></li>
+    <ul>
+	<li>Users can create a function definition data type for function signatures they might want apply again in a new program for a particular named function. To do this, click on a function signature and choose Function-&gt;Create Function Definition from the Listing right mouse menu.</li>
+      <li>Users can create function definitions for their whole program by choosing Capture Function Data Types from the Data Type Manager right mouse menu.</li>
+     <li>In new program, apply function signatures by right mouse-clicking on an appropriate category folder in the Data Type Manager and 
+     choosing <b>Apply Function Data Types</b> from the popup menu.</li>
+
+    </ul>
+  </ul>
+  <p></p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#10" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 10</a></div>
+<header>Advanced Data Types</header>
+<ul>
+  <br><br>
+  <li>Shared Data Archives</li>
+  <li>Advanced Data Options</li>
+  <li>C parser</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes</u></b>
+  </p><ul>
+    <li><b>Shared Data Archives:</b><br>
+    There are two types of Shared Data Archives called File archives and Project archives.</li>
+    <ul>
+      <li><b>File Archives:</b></li>
+      <ul>
+	<li>This archive is stored on the file system and accessible by anyone with access to the file system.</li>
+	<li>To create a File Archive, pull down on the black triangle in the Data Type manager and choose New File Archive.</li>
+      </ul>
+      <li><b>Project Archives:</b></li>
+      <ul>
+	<li>This archive is stored within a Ghidra project and is accessible by anyone with access to that project.</li>
+	<li>To create a Project Archive, pull down on the black triangle in the Data Type manager and choose New Project Archive.</li>
+      </ul>
+    </ul>
+    <li><b>Advanced Data Options:</b></li>
+    <ul>
+      <li>Users can change the settings on a single data item or on any applied data of a particular type using the Data-&gt;Settings or Data-Default Settings actions on the Listing right mouse menu.</li>
+    </ul>
+    <li><b>C parser:</b></li>
+    <ul>
+      <li>Users can create data types by parsing header files. To do this, use the File-&gt;Parse C Source action.</li>
+      <li>It is sometimes tricky to get the options setup correctly in this feature. Please contact the Ghidra team if you have troubles.</li>
+    </ul>
+  </ul>
+<p></p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#11" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 11</a></div>
+<header>Exercise 2<br>Create and Apply Enum</header>
+<ul class="small">
+  <li>In winhelloCPP.exe</li>
+  <ul>
+    <li>1. Create an new Enum named MyEnum with values 0-3 with corresponding names Enum0, Enum1, Enum2, and Enum3. Find a scalar operand reference with one of these values and use the Set Equate action to apply one of your Enums to it. (NOTE: If you cannot find a scalar use Search-&gt;Program Text to help you)</li>
+    <li>2. Create an ENUM named ExceptionNumbers  out of the already defined _FPE_ enums, using the Create Enum from Selection feature. Edit the Enum and make it size 4. Apply the ExceptionNumbers Enum  to the appropriate variable in the __XcptFilter function in both the Listing and the decompiler.  </li>
+  </ul>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <u><b>Notes:</b></u>
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#12" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 12</a></div>
+<header>Memory Map</header>
+<ul class="medium">
+  <li>The Memory Map</li>
+  <li>Allows users to add, delete, move, split, merge, or expand memory blocks in their program.</li>
+  <li>Default memory blocks may be uninitialized or initialized using specified data</li>  
+  <li>Other memory block types include byte-mapped and bit-mapped</li>
+  <li>Any memory block may be created as an overlay</li>
+  <li>Allows users to rename memory blocks</li>
+  <li>Allows users to change the image base of their program</li>
+  <li>Allows users to edit settings on individual memory blocks</li>
+  <ul>
+    <li>Read/Write/Execute</li>
+    <li>Volatile/non-volatile</li>
+    <li>Initialized/non-initialized (default blocks only)</li>
+  </ul>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#13" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 13</a></div>
+<header>Program Differences</header>
+<ul>
+  <br><br>
+  <li>Users can find differences between two programs</li>
+  <li>Users can apply differences from one program to another</li>
+  <li>Users can customize how their differences are applied</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <u><b>Notes:</b></u>
+  </p><ul>
+    <li>To open the Program Differences Tool, go to Tools-&gt;Program Differences and choose a program to compare against the currently opened program in the Code Browser.</li>
+    <br>
+    <li>Next, choose what types of program differences you want to see: bytes, bookmarks, labels, comments, etc.</li>
+    <br>
+    <li>Notice that the program you are comparing shows up to the right of the current program. There are extra icons added to the tool that allow you to navigate to the next difference, view what is different about a particular item, apply differences, or ignore differences.</li>
+    <br>
+    <li>You can decide how differences are applied for each kind of item. Most let you ignore, replace, or merge the difference.</li>
+    <br>
+    <li>If you want to select all differences, choose Select All Differences from the right mouse menu.</li>
+  </ul>
+  <p></p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#14" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 14</a></div>
+<header>Exercise 3<br>Program Differences</header>
+<ul>
+  <br>
+  <li>Import winhelloCPP.exe again and call it winhelloCPP2.exe</li>
+  <li>Pick a new kind of analyzer when you auto-analyze it.</li>
+  <li>Use the Program Differences Tool to view and apply some of the differences between the two programs.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <u><b>Notes:</b></u>
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#15" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 15</a></div>
+<header>Shared Project</header>
+<ul class="small">
+  <li>Setup server</li>
+  <ul>
+    <li>Edit Server.conf file to decide how users will authenticate and other options</li>
+    <li>Install service</li>
+    <li>Start service</li>
+    <li>Add users to the server</li>
+  </ul>
+  <li>Setup project</li>
+  <ul>
+    <li>Create new shared project</li>
+    <li>Add users to project (subgroup of server users)</li>
+    <li>Import and initial analysis of binaries</li>
+    <li>Add to version control so others can get access to it</li>
+    <li>Others do a check out to get access</li>
+  </ul>
+  <li>Shared Project actions</li>
+  <ul>
+    <li>Changes should be checked in so others can see them</li>
+    <li>Others do an update to see the changes</li>
+    <li>Conflicts get merged one at a time </li>
+  </ul>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <u><b>Notes</b></u>
+  </p><ul>
+    <li>As a user, you can run Ghidra in Shared Project mode which allows users to collaborate with other users when using Ghidra to understand and markup a binary.</li>
+    <li><b>Server Setup:</b></li>
+    <ul>
+      <li>Done once by whoever will administer the server</li>
+      <li>Users can set up Ghidra servers anywhere there is shared access amongst the users they want to share with</li>
+      <li>Go to C:\ghidra_&lt;version&gt;\server\svrREADME.html file for server setup instructions</li>
+      <li>Edit the server.conf file to setup server per the readme file</li>
+      <li>Install the server using svrInstall</li>
+	<li>Once server is up and running add people allowed to create shared projects on the server by using the \server\svrAdmin -add <user> command in a cmd window. </user></li>
+    </ul>
+    <li><b>Shared Projects:</b></li>
+    <ul>
+	<ul>
+	<li><b>Person Starting a New Project</b></li>
+	<ul>
+      <li>Create a new Ghidra Project using File-&gt;New Project and choose "Shared Project" and do the following in New Project Wizard:</li>
+	<ul>
+      <li>Type in server name or IP and use default port in most cases</li>
+	<li>Authenticate with method chosen in server.conf file -- server administrator should communicate this. </li>
+      <li>Create a new Repository</li>
+      <li>Give subgroup of people access to your project. You can give them admin, read/write, or read-only access.</li>
+      <li>Choose storage location for your local version of project</li>
+	</ul>
+	</ul>
+<li><b>Others joining project</b></li>
+ <ul>
+      <li>Create a new Ghidra Project using File-&gt;New Project and choose "Shared Project" and do the following in New Project Wizard:</li>
+	<ul>
+      <li>Type in server name or IP and use default port in most cases</li>
+	<li>Authenticate with method chosen in server.conf file -- server administrator or project owner should communicate this. </li>
+	<li>Join existing Repository</li>
+      <li>Choose storage location for your local version of project</li>
+</ul>
+       </ul>
+      
+    </ul>
+  </ul>
+  <p></p>
+</ul></div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#16" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 16</a></div>
+<header>Checksum Tool</header>
+<ul>
+  <br>
+  <li>The Checksum Tool allows users to generate a variety of checksums on either the whole program or a selection.</li>
+  <li>Results are shown in various formats.</li>
+  <ul>
+    <li>Decimal</li>
+    <li>Hex</li>
+    <li>1's Complement</li>
+    <li>2's Complement</li>
+  <ul>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  <br>
+  To open the Checksum Tool, go to Tools-&gt;Generate Checksum.
+  </p>
+</div>
+</ul></ul></section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#17" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 17</a></div>
+<header>Version Tracking</header>
+<ul>
+  <br><br>
+  <li>Version Tracking is the process of identifying matching functions or data in a new version of a binary.</li>
+  <li>See VersionTracking.html or VersionTracking_withNotes.html to follow along with the Version Tracking instruction to follow along with the Version Tracking instruction.</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  <br>
+  The VersionTracking.ppt slides are located in your <b>ghidra_&lt;version&gt;\docs\GhidraClass\Intermediate</b> directory.
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#18" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 18</a></div>
+<header>Scripting</header>
+<ul>
+  <br><br>
+  <li>Ghidra allows users to extend its functionality. One way to do this is to develop scripts</li>
+  <li>See Scripting.html to follow along with the Scripting instruction</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  <br>
+  The Scripting slides are located in your <b>ghidra_&lt;version&gt;\docs\GhidraClass\Intermediate</b> directory.
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#19" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 19</a></div>
+<header>Headless Analyzer</header>
+<ul>
+  <br><br>
+  <li>Analysis and all non-GUI Ghidra scripts can be run without running the Ghidra tool</li>
+  <li>See HeadlessAnalyzer.html or HeadlessAnalyzer_withNotes.html to follow along with the Headless Analyzer instruction</li>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  <br>
+  The HeadlessAnalyzer slides are located in your <b>ghidra_&lt;version&gt;\docs\GhidraClass\Intermediate</b> directory.
+  </p>
+</div>
+</section><section style="display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; margin-bottom: 50px !important; border: 1px solid rgb(68, 68, 68) !important; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px !important; padding: 20px !important; background-color: black !important; color: white !important; overflow: visible !important; box-sizing: border-box !important;"><div style="border-bottom: 1px solid rgb(68, 68, 68); margin-bottom: 15px; padding-bottom: 5px; text-align: right;"><a href="https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html#20" target="_blank" title="Open this slide in the original presentation view" style="text-decoration: none; color: rgb(93, 173, 226); font-weight: bold; font-size: 0.9em; font-family: monospace;">Slide 20</a></div>
+<header>Course Summary</header>
+<br>
+<ul class="medium">
+  <li>You now should be able to:</li>
+  <ul>    
+    <li>Use the more advanced Ghidra features including intermediate code analysis and decompiler, advanced data types and program tree, memory map, multi-user projects, comparing programs, and version tracking</li>
+	<li>Setup the Ghidra development environment</li>
+    <li>Write basic Ghidra scripts</li>
+ 	<li>Run Ghidra in headless mode</li>  
+  </ul>
+</ul>
+<div role="note" style="display: block; border-top: 1px solid rgb(68, 68, 68); margin-top: 20px; padding: 10px; color: rgb(204, 204, 204); background-color: rgb(26, 26, 26); font-size: 0.9em;">
+  <p>
+  <b><u>Notes:</u></b>
+  </p>
+</div>
+</section></div></body></html>

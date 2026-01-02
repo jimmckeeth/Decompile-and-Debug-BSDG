@@ -1,0 +1,9 @@
+{
+  "context": {
+    "fileFiltering": {
+      "respectGitIgnore": false
+    }
+  },
+     "tools": {
+    "sandbox": "podman"}
+}
