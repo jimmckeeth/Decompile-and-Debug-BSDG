@@ -213,6 +213,20 @@ The goal in game hacking is often to find the "Local Player" object to read heal
 4. **Patching Logic:** Use the assembler (Spacebar) to modify instructions. For example, replacing a `dec [eax+10]` (decrement ammo) with `nop` (no operation) creates an infinite ammo cheat.
 5. **Persistence:** To make the cheat permanent, use the "Patch File" feature to save the modified bytes back to the executable on disk.
 
+### 4.4 Case Study: CrackMe Workflow
+
+A common use case for x64dbg is tackling "CrackMe" challenges – small programs designed to be reverse-engineered, often involving bypassing a password or license check. The workflow typically involves:
+
+1. **Load the executable:** Open the target binary in x64dbg.
+2. **Search for String References:** Utilize the "String references" functionality (often found by right-clicking in the CPU view -> Search for -> Current Module -> String references) to locate messages like "Incorrect Password", "Access Denied", or "Registration Failed".
+3. **Locate Referencing Code:** Double-click on the identified string reference to navigate to the code that uses this string. This often leads to the logic that determines success or failure.
+4. **Identify Conditional Jumps:** Analyze the assembly code immediately preceding the error message. Look for conditional jump instructions (e.g., `JE` - Jump if Equal, `JNE` - Jump if Not Equal, `JZ` - Jump if Zero, `JNZ` - Jump if Not Zero). These instructions control the program's flow based on a condition (like a password comparison result).
+5. **Modify Execution Path (Patching):**
+   - **Runtime Modification:** During execution, you can often step to the conditional jump, and then manually alter the CPU's Flag register (e.g., the Zero Flag, `ZF`) to force the jump to take the "success" path.
+   - **Persistent Patch:** To permanently bypass the check, you can right-click the conditional jump instruction and use the "Assemble" (Spacebar) function to change it to an unconditional jump (`JMP`) that skips the failure code, or replace it with `NOP` (No Operation) instructions to effectively remove the check. After modification, use the "Patch File" feature to save these changes to disk.
+
+This process directly manipulates the program's execution logic to achieve a desired outcome, making it a foundational skill in reverse engineering.
+
 ## 5. Automation and Scripting
 
 Manual analysis is unscalable. x64dbg supports robust automation through its internal scripting language and Python integrations, allowing analysts to automate repetitive tasks like unpacking or string decryption.

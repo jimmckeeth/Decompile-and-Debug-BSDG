@@ -1,8 +1,8 @@
 # The Comprehensive Guide to the Ghidra Software Reverse Engineering Framework: Architecture, Operations, and Advanced Analysis
 
-Reference: [GitHub](https://github.com/NationalSecurityAgency/ghidra/) | [Doc Root](https://ghidra.re/) | [API javadoc](https://ghidra.re/ghidra_docs/api/index.html) | [Language Specification](https://ghidra.re/ghidra_docs/languages/index.html)
+**Reference**: [GitHub](https://github.com/NationalSecurityAgency/ghidra/) | [Doc Root](https://ghidra.re/) | [API javadoc](https://ghidra.re/ghidra_docs/api/index.html) | [Language Specification](https://ghidra.re/ghidra_docs/languages/index.html)
 
-Classes: [Courseware](https://ghidra.re/ghidra_docs/GhidraClass/Debugger/README.html) | [Beginner](https://ghidra.re/ghidra_docs/GhidraClass/Beginner/Introduction_to_Ghidra_Student_Guide.html) | [Intermediate](https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html) | [Advanced](https://ghidra.re/ghidra_docs/GhidraClass/AdvancedDevelopment/GhidraAdvancedDevelopment.html) | [BSim Tutorial](https://ghidra.re/ghidra_docs/GhidraClass/BSim/README.html)
+**Classes**: [Courseware](https://ghidra.re/ghidra_docs/GhidraClass/Debugger/README.html) | [Beginner](https://ghidra.re/ghidra_docs/GhidraClass/Beginner/Introduction_to_Ghidra_Student_Guide.html) | [Intermediate](https://ghidra.re/ghidra_docs/GhidraClass/Intermediate/Intermediate_Ghidra_Student_Guide.html) | [Advanced](https://ghidra.re/ghidra_docs/GhidraClass/AdvancedDevelopment/GhidraAdvancedDevelopment.html) | [BSim Tutorial](https://ghidra.re/ghidra_docs/GhidraClass/BSim/README.html)
 
 Other resources: [Hackaday Intro](https://hackaday.io/course/172292-introduction-to-reverse-engineering-with-ghidra)
 
@@ -125,24 +125,31 @@ This [exercise](https://github.com/0x57Origin/Flag_Hunt) demonstrates the basic 
 1. **Import:** Drag and drop the `crackme0x00.exe` binary into the **Project Window**. Select the default loader options.
 2. **Launch CodeBrowser:** Double-click the file in the Project Window. When prompted to analyze, click **Yes** and stick to the default analyzer list.
 3. **Locate Main:** In the **Symbol Tree** (left panel), expand the `Exports` or `Functions` folder. Look for `entry`. Double-click it.
-    - _Tip:_ If you see a call to `__libc_start_main`, the first argument pushed to that function is usually the actual `main` function of the C program. Double-click that address.
+   - _Tip:_ If you see a call to `__libc_start_main`, the first argument pushed to that function is usually the actual `main` function of the C program. Double-click that address.
 4. **Decompile:** With the cursor on the `main` function, observe the **Decompiler View**.
-    - You should see C code that compares a user input string against a hardcoded string using `strcmp`.
+   - You should see C code that compares a user input string against a hardcoded string using `strcmp`.
 5. **Solve:** Identify the hardcoded string (e.g., "250382"). This is the password.
-    - _Verification:_ Running the executable with this input should print a success message.
+   - _Verification:_ Running the executable with this input should print a success message.
 
 ## 5. The Art of Decompilation: P-Code and Refactoring
 
 The decompiler is the interface through which most modern analysts interact with binary code. Understanding how it works—and how to manipulate it—is the single most important skill in using Ghidra.
 
-### 5.1 The P-Code Abstract Machine
+### 5.1 Disassembly vs. Decompilation
+
+It's crucial to understand the distinction between these two core reverse engineering concepts:
+
+- **Disassembly:** This process translates machine code (raw binary instructions) into its corresponding assembly language mnemonics. It provides a 1:1 mapping between machine instructions and human-readable assembly. Tools like `objdump` or even Ghidra's Listing View perform disassembly. It tells you _what_ the processor is doing (e.g., `MOV EAX, 0x10`).
+- **Decompilation:** This process attempts to reconstruct the high-level source code (typically C-like pseudo-code) from assembly language. It is a much more complex task that involves data flow analysis, type inference, and control flow structuring to recover variable names, loop constructs, function parameters, and other semantic information lost during compilation. Ghidra's Decompiler View performs this, aiming to tell you _why_ the processor is doing something (e.g., `variable_1 = array[i];`).
+
+### 5.2 The P-Code Abstract Machine
 
 Ghidra’s decompiler does not translate assembly directly to C. Instead, it lifts the assembly instructions into an intermediate representation called **P-Code**. P-Code is a register transfer language that describes the semantics of the instruction rather than the syntax.
 
 - **Mechanism:** When the processor module (defined in Sleigh) sees an instruction like `ADD EAX, EBX`, it translates this into P-Code operations: `TEMP = EAX + EBX; EAX = TEMP`.
 - **Benefit:** This abstraction allows the decompiler to be architecture-agnostic. The optimization and structuring algorithms run on P-Code, meaning that the decompiler works just as well for an obscure 8-bit microcontroller as it does for x86-64, provided a Sleigh specification exists.
 
-### 5.2 The Refactoring Loop: From `FUN_` to Function
+### 5.3 The Refactoring Loop: From `FUN_` to Function
 
 The initial output of the decompiler is generic. Functions are named by address (e.g., `FUN_00401000`), and variables are typed based on size (e.g., `undefined4`). The analyst’s job is to iteratively refine this output through a process known as "Refactoring."
 
@@ -150,12 +157,26 @@ The initial output of the decompiler is generic. Functions are named by address 
 2. **Retyping (The `Ctrl+L` Key):** Variables default to primitive types. Changing a variable from `int` to a `Structure Pointer` transforms the code. A line like `*(param_1 + 16) = 5` becomes `param_1->status = 5`. This semantic shift makes the code readable and allows the analyst to verify if their [structural understanding matches](https://www.tripwire.com/state-of-security/ghidra-101-creating-structures-in-ghidra) the code's logic.
 3. **Variable Splitting and Merging:** The decompiler sometimes incorrectly merges two separate variables into one (because they use the same stack slot) or splits one variable into two. The analyst can right-click a variable in the Decompiler view to "Split" or "Merge" variables, correcting the data flow representation.
 
-### 5.3 Handling Stack Strings and Arrays
+### 5.4 Handling Stack Strings and Arrays
 
 Malware often constructs strings on the stack byte-by-byte to evade static string analysis. In the listing, this appears as a long sequence of `MOV` instructions.
 
 - **The Technique:** The analyst can identify the range of stack addresses used, highlight them in the Stack Frame editor, and create a `char` array of the appropriate length.
 - **The Result:** The decompiler will collapse the dozens of assignment statements into a single string representation, significantly reducing visual noise and revealing the obfuscated content.
+
+### 5.4 Handling Stack Strings and Arrays
+
+Malware often constructs strings on the stack byte-by-byte to evade static string analysis. In the listing, this appears as a long sequence of `MOV` instructions.
+
+- **The Technique:** The analyst can identify the range of stack addresses used, highlight them in the Stack Frame editor, and create a `char` array of the appropriate length.
+- **The Result:** The decompiler will collapse the dozens of assignment statements into a single string representation, significantly reducing visual noise and revealing the obfuscated content.
+
+### 5.5 Reconstructing C++
+
+One of Ghidra's most powerful features is its ability to assist in the reverse engineering of C++ binaries, which often present complex structures due to object-oriented programming paradigms.
+
+- **The `this` Pointer:** In C++, member functions implicitly receive a hidden first argument: the `this` pointer (often passed in a specific register like `RCX` on Windows x64 or `RDI` on Linux x64). Ghidra allows analysts to define a `struct` that represents the layout of the C++ class. By applying this structure to the `this` pointer in the decompiler, Ghidra can resolve raw memory offsets (e.g., `*(param_1 + 0x10)`) into readable member accesses (e.g., `this->member_variable_name`). This vastly improves readability and understanding of object interactions.
+- **VTable Reconstruction:** Virtual functions (polymorphism) in C++ are typically implemented using a Virtual Method Table (VTable). A VTable is an array of function pointers. When a virtual method is called, the program looks up the function pointer in the object's VTable. Ghidra enables users to manually define and reconstruct VTable structures. By doing so, opaque indirect calls in the assembly or pseudo-code (e.g., `CALL *(pointer_to_vtable + offset)`) can be resolved into meaningful calls like `CALL ClassName::virtual_method()`, providing critical context for object-oriented analysis.
 
 ## 6. Advanced Data Type Management
 
@@ -215,11 +236,11 @@ This exercise simulates handling a bootloader copy loop to analyze code at its e
 1. **Identify the Copy Loop:** In your firmware binary, locate the loop that copies bytes from ROM (e.g., `0x0000`) to RAM (e.g., `0x2000`). Note the source start, destination start, and length.
 2. **Open Memory Map:** Go to `Window -> Memory Map`.
 3. **Add RAM Block:** Click the green plus (`+`) to add a block.
-    - **Name:** `RAM_Copy`
-    - **Start Address:** `0x2000` (Destination)
-    - **Length:** (Length of copy)
-    - **Type:** `Default` (Initialized)
-    - **Permissions:** Read/Write/Execute
+   - **Name:** `RAM_Copy`
+   - **Start Address:** `0x2000` (Destination)
+   - **Length:** (Length of copy)
+   - **Type:** `Default` (Initialized)
+   - **Permissions:** Read/Write/Execute
 4. **Copy Bytes:** Ghidra will ask where to initialize the bytes from. Choose "File Bytes" or "Copy from other block" and specify the ROM source offset (`0x0000`).
 5. **Re-analyze:** Ghidra will now see valid bytes at `0x2000`. You can now disassemble this region (`D` key) to see the code as it appears after the bootloader runs.
 
@@ -253,20 +274,20 @@ This exercise demonstrates using a Python script to decode a XOR-encoded string 
 2. **Open Script Manager:** `Window -> Script Manager`. Click the "Create New Script" icon (page with a plus) and select Python.
 3. **Write the Script:**
 
-    ```python
-    # Simple XOR Decoder
-    start_addr = currentAddress # Place cursor at start of data
-    key = 0x55
-    length = 32
+   ```python
+   # Simple XOR Decoder
+   start_addr = currentAddress # Place cursor at start of data
+   key = 0x55
+   length = 32
 
-    for i in range(length):
-        addr = start_addr.add(i)
-        enc_byte = getByte(addr)
-        dec_byte = enc_byte ^ key
-        setByte(addr, dec_byte) # Patch memory with decoded byte
+   for i in range(length):
+       addr = start_addr.add(i)
+       enc_byte = getByte(addr)
+       dec_byte = enc_byte ^ key
+       setByte(addr, dec_byte) # Patch memory with decoded byte
 
-    print("Decryption Complete")
-    ```
+   print("Decryption Complete")
+   ```
 
 4. **Execute:** Save the script. In the Listing view, place your cursor at the start of the encoded data. Run the script from the Script Manager.
 5. **Verify:** The data in the listing should change to readable ASCII.

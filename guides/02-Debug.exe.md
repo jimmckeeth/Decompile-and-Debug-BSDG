@@ -71,7 +71,7 @@ This "Segment:Offset" notation is ubiquitous in `DEBUG`. When the utility launch
 
 `DEBUG` provides direct visibility and control over the CPU's registers via the **R** command. Understanding these registers is a [prerequisite for any operation](https://thestarman.pcministry.com/asm/debug/debug2.htm).
 
-**Table 1: The 16-Bit x86 Register Set**
+#### Table 1: The 16-Bit x86 Register Set
 
 | Register | Name            | Primary Function in DEBUG context                                     |
 | :------- | :-------------- | :-------------------------------------------------------------------- |
@@ -114,9 +114,9 @@ The **Dump** command displays the contents of memory in both hexadecimal and ASC
 
 The **Enter** command allows for the modification of memory. It has two modes:
 
-1.  **List Mode:** `-e address list` writes a sequence of bytes immediately.
-    - **Example:** `-e 100 B4 09 CD 21` writes the machine code for "Print String" to address CS:0100.
-2.  **Interactive Mode:** `-e address` displays the current byte and waits for input. Pressing `SPACE` accepts the change and moves to the next byte; pressing `ENTER` terminates the edit.
+1. **List Mode:** `-e address list` writes a sequence of bytes immediately.
+   - **Example:** `-e 100 B4 09 CD 21` writes the machine code for "Print String" to address CS:0100.
+2. **Interactive Mode:** `-e address` displays the current byte and waits for input. Pressing `SPACE` accepts the change and moves to the next byte; pressing `ENTER` terminates the edit.
 
 - **Usage:** This is the [standard method for "patching" code](https://thestarman.pcministry.com/asm/debug/debug2.htm)—modifying a specific instruction (e.g., changing a conditional jump `JZ` to a forced jump `JMP`) to alter program behavior.
 
@@ -198,18 +198,18 @@ A classic use of `DEBUG` was controlling the PC Speaker. The speaker is controll
 
 To generate a tone, one must:
 
-1.  **Configure the PIT (Channel 2):** Channel 2 is connected to the speaker. We send a command byte `B6` to the command register `43`. `B6` (binary `10110110`) selects Channel 2, sets access mode to "lo/hi byte", and operating mode to "Square Wave".
-    -o 43 B6
-2.  **Set the Frequency:** The PIT runs at 1.19318 MHz. The frequency divisor is calculated as $1193180 / \text{Frequency}$. For 1000 Hz, the divisor is roughly 1193 ($04A9_{16}$). We write the low byte ($A9$) then the high byte ($04$) to the channel data port `42`.
-    -o 42 A9
-    -o 42 04
-3.  **Enable the Speaker:** Port `61` controls the gate. Bit 0 connects the PIT to the speaker; Bit 1 enables the speaker data. We must read the current state, set these two bits, and write it back.
-    -i 61
-    (Assume return value is 4C)
-    -o 61 4F ; 4C OR 03 = 4F
-    _Result:_ The speaker emits a 1000Hz square wave.
-4.  **Silence:** To stop, we [clear the lower two bits](https://fenixfox-studios.com/content/pc_speaker/).
-    -o 61 4C
+1. **Configure the PIT (Channel 2):** Channel 2 is connected to the speaker. We send a command byte `B6` to the command register `43`. `B6` (binary `10110110`) selects Channel 2, sets access mode to "lo/hi byte", and operating mode to "Square Wave".
+   -o 43 B6
+2. **Set the Frequency:** The PIT runs at 1.19318 MHz. The frequency divisor is calculated as $1193180 / \text{Frequency}$. For 1000 Hz, the divisor is roughly 1193 ($04A9_{16}$). We write the low byte ($A9$) then the high byte ($04$) to the channel data port `42`.
+   -o 42 A9
+   -o 42 04
+3. **Enable the Speaker:** Port `61` controls the gate. Bit 0 connects the PIT to the speaker; Bit 1 enables the speaker data. We must read the current state, set these two bits, and write it back.
+   -i 61
+   (Assume return value is 4C)
+   -o 61 4F ; 4C OR 03 = 4F
+   _Result:_ The speaker emits a 1000Hz square wave.
+4. **Silence:** To stop, we [clear the lower two bits](https://fenixfox-studios.com/content/pc_speaker/).
+   -o 61 4C
 
 ### 5.3 Case Study: CMOS RAM Password Reset
 
@@ -354,9 +354,9 @@ While it has been superseded by sophisticated debuggers and safeguarded operatin
 
 ---
 
-**Appendix A: Reference Tables**
+## Appendix A: Reference Tables
 
-**Table 2: Common BIOS Interrupts for Debugging**
+### Table 2: Common BIOS Interrupts for Debugging
 
 | Interrupt   | Function          | Usage in DEBUG                                     |
 | :---------- | :---------------- | :------------------------------------------------- |
@@ -366,7 +366,7 @@ While it has been superseded by sophisticated debuggers and safeguarded operatin
 | **INT 21h** | DOS Services      | File I/O, Print String, Terminate Program.         |
 | **INT 3**   | Breakpoint        | The opcode `CC` used by DEBUG to stop execution.   |
 
-**Table 3: Common Debug Error Indicators**
+### Table 3: Common Debug Error Indicators
 
 | Error  | Meaning              | Context                                                            |
 | :----- | :------------------- | :----------------------------------------------------------------- |
