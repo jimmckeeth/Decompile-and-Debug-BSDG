@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLVM: The Universal Translator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: #0c0a1e;
+            color: #d8b4fe; /* Light Purple */
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Audiowide', cursive;
+        }
+
+        /* Signal Wave Animation */
+        .wave-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(139, 92, 246, 0.5); /* Violet */
+            opacity: 0;
+            animation: ripple 3s infinite;
+        }
+
+        .wave-ring:nth-child(2) { animation-delay: 1s; }
+        .wave-ring:nth-child(3) { animation-delay: 2s; }
+
+        @keyframes ripple {
+            0% { transform: scale(0.1); opacity: 1; border-width: 4px; }
+            100% { transform: scale(1.5); opacity: 0; border-width: 0px; }
+        }
+
+        /* Platform Cards */
+        .platform-card {
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid #4c1d95; /* Dark Violet */
+            box-shadow: 0 0 15px rgba(76, 29, 149, 0.2);
+            transition: all 0.3s ease;
+        }
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
+            border-color: #8b5cf6;
+        }
+
+        /* Connection Lines */
+        .beam {
+            background: linear-gradient(to bottom, #8b5cf6, transparent);
+            width: 2px;
+            opacity: 0.5;
+        }
+
+        /* Glitch Text */
+        .glitch-text:hover {
+            animation: glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+        }
+        @keyframes glitch-anim {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+        
+        /* Grid Background */
+        .cyber-grid {
+            background-image: linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative p-6 flex flex-col items-center cyber-grid">
+
+    <header class="text-center mb-16 z-10">
+        <h1 class="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400 mb-2 uppercase tracking-wider">
+            Target Acquired
+        </h1>
+        <p class="text-violet-300 text-lg uppercase tracking-[0.3em]">The LLVM Backend Broadcast</p>
+    </header>
+
+    <main class="relative w-full max-w-7xl flex flex-col items-center">
+        
+        <div class="relative w-32 h-32 md:w-48 md:h-48 flex items-center justify-center mb-24 z-20">
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="wave-ring w-full h-full"></div>
+                <div class="wave-ring w-full h-full"></div>
+                <div class="wave-ring w-full h-full"></div>
+            </div>
+            
+            <div class="w-full h-full bg-black rounded-full border-4 border-violet-500 shadow-[0_0_50px_rgba(139,92,246,0.5)] flex flex-col items-center justify-center relative z-10 group cursor-pointer">
+                <i class="fas fa-broadcast-tower text-5xl text-violet-400 mb-2 group-hover:text-white transition-colors"></i>
+                <div class="font-bold text-white text-xl">IR.bc</div>
+                <div class="text-[10px] text-violet-400 uppercase tracking-widest mt-1">Universal Signal</div>
+            </div>
+        </div>
+
+        <div class="absolute top-24 left-0 right-0 h-24 flex justify-center z-0 pointer-events-none">
+             </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full z-10">
+            
+            <div class="platform-card rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500"></div>
+                <div class="flex justify-between items-start mb-4">
+                    <i class="fas fa-server text-3xl text-blue-400"></i>
+                    <span class="text-xs font-bold bg-blue-900/50 text-blue-300 px-2 py-1 rounded">CISC</span>
+                </div>
+                <h3 class="text-2xl text-white mb-2 glitch-text">x86_64</h3>
+                <ul class="text-sm text-gray-400 space-y-2 font-mono">
+                    <li><span class="text-blue-500">></span> Intel Core / Xeon</li>
+                    <li><span class="text-blue-500">></span> AMD Ryzen / EPYC</li>
+                    <li><span class="text-blue-500">></span> Windows / Linux / macOS</li>
+                </ul>
+                <div class="mt-4 pt-4 border-t border-gray-700">
+                    <code class="text-xs text-blue-300 block">MOV EAX, [RBP-4]</code>
+                </div>
+            </div>
+
+            <div class="platform-card rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-orange-500"></div>
+                <div class="flex justify-between items-start mb-4">
+                    <i class="fas fa-microchip text-3xl text-red-400"></i>
+                    <span class="text-xs font-bold bg-red-900/50 text-red-300 px-2 py-1 rounded">RISC</span>
+                </div>
+                <h3 class="text-2xl text-white mb-2 glitch-text">AArch64</h3>
+                <ul class="text-sm text-gray-400 space-y-2 font-mono">
+                    <li><span class="text-red-500">></span> Apple Silicon (M1/M2)</li>
+                    <li><span class="text-red-500">></span> Android / iOS</li>
+                    <li><span class="text-red-500">></span> Raspberry Pi</li>
+                </ul>
+                <div class="mt-4 pt-4 border-t border-gray-700">
+                    <code class="text-xs text-red-300 block">LDR W0, [X29, #-4]</code>
+                </div>
+            </div>
+
+            <div class="platform-card rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                <div class="flex justify-between items-start mb-4">
+                    <i class="fas fa-globe text-3xl text-purple-400"></i>
+                    <span class="text-xs font-bold bg-purple-900/50 text-purple-300 px-2 py-1 rounded">STACK</span>
+                </div>
+                <h3 class="text-2xl text-white mb-2 glitch-text">Wasm32</h3>
+                <ul class="text-sm text-gray-400 space-y-2 font-mono">
+                    <li><span class="text-purple-500">></span> Chrome / Firefox / Safari</li>
+                    <li><span class="text-purple-500">></span> Node.js / Edge</li>
+                    <li><span class="text-purple-500">></span> Cloudflare Workers</li>
+                </ul>
+                <div class="mt-4 pt-4 border-t border-gray-700">
+                    <code class="text-xs text-purple-300 block">i32.const 42</code>
+                </div>
+            </div>
+
+            <div class="platform-card rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500"></div>
+                <div class="flex justify-between items-start mb-4">
+                    <i class="fas fa-robot text-3xl text-green-400"></i>
+                    <span class="text-xs font-bold bg-green-900/50 text-green-300 px-2 py-1 rounded">OPEN</span>
+                </div>
+                <h3 class="text-2xl text-white mb-2 glitch-text">RISC-V</h3>
+                <ul class="text-sm text-gray-400 space-y-2 font-mono">
+                    <li><span class="text-green-500">></span> Embedded Controllers</li>
+                    <li><span class="text-green-500">></span> IoT Devices</li>
+                    <li><span class="text-green-500">></span> Open Source Hardware</li>
+                </ul>
+                <div class="mt-4 pt-4 border-t border-gray-700">
+                    <code class="text-xs text-green-300 block">lw a0, 0(sp)</code>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+    
+    <div class="fixed bottom-4 left-4 text-[10px] text-violet-800 font-mono">
+        SEQ: 002-PLATFORM-TARGETS // STATUS: OPTIMIZED
+    </div>
+
+</body>
+</html>
