@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLVM Modular Design Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #050505;
+            color: #33ff00;
+        }
+
+        /* CRT Scanline Effect */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(51, 255, 0, 0.02) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 10s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100%; }
+        }
+        
+        .crt-overlay {
+            background: rgba(18, 16, 16, 0.1);
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 9;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+        }
+
+        /* Neon Glows */
+        .neon-text-green { text-shadow: 0 0 5px #33ff00, 0 0 10px #33ff00; }
+        .neon-border-green { box-shadow: 0 0 5px #33ff00, inset 0 0 5px #33ff00; }
+        
+        .neon-text-pink { color: #ff00de; text-shadow: 0 0 5px #ff00de, 0 0 10px #ff00de; }
+        .neon-border-pink { border-color: #ff00de; box-shadow: 0 0 5px #ff00de, inset 0 0 5px #ff00de; }
+
+        .neon-text-cyan { color: #00ffff; text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff; }
+        .neon-border-cyan { border-color: #00ffff; box-shadow: 0 0 5px #00ffff, inset 0 0 5px #00ffff; }
+
+        /* Circuit Traces */
+        .circuit-line {
+            stroke-dasharray: 10;
+            animation: dash 20s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -100; }
+        }
+
+        /* Glitch Animation */
+        .glitch {
+            animation: glitch 1s linear infinite;
+        }
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px,0) skew(0deg); }
+            4%, 60% { transform: translate(-2px,0) skew(0deg); }
+            62% { transform: translate(0,0) skew(5deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden selection:bg-green-900 selection:text-white pb-20">
+
+    <!-- FX Layers -->
+    <div class="crt-overlay"></div>
+    <div class="scanline"></div>
+
+    <!-- Header -->
+    <header class="pt-8 pb-4 text-center relative z-20">
+        <h1 class="text-6xl md:text-7xl font-bold uppercase tracking-widest neon-text-green mb-2 glitch">
+            LLVM<span class="text-white">_</span>ARCH
+        </h1>
+        <p class="text-xl md:text-2xl neon-text-cyan tracking-wider">
+            &lt; THE_UNIVERSAL_BACKBONE /&gt;
+        </p>
+    </header>
+
+    <!-- Main Diagram Container -->
+    <main class="container mx-auto px-4 relative z-20 mt-10">
+        
+        <!-- Legend / Status Bar -->
+        <div class="flex justify-between items-center border-b border-green-800 pb-2 mb-12 text-lg text-green-600 font-bold uppercase tracking-widest">
+            <div>System: ONLINE</div>
+            <div>Mode: THREE_PHASE_DESIGN</div>
+            <div>Target: UNIVERSAL</div>
+        </div>
+
+        <!-- The Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch relative">
+
+            <!-- SVG Background Connector Layer (Desktop Only) -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none hidden lg:block z-0" style="opacity: 0.6;">
+                <!-- Connecting Phase 1 to Phase 2 -->
+                <path d="M 280 250 C 350 250, 350 350, 420 350" stroke="#ff00de" stroke-width="2" fill="none" class="circuit-line" />
+                <path d="M 280 400 C 350 400, 350 350, 420 350" stroke="#ff00de" stroke-width="2" fill="none" class="circuit-line" />
+                <path d="M 280 550 C 350 550, 350 350, 420 350" stroke="#ff00de" stroke-width="2" fill="none" class="circuit-line" />
+
+                <!-- Connecting Phase 2 to Phase 3 -->
+                <path d="M 800 350 C 870 350, 870 200, 940 200" stroke="#00ffff" stroke-width="2" fill="none" class="circuit-line" />
+                <path d="M 800 350 C 870 350, 870 350, 940 350" stroke="#00ffff" stroke-width="2" fill="none" class="circuit-line" />
+                <path d="M 800 350 C 870 350, 870 500, 940 500" stroke="#00ffff" stroke-width="2" fill="none" class="circuit-line" />
+                <path d="M 800 350 C 870 350, 870 650, 940 650" stroke="#00ffff" stroke-width="2" fill="none" class="circuit-line" />
+            </svg>
+
+            <!-- PHASE 1: FRONTEND -->
+            <div class="lg:col-span-3 flex flex-col justify-center space-y-6 relative z-10">
+                <div class="text-center mb-4">
+                    <h2 class="text-3xl neon-text-pink border-b-2 border-pink-500 inline-block px-4 pb-1">PHASE_01</h2>
+                    <p class="text-pink-400 mt-2 text-xl">[ THE FRONTEND ]</p>
+                    <p class="text-xs text-pink-700 uppercase mt-1">Source -> IR Generation</p>
+                </div>
+
+                <!-- Source Box 1 -->
+                <div class="border-2 border-pink-500 bg-black p-4 neon-border-pink hover:bg-pink-900/10 transition-colors group">
+                    <div class="flex justify-between text-xs text-pink-500 mb-2 border-b border-pink-900 pb-1">
+                        <span>FILE: MAIN.C</span>
+                        <span>LANG: C/C++</span>
+                    </div>
+                    <div class="text-2xl text-white font-bold mb-1">CLANG</div>
+                    <div class="text-sm text-pink-300">Parser & Lexer</div>
+                </div>
+
+                <!-- Source Box 2 -->
+                <div class="border-2 border-pink-500 bg-black p-4 neon-border-pink hover:bg-pink-900/10 transition-colors">
+                    <div class="flex justify-between text-xs text-pink-500 mb-2 border-b border-pink-900 pb-1">
+                        <span>FILE: APP.RS</span>
+                        <span>LANG: RUST</span>
+                    </div>
+                    <div class="text-2xl text-white font-bold mb-1">RUSTC</div>
+                    <div class="text-sm text-pink-300">Borrow Checker</div>
+                </div>
+
+                <!-- Source Box 3 -->
+                <div class="border-2 border-pink-500 bg-black p-4 neon-border-pink hover:bg-pink-900/10 transition-colors">
+                    <div class="flex justify-between text-xs text-pink-500 mb-2 border-b border-pink-900 pb-1">
+                        <span>FILE: UNIT.PAS</span>
+                        <span>LANG: DELPHI</span>
+                    </div>
+                    <div class="text-2xl text-white font-bold mb-1">NEXTGEN</div>
+                    <div class="text-sm text-pink-300">Pascal Frontend</div>
+                </div>
+            </div>
+
+            <!-- PHASE 2: OPTIMIZER (CORE) -->
+            <div class="lg:col-span-6 flex flex-col justify-center items-center relative z-10 py-10 lg:py-0">
+                
+                <!-- Centerpiece Container -->
+                <div class="w-full max-w-lg border-4 border-green-500 bg-black p-1 neon-border-green relative">
+                    <!-- Decorators -->
+                    <div class="absolute -top-3 -left-3 w-6 h-6 border-t-4 border-l-4 border-green-500"></div>
+                    <div class="absolute -top-3 -right-3 w-6 h-6 border-t-4 border-r-4 border-green-500"></div>
+                    <div class="absolute -bottom-3 -left-3 w-6 h-6 border-b-4 border-l-4 border-green-500"></div>
+                    <div class="absolute -bottom-3 -right-3 w-6 h-6 border-b-4 border-r-4 border-green-500"></div>
+
+                    <div class="bg-green-900/10 p-6 text-center">
+                        <h2 class="text-4xl neon-text-green mb-2 glitch">PHASE_02: OPTIMIZER</h2>
+                        <div class="h-px w-full bg-green-500 my-4 shadow-[0_0_10px_#33ff00]"></div>
+                        
+                        <!-- IR Visualization -->
+                        <div class="text-left bg-black border border-green-800 p-4 font-mono text-sm md:text-lg text-green-300 shadow-inner mb-6">
+                            <span class="text-gray-500">; LLVM IR (SSA Form)</span><br>
+                            define i32 @main() {<br>
+                            &nbsp;&nbsp;%1 = add i32 5, 10<br>
+                            &nbsp;&nbsp;<span class="text-yellow-400 font-bold bg-yellow-900/30 px-1">%2 = mul i32 %1, 2</span><br>
+                            &nbsp;&nbsp;ret i32 %2<br>
+                            }
+                        </div>
+
+                        <!-- Tools -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="border border-green-500/50 p-2 text-green-400">
+                                <i class="fas fa-cog fa-spin"></i> CMD: <span class="text-white font-bold">OPT</span>
+                            </div>
+                            <div class="border border-green-500/50 p-2 text-green-400">
+                                <i class="fas fa-link"></i> PASS: <span class="text-white font-bold">LTO</span>
+                            </div>
+                        </div>
+                        
+                        <p class="mt-4 text-xs text-green-600 uppercase tracking-[0.2em]">The Common Intermediate Representation</p>
+                    </div>
+                </div>
+
+                <!-- Down Arrow for Mobile -->
+                <div class="lg:hidden text-4xl text-green-500 my-4">⬇</div>
+
+            </div>
+
+            <!-- PHASE 3: BACKEND -->
+            <div class="lg:col-span-3 flex flex-col justify-center space-y-6 relative z-10">
+                <div class="text-center mb-4">
+                    <h2 class="text-3xl neon-text-cyan border-b-2 border-cyan-500 inline-block px-4 pb-1">PHASE_03</h2>
+                    <p class="text-cyan-400 mt-2 text-xl">[ THE BACKEND ]</p>
+                    <p class="text-xs text-cyan-700 uppercase mt-1">IR -> Machine Code</p>
+                </div>
+
+                <!-- Target 1 -->
+                <div class="border-2 border-cyan-500 bg-black p-4 neon-border-cyan hover:bg-cyan-900/10 transition-colors text-right">
+                    <div class="text-2xl text-white font-bold mb-1">X86_64</div>
+                    <div class="text-xs text-cyan-300">Desktop / Server</div>
+                    <div class="text-xs text-gray-500 mt-1">MOV EAX, 0x1</div>
+                </div>
+
+                <!-- Target 2 -->
+                <div class="border-2 border-cyan-500 bg-black p-4 neon-border-cyan hover:bg-cyan-900/10 transition-colors text-right">
+                    <div class="text-2xl text-white font-bold mb-1">ARM64</div>
+                    <div class="text-xs text-cyan-300">Mobile / Apple Silicon</div>
+                    <div class="text-xs text-gray-500 mt-1">MOV X0, #1</div>
+                </div>
+
+                <!-- Target 3 -->
+                <div class="border-2 border-cyan-500 bg-black p-4 neon-border-cyan hover:bg-cyan-900/10 transition-colors text-right">
+                    <div class="text-2xl text-white font-bold mb-1">WASM</div>
+                    <div class="text-xs text-cyan-300">Web Assembly</div>
+                    <div class="text-xs text-gray-500 mt-1">i32.const 1</div>
+                </div>
+
+                <!-- Target 4 -->
+                <div class="border-2 border-cyan-500 bg-black p-4 neon-border-cyan hover:bg-cyan-900/10 transition-colors text-right">
+                    <div class="text-2xl text-white font-bold mb-1">RISC-V</div>
+                    <div class="text-xs text-cyan-300">Embedded / IoT</div>
+                    <div class="text-xs text-gray-500 mt-1">addi a0, zero, 1</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Terminal -->
+        <div class="mt-20 border-t-2 border-green-800 pt-6">
+            <div class="bg-black border border-green-900 p-4 font-mono text-sm shadow-lg max-w-3xl mx-auto">
+                <div class="flex gap-2 mb-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div class="text-green-500">
+                    <span class="text-blue-400">user@devbox</span>:<span class="text-white">~/llvm-project</span>$ llvm-as <span class="text-yellow-300">main.ll</span> -o <span class="text-yellow-300">main.bc</span><br>
+                    <span class="text-blue-400">user@devbox</span>:<span class="text-white">~/llvm-project</span>$ opt -O3 <span class="text-yellow-300">main.bc</span> -o <span class="text-yellow-300">main_opt.bc</span><br>
+                    <span class="text-blue-400">user@devbox</span>:<span class="text-white">~/llvm-project</span>$ llc -march=x86-64 <span class="text-yellow-300">main_opt.bc</span> -o <span class="text-yellow-300">main.s</span><br>
+                    <span class="text-blue-400">user@devbox</span>:<span class="text-white">~/llvm-project</span>$ <span class="animate-pulse">_</span>
+                </div>
+            </div>
+            <p class="text-center text-green-800 text-xs mt-4">GENERATED BY GEMINI // LLVM INFRASTRUCTURE GUIDE</p>
+        </div>
+
+    </main>
+
+</body>
+</html>
