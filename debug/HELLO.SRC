@@ -1,0 +1,16 @@
+a
+mov ah, 9
+mov dx, 108
+int 21
+ret
+
+e 108 'Hello world', D, A, '$'
+
+g
+n hello.com
+r CX
+17
+w
+q
+
+
