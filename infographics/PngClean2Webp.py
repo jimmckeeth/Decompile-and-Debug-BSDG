@@ -38,8 +38,7 @@ def process_images(folder_path):
             continue
 
         # Construct the expected clean filename
-        clean_name = f"{img_path.stem}-clean.png"
-        clean_path = folder / clean_name
+        clean_path = folder / "clean" / img_path.name
 
         if clean_path.exists():
             print(f"\n--- Processing: {img_path.name} ---")
@@ -92,7 +91,7 @@ def process_images(folder_path):
 
                     # 5. Feathering (Gradient Mask Approach)
                     # Increased to 33% as requested
-                    feather_dist = int(new_patch_size * 0.50) 
+                    feather_dist = int(new_patch_size * 0.33) 
                     feather_dist = max(1, feather_dist)
                     
                     print(f"Feather Distance: {feather_dist}px")
