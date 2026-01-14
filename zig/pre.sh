@@ -1,4 +1,7 @@
 #!/bin/bash
+
+sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+
 # sudo snap install zig --classic --beta
 
 wget https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
