@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+	<html class="sl-root decks export offline loaded">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, minimal-ui">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<link rel="manifest" href='data:application/manifest+json,{"display": "standalone", "name": "Decompile &amp; Debug"}' />
+		<title>Decompile &amp; Debug</title>
+
+		<meta name="description" content="Exploring the relationship between the high level source code we write an the binary machine code that powers our computers. Presented at BSDG on Jan 13, 2026 by Jim McKeeth - CC-BY-NC-SA">
+
+		<link rel="stylesheet" type="text/css" href="lib/offline-v2.css">
+
+
+
+		<!-- User CSS -->
+		<style id="user-css-output" type="text/css">
+			@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css");
+.reveal {
+  
+  /* fallback */
+}
+.reveal .monospace-font h1,
+.reveal .monospace-font h2,
+.reveal .monospace-font h3 {
+  font-family: monospace;
+}
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/materialicons/v145/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+.reveal .material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+.reveal .material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Default size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all Webkit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+		</style>
+	</head>
+	<body class="reveal-viewport theme-font-helvetica theme-color-black-mint">
+		<div class="reveal">
+			<div class="slides">
+				<section class="stack" data-id="d4e277b530945b929f5a8d91a9a34971"><section data-background-opacity="0.5" data-background-transition="fade" data-id="eec1b1a61bbff263d2c1b623b86a4d5a" data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp"><div class="sl-block" data-block-type="text" style="width: 837px; left: 221.343px; top: 116px; height: auto;" data-block-id="094a46b06a646952557d4e65a3a42e4f"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1>Decompile<br>
+&amp; Debug</h1></div></div></div>
+
+<div class="sl-block" data-block-type="text" style="width: 712.912px; left: 283.387px; top: 380.5px; height: auto;" data-name="text-d18e72" data-block-id="c19bfab9bb0e3b144b6e32e6f983c9d8"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: center; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text"><p>Exploring the relationship between the high level source code we write an the binary machine code that powers our computers.</p></div></div></div>
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 150px; height: 150px; left: 264.843px; top: 547px; min-width: 1px; min-height: 1px;" data-name="image-f925b0" data-block-id="409d4147078b05fbb6aa66dda271bb99"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="150" data-natural-height="150" data-lazy-loaded="" data-src="decompile-debug-bsdg/a5781b72039b7cda81e2baa8c30ae1fc.svg"></div></div>
+
+<div class="sl-block" data-block-type="image" style="width: 150px; height: 150px; left: 560px; top: 547px; min-width: 1px; min-height: 1px;" data-name="image-43aa11" data-block-id="85c935678301b1ab9467b77c41447c8c"><div class="sl-block-content" style="z-index: 14;"><img class="" data-natural-width="150" data-natural-height="150" data-lazy-loaded="" data-src="decompile-debug-bsdg/af2bbcedbff64dff4adbebbe721f4abe.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 150px; height: 150px; left: 864.843px; top: 547px; min-width: 1px; min-height: 1px;" data-name="image-e9888f" data-block-id="32cf4f1b0504705f513fa66436be1a71"><div class="sl-block-content" style="z-index: 15;"><img class="" data-natural-width="128" data-natural-height="128" data-lazy-loaded="" data-src="decompile-debug-bsdg/8a2143728e1a6556ad4dfaba991b3b7f.svg"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 195.312px; left: 1074.85px; top: 22.9999px; height: auto;" data-block-id="66e03da4c5311b7dfbb46dc3835ad53a" data-name="text-e2d179"><div class="sl-block-style" style="z-index: 16; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 16; text-align: center; color: rgb(28, 235, 123); font-size: 70%; line-height: 1.04;" data-placeholder-text="Text" data-has-line-height="">
+<p><span style="color:rgb(28, 235, 123)">BSDG.dev</span></p>
+
+<p>Jan 13, 2026</p>
+
+<p>Jim McKeeth</p>
+
+<p>jim@mckeeth.org</p>
+
+<p>delphi.org</p>
+</div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 0px; top: 0px; height: auto;" data-origin-id="edc0abb539e2297b75907ccde848d0b2" data-block-id="48acbde69bc3aff4316a97b533c8e215"><div class="sl-block-style" style="z-index: 14; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 14; text-align: left; color: rgb(28, 235, 123); font-size: 70%;" data-placeholder-text="Text" data-has-custom-html="">
+<p><a href="https://slides.com/jimmckeeth/decompile-debug-bsdg" target="_blank">
+  <span class="material-icons"></span> slides.com/jimmckeeth/decompile-debug-bsdg</a></p>
+
+<p><a href="https://github.com/jimmckeeth/decompile-and-debug" target="_blank">
+  <i class="fab fa-github"></i> github.com/jimmckeeth/decompile-debug-bsdg</a></p>
+</div></div></div></section><section data-background-opacity="0.49" data-background-transition="fade" data-id="57de1cd2c3d2282b9c2925ba7abba8a8" data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp"><div class="sl-block" data-block-type="text" style="width: 1138.5px; left: 53.6695px; top: 23px; height: auto;" data-block-id="2371e5c01b6445a5a006bb0fc9d9328b"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1>Blah, Blah, Blah</h1></div></div></div>
+
+<div class="sl-block" data-block-type="text" style="width: 765.839px; left: 17.0805px; top: 500px; height: auto;" data-name="text-d18e72" data-block-id="7f7db342ea08e355cdcf4f5ea279b6e0"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: left; color: rgb(28, 235, 123); font-size: 80%; line-height: 1.365;" data-placeholder-text="Text" data-has-line-height=""><ul>
+	<li>Icons: <a href="https://icons8.com/" target="_blank">Icons 8</a><span style="color:rgb(28, 235, 123)"> | </span><a href="https://thenounproject.com/" target="_blank">Noun Project</a><span style="color:rgb(28, 235, 123)"> | </span><a href="https://fontawesome.com/" target="_blank">Font Awesome</a> | <a href="https://fonts.google.com/icons" target="_blank">Google</a>
+</li>
+	<li>Graphics: <a href="https://pixabay.com/" target="_blank">Pixabay</a><span style="color:rgb(28, 235, 123)"> | </span><a href="https://www.pexels.com/@pixabay/" target="_blank">Pexels</a><span style="color:rgb(28, 235, 123)"> | </span><a href="https://unsplash.com/" target="_blank">Unsplash</a>
+</li>
+	<li>Images &amp; reference: <a href="https://www.wikipedia.org/" target="_blank">Wikipedia</a><span style="color:rgb(28, 235, 123)"> | </span><a href="https://wikimedia.org/" target="_blank">Wikimedia</a>
+</li>
+	<li>LLM Research &amp; Infographics: <a href="https://gemini.google/" target="_blank">Google Gemini</a>
+</li>
+	<li>Image Editing: <a href="https://www.midjourney.com/" target="_blank">Midjourney</a><span style="color:rgb(28, 235, 123)"> | </span><a href="https://banana.ovo.re/" target="_blank">banana.ovo.re</a><span style="color:rgb(28, 235, 123)"> | <a href="https://www.gimp.org/" target="_blank">Gimp</a></span>
+</li>
+	<li>Slides: <a href="http://Slides.com/" target="_blank">Slides.com</a><span style="color:rgb(28, 235, 123)"> | </span><a href="https://revealjs.com/" target="_blank">Reveal.js</a>
+</li>
+</ul></div></div></div>
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 1120px; left: 62.9195px; top: 222px;" data-name="text-e80e45" data-block-id="49a761cf536c2a110a7acf1b5d792468"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; line-height: 1.365;" data-has-line-height=""><ul>
+	<li style="text-align:left">Presentation by Jim McKeeth</li>
+	<li style="text-align:left">New &amp; original materials licensed under Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">BY-NC-SA 4.0</a> </li>
+	<li style="text-align:left">Research pulled from experience and various source, including product and project pages, 3rd party publications, and large language models  </li>
+	<li style="text-align:left">Independently verified as possible, considered biased opinion otherwise</li>
+</ul></div></div>
+<div class="sl-block" data-block-type="image" style="width: 198.739px; height: 69.5587px; left: 1040px; top: 621.979px; min-width: 1px; min-height: 1px;" data-name="image-b7ca5e" data-block-id="3cc4696f2018e0916942a4266bc0d07a"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="120" data-natural-height="42" data-lazy-loaded="" data-src="decompile-debug-bsdg/dc82b02fde5034f4d94912f5c963c2d5.svg"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 800px; top: 504px; height: auto;" data-block-id="bb0c1a31d9450b20ce42a726af71b2ba" data-name="text-1418bd"><div class="sl-block-style" style="z-index: 14; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 14; text-align: left; color: rgb(28, 235, 123); font-size: 70%;" data-placeholder-text="Text" data-has-custom-html="">
+<p><a href="https://slides.com/jimmckeeth/decompile-debug-bsdg" target="_blank">
+  <span class="material-icons"></span> slides.com/jimmckeeth/decompile-debug-bsdg</a></p>
+
+<p><a href="https://github.com/jimmckeeth/decompile-and-debug" target="_blank">
+  <i class="fab fa-github"></i> github.com/jimmckeeth/decompile-debug-bsdg</a></p>
+</div></div></div></section></section><section class="stack" data-id="d77d380050ed1f55a590c3c179548c0b"><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="b5dfcb392bedae133aff2195a2e34d98" data-visibility="hidden">
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280px; height: 714.345px; left: 0.065px; top: 2.8275px; min-width: 1px; min-height: 1px;" data-name="image-580d9b" data-block-id="7f128228689679ad2f8669670564bd91"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/10e46b8f0dfbe22b7932c2abf3418250.webp"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80.065px; top: 48px; height: auto;" data-name="text-853d2e" data-block-id="e1b75f1e04f58788f181e1b501308d5a"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 11; color: rgb(28, 235, 123); font-size: 228%; line-height: 1.04;" data-placeholder-text="Text" data-has-line-height=""><h1><code>Why?</code></h1></div></div></div></section><section data-id="749bda242c0f2c2b09fdfced5b42161a"><div class="sl-block" data-block-type="text" style="width: 1120px; left: 80.065px; top: 48px; height: auto;" data-name="text-853d2e" data-block-id="eb70e2ba733e5f4411e28369bc9de57d"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 11; color: rgb(28, 235, 123); font-size: 228%; line-height: 1.04;" data-placeholder-text="Text" data-has-line-height=""><h1><code>Why?</code></h1></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="image-9e9bf0" data-block-id="82d66657a2cdfec514aad6f75401417b"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/2bb0c33ba188a70a63161faa21e1ee04.webp"></div></div></section><section data-id="d2440f2a4ca0d3069981f9cdf2839f53"><div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="image-fac9e3" data-block-id="4c3fe0e700877db332a1640c1c5db473"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/7d1c924551fe86d2f593c308b87718fc.webp"></div></div></section><section data-id="f8fbd8754dc28583814a7adffc21bec4"><div class="sl-block" data-block-type="image" style="width: 1280px; height: 698.182px; left: 2.84217e-14px; top: 10.909px; min-width: 1px; min-height: 1px;" data-name="image-48053d" data-block-id="ca49080c504dd51dfa381e1202bdd86f"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2475" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/c67b9729df3c8277f47b7691f50409e7.webp"></div></div></section></section><section class="stack" data-id="92ae404980f4ae974434948ddc5b42f1"><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="7ffae006f3cd8f030c227fa459a645c4">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 432px; height: 432px; left: 648px; top: 144px; min-width: 1px; min-height: 1px;" data-name="image-2aa984" data-block-id="02b81fd9a8697418e5bb390530455b39"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="1350" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/6c024423607b4a36c94637fd97cf9354.webp"></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 432px; height: 432px; left: 176.648px; top: 144px; min-width: 1px; min-height: 1px;" data-name="image-8832ba" data-block-id="311929dc1aa2bce1c2cab3023a52c21a"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="600" data-natural-height="600" data-lazy-loaded="" data-src="decompile-debug-bsdg/6d5e5b64a928f4bd1541796a83089ab2.png"></div></div></section><section data-background-opacity="0.49" data-background-transition="fade" data-id="622830d9fad39594e0b36c0c7730eea1" data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp">
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 719.463px; left: 40.5365px; top: 22.7759px; height: auto;" data-block-id="9bab3000abd7347b8bdf71dc1769627b" data-name="text-853d2e"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>Debug.exe</code></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 720px; left: 40.5365px; top: 288px; height: auto;" data-name="text-d18e72" data-block-id="9ad2e9b1b9eddf7697a5cc67fb12c5ea"><div class="sl-block-style" style="z-index: 13; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 13; text-align: center; color: rgb(28, 235, 123); line-height: 1.95;" data-placeholder-text="Text" data-has-line-height="">
+<p>Originally written by Tim Paterson for 86-DOS</p>
+
+<p>Microsoft hired him &amp; added it to MS-DOS</p>
+
+<p>Still available through Windows XP</p>
+
+<p>Also in FreeDOS, DR-DOS, and other clones.</p>
+</div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 694.924px; left: 292.538px; top: 648px;" data-block-id="d291e9aa0cab02fd7af103c725d28573" data-name="text-490ed7"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; font-size: 75%; text-align: left;"><p style="text-align:center">​<a href="https://en.wikipedia.org/wiki/Debug_(command)" target="_blank">en.wikipedia.org/wiki/Debug_(command)</a></p></div></div>
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 455.704px; height: 455.704px; left: 800px; top: 27.5715px; min-width: 1px; min-height: 1px;" data-name="image-2aa984" data-block-id="a6eb97e70ee61c24eca306ee392e591a"><div class="sl-block-style" style="z-index: 19; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 19;"><img class="" data-natural-width="1350" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/6c024423607b4a36c94637fd97cf9354.webp"></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="6f5730ceb99b4584e81a80d36362b316">
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 59.9999px; top: 179px; height: auto;" data-name="text-d18e72" data-block-id="3dc3c74c02e475774386fd5a32169146"><div class="sl-block-style" style="z-index: 10; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 10; text-align: left; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text" data-has-custom-html=""><ul>
+	<li>The original - launched in 2002</li>
+	<li>Focused on game emulation<br>
+	 </li>
+	<li>Emulates 286/386/486 real and protected modes</li>
+	<li>Also emulates relevant hardware </li>
+	<li>The defacto standard for DOS emulation on <em>many platforms</em><br>
+	 </li>
+	<li>Development slowed in late 2010s</li>
+	<li>Last major release 0.74-3 is from 2019<br>
+	 </li>
+	<li><a href="https://www.dosbox.com/" target="_blank">dosbox.com</a></li>
+	<li><a href="https://sourceforge.net/projects/dosbox/" target="_blank"><svg fill="#75FB4C" height="24px" viewbox="0 -960 960 960" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M160-240v-480 520-40Zm0 80q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v200h-80v-200H447l-80-80H160v480h200v80H160ZM584-56 440-200l144-144 56 57-87 87 87 87-56 57Zm192 0-56-57 87-87-87-87 56-57 144 144L776-56Z"></path></svg>  sourceforge.net/projects/dosbox</a></li>
+</ul></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 240px; height: 240px; left: 980px; top: 468px; min-width: 1px; min-height: 1px;" data-name="image-6d64e9" data-block-id="74f1e3200064116e8246686b52407810"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="180" data-natural-height="180" data-lazy-loaded="" data-src="decompile-debug-bsdg/b674e85900c1bbecef213f66588cad6f.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 712.128px; height: 144px; left: 263.936px; top: 12px; min-width: 1px; min-height: 1px;" data-name="image-0c11ed" data-block-id="9bdf8500a01aa42e214c3456e2233153"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="499" data-natural-height="102" data-crop-x="0" data-crop-y="0" data-crop-width="1" data-crop-height="0.989247" style="left: 0px; top: 0px; width: 712px; height: 146px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/3d4792ed31e734a79ad226a8d02e8ac6.png"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="58e323132fd180701a54d6c7ba166d01">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 79.9999px; top: 15.2499px; height: auto;" data-name="text-853d2e" data-block-id="bf42113deeaee245db8b81e8ce4dd95e"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>Alternatives</code></h1></div></div></div>
+
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-56a95f" data-block-id="ff77e954476f27f698a50df27149c352"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1056.64px 365.75px; z-index: 14;">
+<div class="sl-block" data-block-type="image" style="width: 279.596px; height: 316.876px; left: 916.847px; top: 149.75px; min-width: 1px; min-height: 1px;" data-name="image-a186bc" data-block-id="02edbfe447c7cc0d4e249d894f66720d"><div class="sl-block-content" style="z-index: 15;"><img class="" data-natural-width="240" data-natural-height="272" data-lazy-loaded="" data-src="decompile-debug-bsdg/ce0b3494a16dd807cc152dc3c16841b9.png"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 331.242px; left: 891.024px; top: 495.75px; height: auto;" data-name="text-1ef418" data-block-id="b47550eae440ffe74009e019da7d101c"><div class="sl-block-style" style="z-index: 16; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 16; text-align: center; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text"><p><a href="https://github.com/schellingb/dosbox-pure" target="_blank">github.com/schellingb/dosbox-pure</a></p></div></div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-c4e387" data-block-id="3e8b93341e035d05a7dd72c5890b24ca"><div class="sl-block-content sl-block-group-content" style="transform-origin: 634.403px 355.688px; z-index: 17;">
+<div class="sl-block" data-block-type="image" style="width: 354.876px; height: 354.876px; left: 456.965px; top: 149.75px; min-width: 1px; min-height: 1px;" data-name="image-7ea1d6" data-block-id="f87f55d85151ec73e9c3d1597bf99d2f"><div class="sl-block-content" style="z-index: 18;"><img class="" data-natural-width="36" data-natural-height="36" data-lazy-loaded="" data-src="decompile-debug-bsdg/528a1bcad8cd3e2391976023a380989a.svg"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 331.242px; left: 468.782px; top: 518.626px; height: auto;" data-block-id="e3ecbff1e24a65a82bcbf0cf85c37784" data-name="text-3f27ab"><div class="sl-block-style" style="z-index: 19; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 19; text-align: center; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text"><p><a href="https://dosbox-x.com/" target="_blank">dosbox-x.com</a></p></div></div></div>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 1138.71px; left: 57.734px; top: 610.75px; height: auto;" data-block-id="bf63120e9fd75039c5ea56478006bf9e" data-name="text-14c7be"><div class="sl-block-style" style="z-index: 20; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 20; text-align: center; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text">
+<p>See Also: <a href="https://vdos.info/" target="_blank">vdos.info</a> (DOS line of business app focus)</p>
+
+<p><a href="https://github.com/MartyShepard/DOSBox-Optionals" target="_blank">github.com/MartyShepard/DOSBox-Optionals</a> (Win 95 gaming)</p>
+</div></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-f5bc3b" data-block-id="2ee5ff46aa9f90ef2eba0e84bc4e5944"><div class="sl-block-content sl-block-group-content" style="transform-origin: 217.734px 355.688px; z-index: 11;">
+<div class="sl-block" data-block-type="text" style="width: 320px; left: 57.734px; top: 518.626px; height: auto;" data-name="text-d18e72" data-block-id="2885f514ad770b312f52f10e5b48ec90"><div class="sl-block-style" style="z-index: 12; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 12; text-align: center; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text"><p><a href="https://www.dosbox-staging.org/" target="_blank">dosbox-staging.org</a></p></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 286.662px; height: 325.752px; left: 74.403px; top: 149.75px; min-width: 1px; min-height: 1px;" data-name="image-af06e1" data-block-id="d80bf5f3fbe2394e3776952badcc813c"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="66" data-natural-height="75" data-lazy-loaded="" data-src="decompile-debug-bsdg/ce690c78501027c01d1e16d9b32704e6.svg"></div></div>
+</div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="a29c2a3508f5139b871341d458a4d227">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 111.665px; top: 34.1261px; height: auto;" data-name="text-853d2e" data-block-id="a4a0e2ad473ec8c839368f53f48aa7bf"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><strong>DOSBox Staging</strong></h1></div></div></div>
+
+<div class="sl-block" data-block-type="text" style="width: 320px; left: 48.3344px; top: 557.626px; height: auto;" data-name="text-d18e72" data-block-id="1d010baf9f2bc8498ed98d8b7881170f"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: center; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text"><p><a href="https://www.dosbox-staging.org/" target="_blank">dosbox-staging.org</a></p></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 286.662px; height: 325.752px; left: 65.0034px; top: 202.874px; min-width: 1px; min-height: 1px;" data-name="image-af06e1" data-block-id="71004d810482956017addbcf305d97d4"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="66" data-natural-height="75" data-lazy-loaded="" data-src="decompile-debug-bsdg/ce690c78501027c01d1e16d9b32704e6.svg"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 431.665px; top: 202.874px; height: auto;" data-block-id="f3ef0ed913f0807e695cbf8e8ed5bc4b" data-name="text-b0da60"><div class="sl-block-style" style="z-index: 13; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 13; text-align: left; color: rgb(28, 235, 123); line-height: 1.95;" data-placeholder-text="Text" data-has-line-height=""><ul>
+	<li><span style="font-size:1.0em"><span style="color:rgb(28, 235, 123)">Latest Release </span>0.82.2 on Jun 17, 2025</span></li>
+	<li>Focus:
+	<ul>
+		<li>High-fidelity Gaming</li>
+		<li>Modern Hardware</li>
+		<li>"Drop-in" Replacement for DosBox</li>
+	</ul>
+	</li>
+	<li>Dropped support for legacy OS (Windows 7 or older)</li>
+	<li>Includes authentic adaptive CRT emulation</li>
+	<li>Sensible Defaults</li>
+</ul></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="dd6b7a806e481e7d5363ce449762fcd0">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 120px; top: 76.75px; height: auto;" data-name="text-853d2e" data-block-id="21b692276745980ead94cefaaff1ca74"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>DosBox Pure</code></h1></div></div></div>
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 440px; top: 228.913px; height: auto;" data-name="text-14c7be" data-block-id="bc6107deec0691828891e096d7fcded3"><div class="sl-block-style" style="z-index: 26; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 26; text-align: left; color: rgb(28, 235, 123); line-height: 2.08;" data-placeholder-text="Text" data-has-custom-html="" data-has-line-height=""><ul>
+	<li>Focused on Simplicity &amp; Ease of Use</li>
+	<li>Latest release Pure 1.0 Preview 4 from Nov 2025</li>
+	<li>Built for RetroArch/Libretro (game emulator frontends)</li>
+	<li>Save states with automatic rewind</li>
+	<li>Adds controller support</li>
+</ul></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 279.596px; height: 316.876px; left: 65.8232px; top: 211.25px; min-width: 1px; min-height: 1px;" data-name="image-a186bc" data-block-id="20237599466731646c7a6c84bb4277fc"><div class="sl-block-content" style="z-index: 19;"><img class="" data-natural-width="240" data-natural-height="272" data-lazy-loaded="" data-src="decompile-debug-bsdg/ce0b3494a16dd807cc152dc3c16841b9.png"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 484.71px; left: 65.8232px; top: 628.5px; height: auto;" data-name="text-1ef418" data-block-id="7692e86ff003338b72504d463e477f9f"><div class="sl-block-style" style="z-index: 20; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 20; text-align: center; color: rgb(28, 235, 123);" data-placeholder-text="Text"><p><a href="https://github.com/schellingb/dosbox-pure" target="_blank">github.com/schellingb/dosbox-pure</a></p></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="cdd161990cf772dfb9faa3ccf478452d">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 40.7502px; height: auto;" data-name="text-853d2e" data-block-id="6d1d271a4f4df2e34af300c6739731d8"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1>DOSBox-X</h1></div></div></div>
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 880px; left: 400px; top: 169.25px; height: auto;" data-name="text-14c7be" data-block-id="0796be905b2c93a623912e6d92c30b1c"><div class="sl-block-style" style="z-index: 26; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 26; text-align: left; color: rgb(28, 235, 123); line-height: 1.651;" data-placeholder-text="Text" data-has-line-height=""><ul>
+	<li>Focused on completeness</li>
+	<li>A general-purpose x86 emulator that also supports gaming</li>
+	<li>Latest Release: 2026.01.02 (Jan 2, 2026)</li>
+	<li>GUI and Menu Bar configuration</li>
+	<li>Clipboard support</li>
+	<li>Good documentation and guides
+	<ul>
+		<li><a href="https://dosbox-x.com/wiki/" target="_blank">dosbox-x.com/wiki/</a></li>
+		<li><a href="https://dosbox-x.com/wiki/Guide:Installing-FreeDOS" target="_blank">dosbox-x.com/wiki/Guide:Installing-FreeDOS</a></li>
+		<li><a href="https://dosbox-x.com/wiki/Guide%3AClipboard-support-in-DOSBox%E2%80%90X" target="_blank">dosbox-x.com/wiki/Guide:Clipboard-support-in-DOSBox-X</a></li>
+		<li><a href="https://dosbox-x.com/wiki/DOSBox%E2%80%90X%E2%80%99s-Feature-Highlights" target="_blank">dosbox-x.com/wiki/DOSBox-X's-Feature-Highlights</a></li>
+	</ul>
+	</li>
+</ul></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 354.876px; height: 354.876px; left: 0px; top: 173.562px; min-width: 1px; min-height: 1px;" data-name="image-7ea1d6" data-block-id="c944ede3feef562053fd1d92f31b470c"><div class="sl-block-content" style="z-index: 24;"><img class="" data-natural-width="36" data-natural-height="36" data-lazy-loaded="" data-src="decompile-debug-bsdg/528a1bcad8cd3e2391976023a380989a.svg"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 331.242px; left: 11.817px; top: 544.126px; height: auto;" data-name="text-3f27ab" data-block-id="fd57694ac03891834b43546899dd985e"><div class="sl-block-style" style="z-index: 25; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 25; text-align: center; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text"><p><a href="https://dosbox-x.com/" target="_blank">dosbox-x.com</a></p></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="6bca49eca8db402bf08a1d2654efcdf8">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="table" style="height: auto; min-width: 240px; width: 1280px; left: 0px; top: 86px;" data-name="table-30df2a" data-block-id="77eb9668b456d2577825d602ddca1af4"><div class="sl-block-content" data-table-rows="12" data-table-cols="6" style="z-index: 10; font-size: 74%; background-color: rgba(0, 0, 0, 0.63); text-align: center;" data-table-padding="2px" data-table-border-width="1px" data-table-border-color="rgb(136, 136, 136)" data-table-has-header="true"><table><tbody>
+<tr>
+<th style="padding: 2px; border-color: rgb(136, 136, 136);"></th>
+<th style="padding: 2px; border-color: rgb(136, 136, 136);">DOSBox Staging </th>
+<th style="padding: 2px; border-color: rgb(136, 136, 136);">DOSBox-X </th>
+<th style="padding: 2px; border-color: rgb(136, 136, 136);">DOSBox Pure </th>
+<th style="padding: 2px; border-color: rgb(136, 136, 136);">vDos </th>
+<th style="padding: 2px; border-color: rgb(136, 136, 136);">DOSBox Optionals</th>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Primary Focus</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Modern Gaming/Accuracy</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Complete System Emulation</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Ease of Use/Controller</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Business Apps</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Win-Integrated Gaming</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Codebase</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Modern C++ (Clean)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Legacy C++ (Extensive)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Custom / Libretro base</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Custom</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">ECE + Tweaks</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Host OS Support</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Win/Mac/Linux (Modern)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Win/Mac/Linux/DOS</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Win/Mac/Linux</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Windows Only</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Windows Only</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Cycle Accuracy</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">High (Gaming tuned)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">High (Configurable)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Medium</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">N/A</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">High</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Win 9x Support</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Experimental</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);"><strong>Excellent (Drivers included)</strong></td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);"><strong>Automated Install</strong></td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">None</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Good</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">PC-98 Support</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">No</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);"><strong>Yes</strong></td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">No</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">No</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">No</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Save States</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">No</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">
+<strong>Yes</strong> (Robust, 100 slots)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">
+<strong>Yes</strong> (w/ Rewind)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">No</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Basic</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Printing</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">No</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">
+<strong>Yes </strong>(LPT -&gt; PDF/PNG)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">No</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">
+<strong>Yes</strong> (Native)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">No</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">File Locking</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Basic (Risk of corruption)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Experimental</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Basic</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">
+<strong>Robust</strong> (Win API)</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Basic</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Input Method</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Keyboard/Mouse</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Keyboard / Mouse / GUI</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);"><strong>Gamepad Mapper/OSK</strong></td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Keyboard</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Keyboard/Mouse</td>
+</tr>
+<tr>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Shaders/CRT</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);"><strong>Built-in Dynamic</strong></td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">External Shaders</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">RetroArch Shaders</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">None</td>
+<td style="padding: 2px; border-color: rgb(136, 136, 136);">Integrated</td>
+</tr>
+</tbody></table></div></div>
+<div class="sl-block" data-block-type="image" style="width: 86px; height: 86px; left: 480px; top: 0px; min-width: 1px; min-height: 1px;" data-name="image-7ea1d6" data-block-id="87b886f2b2c691164c9d4d75b6181716"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="36" data-natural-height="36" data-lazy-loaded="" data-src="decompile-debug-bsdg/528a1bcad8cd3e2391976023a380989a.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 75.8824px; height: 86px; left: 703.252px; top: 0px; min-width: 1px; min-height: 1px;" data-name="image-a186bc" data-block-id="7a410047d1311237855340653ad999f0"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="240" data-natural-height="272" data-lazy-loaded="" data-src="decompile-debug-bsdg/ce0b3494a16dd807cc152dc3c16841b9.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 75.68px; height: 86px; left: 282.16px; top: 0px; min-width: 1px; min-height: 1px;" data-name="image-af06e1" data-block-id="da5614d9cfa7bec2af9987819a48b32d"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="66" data-natural-height="75" data-lazy-loaded="" data-src="decompile-debug-bsdg/ce690c78501027c01d1e16d9b32704e6.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 86px; height: 86px; left: 917px; top: 0px; min-width: 1px; min-height: 1px;" data-name="image-e9aadf" data-block-id="48512cfc82d8cdb5e926c72d08769e90"><div class="sl-block-content" style="z-index: 14;"><img class="" data-natural-width="186" data-natural-height="186" data-lazy-loaded="" data-src="decompile-debug-bsdg/e9d1ce2303b28ea816c4058a129da5b6.svg"></div></div></section><section data-id="dabb0b843c513ec376cb512900a488be"><div class="sl-block" data-block-type="iframe" data-name="iframe-99965d" style="width: 1280px; height: 720px; left: 0px; top: 0px;" data-block-id="b1ac3679709f90405b2e3e2af8da715f"><div class="sl-block-content" style="z-index: 11;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-preload="true" data-lazy-loaded="" data-src="https://vetusware.com/"></iframe></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1279.8px; height: 720px; left: 0.2px; top: 0px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="9c01456f110b7f91fd56b9ee1d60012f"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2244" data-natural-height="1307" data-crop-x="0.024345" data-crop-y="0.038961" data-crop-width="0.952306" data-crop-height="0.919841" style="left: -33px; top: -30px; width: 1344px; height: 783px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/9607bc8f8d8f6d7ac8b2a7e0cfb1a522.png"></div></div></section><section data-id="991ae3484cd02b00d3cc29b0f10f8a0b"><div class="sl-block" data-block-type="iframe" data-name="iframe-d1b820" style="width: 1280px; height: 720px; left: 2.84217e-14px; top: 0.9755px;" data-block-id="71b3b056ef391f4163b7f8ac000793da"><div class="sl-block-content" style="z-index: 11;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-preload="true" data-lazy-loaded="" data-src="https://winworldpc.com/product/ms-dos/622"></iframe></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1280px; height: 718.049px; left: 2.84217e-14px; top: 0.9755px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="75a03734f6762a07a8d05e759784dcc0"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2132" data-natural-height="1196" data-lazy-loaded="" data-src="decompile-debug-bsdg/64aee16fbc3abfc1e51164a618c592ce.png"></div></div></section><section data-background-transition="fade" data-id="3e667ff5355228bc265af54315be16a4" data-background-image="decompile-debug-bsdg/edfcc2335c9c57a616a33800b1fdc107.webp" data-background-opacity="0.42">
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 144px; height: auto;" data-name="text-d18e72" data-block-id="c7a2b41ddc601dacd3008823e041821a"><div class="sl-block-style" style="z-index: 10; filter: opacity(100%) drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 10; text-align: left; color: rgb(28, 235, 123); font-size: 110%; line-height: 1.69;" data-placeholder-text="Text" data-has-line-height="" data-has-custom-html=""><ul>
+	<li>An open source DOS-compatible operating system</li>
+	<li>Compatible with and includes
+	<ul>
+		<li>Classic games</li>
+		<li>Legacy applications</li>
+		<li>Developer tools</li>
+	</ul>
+	</li>
+	<li>
+<a href="https://www.freedos.org/" target="_blank">freedos.org</a> - Also links to other resources</li>
+	<li>
+<a href="https://github.com/FDOS/kernel" target="_blank">github.com/FDOS/kernel</a> </li>
+	<li><a href="https://gitlab.com/FreeDOS" target="_blank">gitlab.com/FreeDOS</a></li>
+	<li><a href="https://gitlab.com/FreeDOS/docs" target="_blank">gitlab.com/FreeDOS/docs</a></li>
+</ul></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 584.24px; height: 116.848px; left: 347.88px; top: 13.576px; min-width: 1px; min-height: 1px;" data-name="image-f3406a" data-block-id="6302db8a649d5d5069969da4b93350e7"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="600" data-natural-height="120" data-lazy-loaded="" data-src="decompile-debug-bsdg/01b23fe00dab5060dd4999e409c9cf3f.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 458.837px; height: 247.066px; left: 821.163px; top: 360px; min-width: 1px; min-height: 1px;" data-name="image-5e8e29" data-block-id="cb6f79f701586689d677cdc24941b288"><div class="sl-block-style" style="z-index: 12; filter: opacity(100%) drop-shadow(rgb(255, 255, 255) 0px 0px 4px);"><div class="sl-block-content" style="z-index: 12; border-width: 1px;"><img class="" data-natural-width="39" data-natural-height="21" data-lazy-loaded="" data-src="decompile-debug-bsdg/54a19488d73edfcc082baa07d3d83064.svg"></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="43d32c5fc457601fd1ef1c4a3af1dc1a">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 665.395px; left: 581.826px; top: 26px; height: auto;" data-name="text-853d2e" data-block-id="53ca2fc48dc5bc565d4645438fe7f374"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 115%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>Interrupts</code></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 698.174px; left: 581.826px; top: 131px; height: auto;" data-name="text-d18e72" data-block-id="ebc4139cfae5ca5d515bc8ddfc4c2322"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: left; color: rgb(28, 235, 123); font-size: 110%; line-height: 1.43;" data-placeholder-text="Text" data-has-line-height=""><ul>
+	<li>Ralf Brown's Interrupt List (<a href="https://en.wikipedia.org/wiki/Ralf_Brown's_Interrupt_List" target="_blank">RBIL</a>)
+	<ul>
+		<li>​​9600 Interrupt entries</li>
+		<li>5400 tables</li>
+	</ul>
+	</li>
+	<li>Print version was 1200 pages</li>
+	<li>Last revision 61 (17 July 2000)​
+	<ul>
+		<li>
+<a href="https://www.cs.cmu.edu/~ralf/files.html" target="_blank">cs.cmu.edu/~ralf/files.html</a> (source)</li>
+		<li><a href="https://www.delorie.com/djgpp/doc/rbinter/" target="_blank">delorie.com/djgpp/doc/rbinter</a></li>
+		<li><a href="https://www.ctyme.com/rbrown.htm" target="_blank">ctyme.com/rbrown.htm</a></li>
+		<li><a href="https://fd.lod.bz/rbil/" target="_blank">fd.lod.bz/rbil</a></li>
+	</ul>
+	</li>
+</ul></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 532.219px; height: 658.613px; left: 27.781px; top: 24.1935px; min-width: 1px; min-height: 1px;" data-name="image-e0096b" data-block-id="aa54d4c426fcd656e40b987bb4abee9b"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="779" data-natural-height="964" data-lazy-loaded="" data-src="decompile-debug-bsdg/739627b7e7cb8a491ffd9c752669d848.webp"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 240px; height: 240px; left: 1040px; top: 480px; min-width: 1px; min-height: 1px;" data-name="image-57c572" data-block-id="7886577f24ff70afe426cbee948b5175"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="1350" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/f228b318c1f3d1e9ec23c2cdf57c4376.webp"></div></div></section><section data-id="4b8ab60024718c72e275e77c6cd3f1af"><div class="sl-block" data-block-type="image" style="width: 1280px; height: 698.182px; left: 2.84217e-14px; top: 10.909px; min-width: 1px; min-height: 1px;" data-name="image-61801f" data-block-id="1cf3e39c6432fed94e6bd1add250bec1"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2475" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/88e181b0c275169e937dfacacbf3d868.webp"></div></div></section><section data-id="58113587c9b239913dfa8ade9f3dda97"><div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="image-048f44" data-block-id="c027e708c16af0dd702f7494557b43a1"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/957e5c068c9271556d6bcf8fdf452f20.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="a5aefdd764333513c89682cb0665ed22">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 9.5px; height: auto;" data-name="text-853d2e" data-block-id="7b49e64896ee94689d37a3949614a26d"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 105%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1>16-Bit x86 Register Set</h1></div></div></div>
+<div class="sl-block" data-block-type="table" style="height: auto; min-width: 364px; width: 1084.4px; left: 97.8px; top: 102px;" data-name="table-e6ec27" data-block-id="b1495dc7d636fb5b11d0df31361398e2"><div class="sl-block-style" style="z-index: 12; filter: opacity(100%) drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-table-rows="15" data-table-cols="3" style="z-index: 12; font-size: 80%; color: rgb(28, 235, 123);" data-table-border-width="0px"><table><tbody>
+<tr>
+<th style="width: 108px; border-width: 0px;">Reg</th>
+<th style="width: 216px; border-width: 0px;">Name</th>
+<th style="border-width: 0px;">Primary Function in DEBUG context</th>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">AX</td>
+<td style="width: 216px; border-width: 0px;">Accumulator</td>
+<td style="border-width: 0px;">Primary arithmetic and logic; Input/Output operations; Return values.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">BX</td>
+<td style="width: 216px; border-width: 0px;">Base</td>
+<td style="border-width: 0px;">Base pointer for memory access; High-order word of file size.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">CX</td>
+<td style="width: 216px; border-width: 0px;">Count</td>
+<td style="border-width: 0px;">Loop counters; Low-order word of file size.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">DX</td>
+<td style="width: 216px; border-width: 0px;">Data</td>
+<td style="border-width: 0px;">I/O port addressing; High-order word for multiplication/division.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">SP</td>
+<td style="width: 216px; border-width: 0px;">Stack Pointer</td>
+<td style="border-width: 0px;">Pointer to the top of the stack (grows downwards).</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">BP</td>
+<td style="width: 216px; border-width: 0px;">Base Pointer</td>
+<td style="border-width: 0px;">Stack frame base pointer for accessing local variables.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">SI</td>
+<td style="width: 216px; border-width: 0px;">Source Index</td>
+<td style="border-width: 0px;">Source pointer for string operations.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">DI</td>
+<td style="width: 216px; border-width: 0px;">Dest Index</td>
+<td style="border-width: 0px;">Destination pointer for string operations.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">CS</td>
+<td style="width: 216px; border-width: 0px;">Code Segment</td>
+<td style="border-width: 0px;">Segment containing the currently executing instructions.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">DS</td>
+<td style="width: 216px; border-width: 0px;">Data Segment</td>
+<td style="border-width: 0px;">Default segment for data variables.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">SS</td>
+<td style="width: 216px; border-width: 0px;">Stack Segment</td>
+<td style="border-width: 0px;">Segment containing the stack.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">ES</td>
+<td style="width: 216px; border-width: 0px;">Extra Segment</td>
+<td style="border-width: 0px;">Auxiliary segment; Critical for INT 13h disk buffer pointers.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">IP</td>
+<td style="width: 216px; border-width: 0px;">Instruction Ptr</td>
+<td style="border-width: 0px;">Offset of the next instruction to be executed.</td>
+</tr>
+<tr>
+<td style="width: 108px; border-width: 0px;">FL</td>
+<td style="width: 216px; border-width: 0px;">Flags</td>
+<td style="border-width: 0px;">Status indicators (Zero, Carry, Overflow, Sign, etc.).</td>
+</tr>
+</tbody></table></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="193535be3df6b3e7ad9f898bfefb0523">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 9.5px; height: auto;" data-name="text-853d2e" data-block-id="86457f81c691a271d585f2652b63042e"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04; text-align: left;" data-has-line-height="" data-placeholder-text="Text"><h1><code>DOS Debug</code></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 743.414px; left: 80px; top: 144px; height: auto;" data-name="text-d18e72" data-block-id="389bc689f3be34971e3b39e5030cf96f"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: left; color: rgb(28, 235, 123); line-height: 1.703;" data-placeholder-text="Text" data-has-line-height=""><ul>
+	<li>Debug "hello world"</li>
+	<li>Flipfont</li>
+</ul></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 273.504px; height: 273.504px; left: 926.924px; top: 414.656px; min-width: 1px; min-height: 1px;" data-name="image-7ea1d6" data-origin-id="c944ede3feef562053fd1d92f31b470c" data-block-id="bf43eb0f217f834c1934d7eafa812238"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="36" data-natural-height="36" data-lazy-loaded="" data-src="decompile-debug-bsdg/528a1bcad8cd3e2391976023a380989a.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 396.732px; height: 79.3465px; left: 865.26px; top: 320.31px; min-width: 1px; min-height: 1px;" data-name="image-f3406a" data-block-id="eb0c39ed1a7ca4dfb8f120c11a2369e1"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="600" data-natural-height="120" data-lazy-loaded="" data-src="decompile-debug-bsdg/01b23fe00dab5060dd4999e409c9cf3f.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 273.471px; height: 273.471px; left: 926.924px; top: 31.8391px; min-width: 1px; min-height: 1px;" data-name="image-aba1b7" data-block-id="5eeba2656f0a57d2066b5c84031f68cc"><div class="sl-block-style" style="z-index: 14; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 14;"><img class="" data-natural-width="1350" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/e7db37d56ff89587b9ffb41c1728e1a3.webp"></div></div></div>
+<div class="sl-block" data-block-type="code" style="width: 320px; height: auto; left: 80px; top: 295px;" data-name="code-81ee8c" data-block-id="7552cd2cc7eb7ee881a8a7aa3f419d51"><div class="sl-block-content notranslate" data-highlight-theme="monokai" data-code-frame="none" style="z-index: 15; border-style: solid; border-width: 1px; border-radius: 15px;" data-code-autoheight="true"><pre style="font-size: 18px; line-height: 22px; tab-size: 4;"><code data-line-numbers="" style="padding: 9px;">mov ah, 9
+mov dx, 108
+int 21
+ret
+'Hello world', D, A, '$'</code></pre></div></div>
+<div class="sl-block" data-block-type="code" style="width: 622.292px; height: auto; left: 80px; top: 489px;" data-name="code-34f4d5" data-block-id="e1aea2d91ecdf9b932aa2652d2c54dd4"><div class="sl-block-content notranslate" data-highlight-theme="monokai" data-code-frame="none" style="z-index: 16; border-style: solid; border-width: 1px; border-radius: 15px;" data-code-autoheight="true"><pre style="font-size: 18px; line-height: 22px; tab-size: 4;"><code data-line-numbers="" style="padding: 9px;">E 100 FA BA C4 03 B8 02 04 EF B8 04 06 EF BA CE 03 B8
+E 110 04 02 EF B8 05 00 EF B8 06 00 EF B8 00 A0 8E C0
+E 120 31 FF B9 00 01 51 B9 08 00 89 FE 8D 5D 0F 26 8A
+E 130 04 26 86 07 26 88 04 46 4B E2 F3 83 C7 20 59 E2
+E 140 E4 BA C4 03 B8 02 03 EF B8 04 02 EF BA CE 03 B8
+E 150 04 00 EF B8 05 10 EF B8 06 0E EF FB B8 00 4C CD
+E 160 21</code></pre></div></div></section><section data-background-opacity="0.52" data-background-transition="fade" data-id="7800248eeb5211ab10252ea56970554c" data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 854.138px; left: 26.4654px; top: 64.5px;" data-name="text-ada312" data-block-id="7879ea8b443ec176800420ca03752433"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 10; text-align: left; line-height: 0.845;" data-has-line-height=""><pre><span style="font-size:0.7em">C:\&gt; debug
+-?
+assemble     A [address]
+compare      C range address
+dump         D [range]
+enter        E address [list]
+fill         F range list
+go           G [=address] [addresses]
+hex          H value1 value2
+input        I port
+load         L [address] [drive] [firstsector] [number]
+move         M range address
+name         N [pathname] [arglist]
+output       O port byte
+proceed      P [=address] [number]
+quit         Q
+register     R [register]
+search       S range list
+trace        T [=address] [value]
+unassemble   U [range]
+write        W [address] [drive] [firstsector] [number]
+allocate expanded memory        XA [#pages]
+deallocate expanded memory      XD [handle]
+map expanded memory pages       XM [Lpage] [Ppage] [handle]
+display expanded memory status  XS</span></pre></div></div>
+<div class="sl-block" data-block-type="image" style="width: 480px; height: 480px; left: 773.534px; top: 21.5px; min-width: 1px; min-height: 1px;" data-name="image-aba1b7" data-block-id="c5f9a22b155503561de8af47ade27c30"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="1350" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/e7db37d56ff89587b9ffb41c1728e1a3.webp"></div></div></div></section></section><section class="stack" data-id="45349ded11b7e797a0b1c6b9da08c115"><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="003376452e24f1ac4c103dc186538c5f">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 83.9532px; top: 54.7505px; height: auto;" data-name="text-853d2e" data-block-id="7d1048bd1ba00782865b5066aca72305"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 111%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>Most Popular Languages</code></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 76.0468px; top: 261.249px; height: auto;" data-name="text-d18e72" data-block-id="36dd2365d2df47837076911e51bd4bbe"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: left; color: rgb(28, 235, 123); line-height: 1.56;" data-placeholder-text="Text" data-has-line-height=""><ul>
+	<li>
+<span style="font-size:1.2em"><strong>Sources</strong></span>:
+	<ul>
+		<li><a href="https://www.tiobe.com/tiobe-index/" target="_blank"><strong>TIOBE</strong>: tiobe.com/tiobe-index</a></li>
+		<li><a href="https://survey.stackoverflow.co/2025/technology#most-popular-technologies-language" target="_blank"><strong>Stack Overflow</strong> 2025 Survey: survey.stackoverflow.co</a></li>
+		<li><a href="https://spectrum.ieee.org/top-programming-languages-2025" target="_blank"><strong>IEEE</strong>: spectrum.ieee.org/top-programming-languages-2025</a></li>
+		<li><a href="https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/#the-top-programming-languages-of-2025-typescript-jumps-to-1-while-python-takes-2" target="_blank"><strong>GitHub</strong> Octoverse 2025: github.blog/news-insights/octoverse/</a></li>
+		<li>
+<strong>PYPL</strong>: <a href="https://pypl.github.io/" target="_blank">pypl.github.io</a> <strong>|</strong> <a href="https://github.com/pypl/pypl.github.io" target="_blank">github.com/pypl</a>
+</li>
+		<li>
+<strong>Languish</strong>: <a href="https://tjpalmer.github.io/languish/" target="_blank">tjpalmer.github.io/languish</a> <strong>|</strong> <a href="https://github.com/tjpalmer/languish" target="_blank">github.com/tjpalmer/languish</a>
+</li>
+		<li>RedMonk: <a href="https://redmonk.com/data/" target="_blank">redmonk.com/data/</a>
+</li>
+	</ul>
+	</li>
+</ul></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="75b99dfbde8168f45be0051306c2ab57">
+
+
+
+
+
+
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-e40850" data-block-id="5b046a9cc2a7ce93557810722e4cdada"><div class="sl-block-content sl-block-group-content" style="transform-origin: 640px 354.5px; z-index: 11;">
+<div class="sl-block" data-block-type="iframe" data-name="iframe-95f3a8" style="width: 1280px; height: 670.302px; left: 0px; top: 0px;" data-block-id="b831992093a013fc8b75f52f51ff388c"><div class="sl-block-style" style="z-index: 12; opacity: 0.8;"><div class="sl-block-content" style="z-index: 12;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-preload="true" data-lazy-loaded="" data-src="https://tjpalmer.github.io/languish/"></iframe></div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 780px; left: 250px; top: 681px;" data-name="text-e89162" data-block-id="0e8a22f3053d174bcaf6288ebee26e60"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; font-size: 72%;"><p><span style="color:rgb(240, 246, 252); text-align:start">Data from GitHub and Stack Overflow</span></p></div></div>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 1278.44px; height: 718.423px; left: 0px; top: 0px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="a28ceeac8da3773497391cb71863737f"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2132" data-natural-height="1210" data-crop-x="0.000867" data-crop-y="0" data-crop-width="0.999133" data-crop-height="0.989297" style="left: -1px; top: 0px; width: 1280px; height: 726px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/7dd9496568de0701be3ec8a9286feac0.png"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="fa256730bee2b2e381f71cc30f7dc1ba">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="iframe" data-name="iframe-6e2fe3" style="width: 757.896px; height: 473.013px; left: 261.052px; top: 85.0953px;" data-block-id="b1ab88f371e52b8ab496cdcbcbc26afc"><div class="sl-block-content" style="z-index: 11;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-preload="true" data-lazy-loaded="" data-src="https://delphi.org/rankings/PYPL.html"></iframe></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 860px; left: 210px; top: 598.656px;" data-name="text-42ee9a" data-block-id="19d2ab5720a20ed1483f6e01b1a6ab3e"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; font-size: 76%;">
+<p><a href="https://pypl.github.io/" target="_blank">pypl.github.io</a> <strong>|</strong> <a href="https://github.com/pypl/pypl.github.io" target="_blank">github.com/pypl</a></p>
+
+<p>Determined by analyzing frequency of language tutorials are searched on Google</p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 934.61px; height: 558.71px; left: 172.926px; top: 38.3602px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="e90a941f5e8a1db5385e18cf147ab59d"><div class="sl-block-style" style="z-index: 10; opacity: 0.59;"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="1273" data-natural-height="761" data-lazy-loaded="" data-src="decompile-debug-bsdg/7109f88c7744fb309725237cd1d890cf.png"></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="8cae06866e5c40d5135a8b7167f42173">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 640px; left: 21.2913px; top: 29.933px; height: auto;" data-name="text-853d2e" data-block-id="cae4117d8c9ba6691dde41e85c37f5da"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><strong>Stackoverflow</strong></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 101.291px; top: 147.933px; height: auto;" data-name="text-14c7be" data-block-id="9849d7b1e6b1c5d4ed6c19ffdb719bce"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: left; color: rgb(28, 235, 123); line-height: 2.08; font-size: 90%;" data-placeholder-text="Text" data-has-custom-html="" data-has-line-height=""><ul>
+	<li>2025 Survey Results</li>
+	<li>For <em>"All Respondents"</em>
+</li>
+	<li>Responses: 31,771 (64.8%)</li>
+	<li><span style="font-size:0.9em;">(removed HTML &amp; SQL)</span></li>
+</ul></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 597.417px; height: 652.267px; left: 661.291px; top: 37.8px; min-width: 1px; min-height: 1px;" data-name="image-bea64e" data-block-id="2df4fe8ec165fe5a9c7331a9212dfc51"><div class="sl-block-style" style="z-index: 12; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="403" data-natural-height="440" data-lazy-loaded="" data-src="decompile-debug-bsdg/4b329874053fd85c4f54bfd17fc982a0.svg"></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="1843c2bb830f0d73493b83e1f957f3d1">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="table" style="height: auto; min-width: 613px; width: 736.705px; left: 511.648px; top: 0px;" data-name="table-f4a7fe" data-block-id="ec84cd0d032bd5802c69fefeaf50226c"><div class="sl-block-content" data-table-rows="21" data-table-cols="6" style="z-index: 10; font-size: 59%; text-align: center; background-color: rgba(0, 0, 0, 0.5);" data-table-border-width="0px" data-table-has-header="true"><table><tbody>
+<tr>
+<th style="width: 96px; border-width: 0px;">Jan 2026</th>
+<th style="width: 99px; border-width: 0px;">Jan 2025</th>
+<th style="width: 95px; border-width: 0px;">Change</th>
+<th style="width: 243px; border-width: 0px;">Programming Language</th>
+<th style="border-width: 0px;">Ratings</th>
+<th style="border-width: 0px;">Change
+</th>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">1</td>
+<td style="width: 99px; border-width: 0px;">1</td>
+<td style="width: 95px; border-width: 0px;"></td>
+<td style="width: 243px; border-width: 0px;">Python</td>
+<td style="border-width: 0px;">22.61%</td>
+<td style="border-width: 0px;">-0.68%
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">2</td>
+<td style="width: 99px; border-width: 0px;">4</td>
+<td style="width: 95px; border-width: 0px;">▲</td>
+<td style="width: 243px; border-width: 0px;">C</td>
+<td style="border-width: 0px;">10.99%</td>
+<td style="border-width: 0px;">0.0213
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">3</td>
+<td style="width: 99px; border-width: 0px;">3</td>
+<td style="width: 95px; border-width: 0px;"></td>
+<td style="width: 243px; border-width: 0px;">Java</td>
+<td style="border-width: 0px;">8.71%</td>
+<td style="border-width: 0px;">-1.44%
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">4</td>
+<td style="width: 99px; border-width: 0px;">2</td>
+<td style="width: 95px; border-width: 0px;">▼</td>
+<td style="width: 243px; border-width: 0px;">C++</td>
+<td style="border-width: 0px;">8.67%</td>
+<td style="border-width: 0px;">-1.62%
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">5</td>
+<td style="width: 99px; border-width: 0px;">5</td>
+<td style="width: 95px; border-width: 0px;"></td>
+<td style="width: 243px; border-width: 0px;">C#</td>
+<td style="border-width: 0px;">7.39%</td>
+<td style="border-width: 0px;">0.0294
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">6</td>
+<td style="width: 99px; border-width: 0px;">6</td>
+<td style="width: 95px; border-width: 0px;"></td>
+<td style="width: 243px; border-width: 0px;">JavaScript</td>
+<td style="border-width: 0px;">3.03%</td>
+<td style="border-width: 0px;">-1.17%
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">7</td>
+<td style="width: 99px; border-width: 0px;">9</td>
+<td style="width: 95px; border-width: 0px;"></td>
+<td style="width: 243px; border-width: 0px;">Visual Basic</td>
+<td style="border-width: 0px;">2.41%</td>
+<td style="border-width: 0px;">0.0004
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">8</td>
+<td style="width: 99px; border-width: 0px;">8</td>
+<td style="width: 95px; border-width: 0px;"></td>
+<td style="width: 243px; border-width: 0px;">SQL</td>
+<td style="border-width: 0px;">2.27%</td>
+<td style="border-width: 0px;">-0.14%
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">9</td>
+<td style="width: 99px; border-width: 0px;">11</td>
+<td style="width: 95px; border-width: 0px;">▲</td>
+<td style="width: 243px; border-width: 0px;">Delphi/Object Pascal</td>
+<td style="border-width: 0px;">1.98%</td>
+<td style="border-width: 0px;">0.0019
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">10</td>
+<td style="width: 99px; border-width: 0px;">18</td>
+<td style="width: 95px; border-width: 0px;">▲▲</td>
+<td style="width: 243px; border-width: 0px;">R</td>
+<td style="border-width: 0px;">1.82%</td>
+<td style="border-width: 0px;">0.0081
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">11</td>
+<td style="width: 99px; border-width: 0px;">32</td>
+<td style="width: 95px; border-width: 0px;">▲▲</td>
+<td style="width: 243px; border-width: 0px;">Perl</td>
+<td style="border-width: 0px;">1.63%</td>
+<td style="border-width: 0px;">0.0114
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">12</td>
+<td style="width: 99px; border-width: 0px;">10</td>
+<td style="width: 95px; border-width: 0px;">▼</td>
+<td style="width: 243px; border-width: 0px;">Fortran</td>
+<td style="border-width: 0px;">1.61%</td>
+<td style="border-width: 0px;">-0.42%
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">13</td>
+<td style="width: 99px; border-width: 0px;">14</td>
+<td style="width: 95px; border-width: 0px;">▲</td>
+<td style="width: 243px; border-width: 0px;">Rust</td>
+<td style="border-width: 0px;">1.51%</td>
+<td style="border-width: 0px;">0.0034
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">14</td>
+<td style="width: 99px; border-width: 0px;">15</td>
+<td style="width: 95px; border-width: 0px;">▲</td>
+<td style="width: 243px; border-width: 0px;">MATLAB</td>
+<td style="border-width: 0px;">1.40%</td>
+<td style="border-width: 0px;">0.0034
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">15</td>
+<td style="width: 99px; border-width: 0px;">13</td>
+<td style="width: 95px; border-width: 0px;">▼</td>
+<td style="width: 243px; border-width: 0px;">PHP</td>
+<td style="border-width: 0px;">1.38%</td>
+<td style="border-width: 0px;">0.00%
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">16</td>
+<td style="width: 99px; border-width: 0px;">7</td>
+<td style="width: 95px; border-width: 0px;">▼▼</td>
+<td style="width: 243px; border-width: 0px;">Go</td>
+<td style="border-width: 0px;">1.24%</td>
+<td style="border-width: 0px;">-1.37%
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">17</td>
+<td style="width: 99px; border-width: 0px;">12</td>
+<td style="width: 95px; border-width: 0px;">▼▼</td>
+<td style="width: 243px; border-width: 0px;">Scratch</td>
+<td style="border-width: 0px;">1.24%</td>
+<td style="border-width: 0px;">-0.31%
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">18</td>
+<td style="width: 99px; border-width: 0px;">26</td>
+<td style="width: 95px; border-width: 0px;">▲▲</td>
+<td style="width: 243px; border-width: 0px;">Ada</td>
+<td style="border-width: 0px;">1.19%</td>
+<td style="border-width: 0px;">0.0054
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">19</td>
+<td style="width: 99px; border-width: 0px;">17</td>
+<td style="width: 95px; border-width: 0px;">▼</td>
+<td style="width: 243px; border-width: 0px;">Assembly language</td>
+<td style="border-width: 0px;">1.07%</td>
+<td style="border-width: 0px;">0.0005
+</td>
+</tr>
+<tr>
+<td style="width: 96px; border-width: 0px;">20</td>
+<td style="width: 99px; border-width: 0px;">25</td>
+<td style="width: 95px; border-width: 0px;">▲▲</td>
+<td style="width: 243px; border-width: 0px;">Kotlin</td>
+<td style="border-width: 0px;">0.97%</td>
+<td style="border-width: 0px;">0.0023</td>
+</tr>
+</tbody></table></div></div>
+<div class="sl-block" data-block-type="image" style="width: 480px; height: 154.906px; left: 31.6476px; top: 11.5px; min-width: 1px; min-height: 1px;" data-name="image-f7d180" data-block-id="3a8b9f370dfcfeb61e2560dc358b7684"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="900" data-natural-height="274" data-crop-x="0" data-crop-y="0" data-crop-width="0.943365" data-crop-height="1" style="left: 0px; top: 0px; width: 509px; height: 155px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/e3e998ceded6fcb76d97b6306399d329.svg"></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 31.6476px; top: 196.216px; height: auto;" data-name="text-14c7be" data-block-id="344c7857d46191875686d72981546d74"><div class="sl-block-style" style="z-index: 12; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 12; text-align: left; color: rgb(28, 235, 123); line-height: 2.08; font-size: 90%;" data-placeholder-text="Text" data-has-custom-html="" data-has-line-height=""><ul>
+	<li>Ranking in January 2026</li>
+	<li>Based on search data</li>
+</ul></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="bb99da98d4515af1fc8ee7b7b231aa34">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1279.88px; height: 664.088px; left: 0.12px; top: 27.956px; min-width: 1px; min-height: 1px;" data-name="image-97b77e" data-block-id="93e7f0f42b4510eba8bc174e36de574e"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="1060" data-natural-height="550" style="" data-lazy-loaded="" data-src="decompile-debug-bsdg/79d8379a20102c2a6cd0f4585ea9a287.svg"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 473.724px; height: 152.881px; left: 424.267px; top: 37.946px; min-width: 1px; min-height: 1px;" data-name="image-f7d180" data-block-id="a91d1912749c1b7aa06b7c56238b0d35"><div class="sl-block-style" style="z-index: 12; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="900" data-natural-height="274" data-crop-x="0" data-crop-y="0" data-crop-width="0.943365" data-crop-height="1" style="left: 0px; top: 0px; width: 502px; height: 153px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/e3e998ceded6fcb76d97b6306399d329.svg"></div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 627.119px; left: 384.734px; top: 160.857px;" data-name="text-46f5ff" data-block-id="c57bc79ba7a70eef2c7c4897bc21b1b7"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;"><p><span style="font-size:0.7em"><span style="text-align:left">January 2026</span></span></p></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1268.42px; height: 654.322px; left: 5.6px; top: 28.739px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="0bd30d68f20a606235b8ec36aa2488b2"><div class="sl-block-style" style="z-index: 10; opacity: 0.56;"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2113" data-natural-height="1090" data-lazy-loaded="" data-src="decompile-debug-bsdg/2e2e915b53727144acbcce72f949582a.png"></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="4093a5d641890924ea29c984a53db82f">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 944px; height: 720px; left: 168px; top: 0px; min-width: 1px; min-height: 1px;" data-name="image-2c6ecd" data-block-id="1832e1410243620f53192cb2bacdc59b"><a class="sl-block-content" style="z-index: 10;" href="https://redmonk.com/rstephens/2025/06/18/top20-jan2025/" target="_blank"><img class="" data-natural-width="1770" data-natural-height="1350" style="" data-lazy-loaded="" data-src="decompile-debug-bsdg/c3e8f852386d80698e8310b3c149aee1.png"></a></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="994eb73eca13872e13453afe30390cd8">
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 178.502px; height: 524.432px; left: 6.59763px; top: 133.877px; min-width: 1px; min-height: 1px;" data-block-id="9add974c821b10b10de381b65a40c64e" data-name="image-aa005a"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="1770" data-natural-height="1350" data-crop-x="0.006211" data-crop-y="0.093638" data-crop-width="0.116668" data-crop-height="0.449404" style="left: -10px; top: -109px; width: 1530px; height: 1167px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/c3e8f852386d80698e8310b3c149aee1.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1072.6px; height: 576.165px; left: 200.443px; top: 25.0692px; min-width: 1px; min-height: 1px;" data-name="image-2c6ecd" data-block-id="74afe8ad85cd7f0835a6c011131529a4"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="1770" data-natural-height="1350" data-crop-x="0.29815" data-crop-y="0" data-crop-width="0.70185" data-crop-height="0.494302" style="left: -456px; top: 0px; width: 1528px; height: 1166px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/c3e8f852386d80698e8310b3c149aee1.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1072.96px; height: 72.5263px; left: 200.443px; top: 622.404px; min-width: 1px; min-height: 1px;" data-block-id="1dc0fd360f7aefe28aee8a50800ae94f" data-name="image-9f3dfe"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="1770" data-natural-height="1350" data-crop-x="0.29815" data-crop-y="0.937799" data-crop-width="0.70185" data-crop-height="0.062201" style="left: -456px; top: -1093px; width: 1529px; height: 1166px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/c3e8f852386d80698e8310b3c149aee1.png"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="85f08138b470f080a14b2d950a102b79" data-visibility="hidden">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 873.6px; height: 720px; left: 203.2px; top: 0px; min-width: 1px; min-height: 1px;" data-name="image-ad7d16" data-block-id="9204d47b0b35992d81e89107fc4e34f6"><a class="sl-block-content" style="z-index: 10;" href="https://redmonk.com/sogrady/2025/06/18/language-rankings-1-25/" target="_blank"><img class="" data-natural-width="1638" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/6b472cb49d1e20f2474d462338772817.png"></a></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="d2cae6ae89f386e3d5ec74db58199311">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 79.9997px; top: 18.7499px; height: auto;" data-name="text-853d2e" data-block-id="13c8f8840ceab4efde03126d17bc00f4"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>Overall</code></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 160px; top: 153.25px; height: auto;" data-name="text-d18e72" data-block-id="a285162378e281c6d343464b33f4e5f3"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: left; color: rgb(28, 235, 123); font-size: 110%; line-height: 1.612;" data-placeholder-text="Text" data-has-line-height="">
+<p><strong><span style="font-size:1.2em">Top 10</span></strong><em><span style="font-size:1.2em">ish</span></em></p>
+
+<ul>
+	<li>JavaScript/TypeScript</li>
+	<li>Python</li>
+	<li>Java</li>
+	<li>C#</li>
+	<li>PHP</li>
+	<li>C/C++</li>
+	<li>Ruby</li>
+	<li>Bash/Shell/PowerShell</li>
+</ul>
+</div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 720px; top: 153.25px; height: auto;" data-block-id="9e74187b5a66bb68e78a2fe0a056b8ec" data-name="text-af7841"><div class="sl-block-style" style="z-index: 12; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 12; text-align: left; color: rgb(28, 235, 123); font-size: 110%; line-height: 1.612;" data-placeholder-text="Text" data-has-line-height="" data-has-custom-html="">
+<p>Other Common</p>
+
+<ul>
+	<li>Ada</li>
+	<li>Rust</li>
+	<li>Go</li>
+	<li>Kotlin</li>
+	<li>Swift</li>
+	<li>R</li>
+	<li>Objective-C</li>
+	<li>Visual Basic</li>
+	<li>Delphi/Pascal</li>
+</ul>
+</div></div></div></section><section data-id="b71045507a744f6090111126831bc52c"><div class="sl-block" data-block-type="image" style="width: 1280px; height: 720px; left: 0px; top: 0px; min-width: 1px; min-height: 1px;" data-name="image-ee8842" data-block-id="55c45805c2f7fce31bff459dd171adc5"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2475" data-natural-height="1350" data-crop-x="0.015152" data-crop-y="0" data-crop-width="0.969697" data-crop-height="1" style="left: -20px; top: 0px; width: 1320px; height: 720px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/9c4c811b70c4c38ff69af42c86b45f12.webp"></div></div></section></section><section class="stack" data-id="cccf09fb555849e1d647f0b3c82aa973"><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="b947ea8984706e9e54092adf85b18db0">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 904.245px; left: 187.877px; top: 276.5px; height: auto;" data-name="text-853d2e" data-block-id="e237294a6a6a2f66a767ba404aad61cf"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 200%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>JavaScript</code></h1></div></div></div>
+</section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="7ee9ad4e30af26e4214895b658bd9929">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 9.5px; height: auto;" data-name="text-853d2e" data-block-id="9d852051ce892693d8ffb6e1986374e4"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>JavScript Debugging</code></h1></div></div></div>
+<div class="sl-block" data-block-type="code" style="width: 851.038px; height: auto; left: 214.481px; top: 144px;" data-name="code-013486" data-block-id="2b0355b6c8463671bf625580ac837b01"><div class="sl-block-content notranslate" data-highlight-theme="monokai" data-code-frame="none" style="z-index: 11;" data-code-autoheight="true"><pre style="font-size: 20px; line-height: 24px; tab-size: 4;" class="javascript"><code data-line-numbers="">console.log("The basic log");
+
+// Group related logs to keep the console tidy
+console.group("User Transaction");
+console.log("User: Alice");
+console.log("Item: Sword of Truth");
+console.groupEnd();
+
+// Display arrays of objects as a clean table
+const users = [
+  { name: "Alice", role: "Mage", hp: 100 },
+  { name: "Bob", role: "Warrior", hp: 150 }
+];
+console.table(users);
+
+// Only logs if the condition is false
+console.assert(users[0].hp &gt; 0, "User is dead!", users[0]);
+
+// Print a stack trace
+console.trace();
+</code></pre></div></div></section><section data-id="e1c6c3d5beb3e5e11969989e30a76e52"><div class="sl-block" data-block-type="image" style="width: 1280px; height: 698.182px; left: 2.84217e-14px; top: 10.909px; min-width: 1px; min-height: 1px;" data-name="image-2e5a92" data-block-id="602d4481841fe6f9643b3e10664e3165"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2475" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/2fabd1cfe7301fbc3e5184551d097397.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="633d54d0de1f9972c36994619bb77c1d">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="code" style="width: 734.354px; height: auto; left: 272.823px; top: 216px;" data-name="code-013486" data-block-id="5bbbf1cad0c5a65721b1f438e8d7bfcf"><div class="sl-block-content notranslate" data-highlight-theme="monokai" data-code-frame="none" style="z-index: 10;" data-code-autoheight="true"><pre style="font-size: 20px; line-height: 24px; tab-size: 4;" class="javascript"><code data-line-numbers="" style="padding: 10px;">function square(a) {
+	let result = a * a;
+	return result;
+}
+
+// Collect type information on next call of function
+%PrepareFunctionForOptimization(square)
+
+// Call function once to fill type information
+square(23);
+
+// Call function again to go from uninitialized 
+//            -&gt; pre-monomorphic -&gt; monomorphic
+square(13);
+%OptimizeFunctionOnNextCall(square);
+square(71);</code></pre></div></div>
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 30.5px; height: auto;" data-name="text-853d2e" data-block-id="cc55e709f1f60893ea07f24422b58948"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 11; color: rgb(28, 235, 123); line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>JavScript Disassembly</code></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 320px; height: auto; left: 480px; top: 654.641px;" data-name="Text 1" data-block-id="d0356e4d157ef9b5d715f0472d9c146b"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: left; z-index: 12;" data-placeholder-text="Text"><p style="text-align:center"><a href="https://godbolt.org/z/MhKG9vvej" target="_blank"><span style="font-size:0.7em">godbolt.org/z/MhKG9vvej</span></a></p></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="95f7aafadb1345581059a9b7ea0f49e5">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1264.7px; height: 720px; left: 0px; top: 0px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="0b527f5b214124000e0e823be3420f16"><div class="sl-block-style" style="z-index: 10; opacity: 0.9;"><a class="sl-block-content" style="z-index: 10; border-style: solid; border-width: 10px; border-color: rgb(29, 29, 29);" href="https://godbolt.org/z/MhKG9vvej" target="_blank"><img class="" data-natural-width="1501" data-natural-height="1225" data-crop-x="0" data-crop-y="0" data-crop-width="1" data-crop-height="0.697575" style="left: 0px; top: 0px; width: 1265px; height: 1032px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/501d78f8c18940c58a898dc43d2c3cc6.png"></a></div></div>
+<div class="sl-block" data-block-type="text" style="width: 320px; height: auto; left: 480px; top: 150px;" data-name="Text 1" data-block-id="ca88b5f00c76dba4c6ee4db0f73c8ca7"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: left; z-index: 11;" data-placeholder-text="Text"><p style="text-align:center"><a href="https://godbolt.org/z/MhKG9vvej" target="_blank"><span style="font-size:0.7em">godbolt.org/z/MhKG9vvej</span></a></p></div></div>
+<div class="sl-block" data-block-type="text" style="width: 560px; left: 360px; top: -1.00032px; height: auto;" data-name="Text 2" data-block-id="1343eed4ee5aaf7cdb46c4cac4421296"><div class="sl-block-style" style="z-index: 12; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 12; color: rgb(28, 235, 123); line-height: 0.871;" data-has-line-height="" data-placeholder-text="Text">
+<h1><code>JavScript</code></h1>
+<h1><code>Disassembly</code></h1>
+</div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 500.011px; height: 273.706px; left: 764.689px; top: 200.008px; min-width: 1px; min-height: 1px;" data-name="Image 2" data-block-id="780d4965a156456850c36c6a8f55c7fe"><div class="sl-block-style" style="z-index: 13; filter: opacity(100%) drop-shadow(rgba(0, 0, 0, 0.5) 0px 0px 5px);"><div class="sl-block-content" style="z-index: 13; border-width: 2px; border-color: rgb(136, 136, 136);"><img class="" data-natural-width="1073" data-natural-height="602" data-crop-x="0.012526" data-crop-y="0.02974" data-crop-width="0.902999" data-crop-height="0.881041" style="left: -7px; top: -9px; width: 554px; height: 311px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/068f6fba3436534321e36828229e58f9.png"></div></div></div></section></section><section class="stack" data-id="22f5538b701cbdc8de45af87908f3234"><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="5c900ecd54bf12f282cef7334ad812ea">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 658.768px; left: 331.531px; top: 297.5px; height: auto;" data-name="text-853d2e" data-block-id="abce2b8c870615b709ed5f86032a297f"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><font face="Courier, monospace">vs.</font></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 520.5px; height: auto;" data-name="text-d18e72" data-block-id="08c6da507691e4ace43563196dd149b3"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: center; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text">
+<p><span style="font-size:1.4em">GCC vs LLVM</span></p>
+
+<p><span style="font-size:0.9em">Compiler Infrastructure Platforms</span></p>
+</div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 449.14px; height: 449.14px; left: 773.187px; top: 135.43px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="9fe5b8890563a26d05cf31593dfd1c27"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="512" data-natural-height="512" data-lazy-loaded="" data-src="decompile-debug-bsdg/d40035efa777d4c44821e2f9414c2622.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 288px; height: 288px; left: 176px; top: 216px; min-width: 1px; min-height: 1px;" data-name="Image 2" data-block-id="4b2d605da4e16b35b6a5e413150dbab4"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="150" data-natural-height="150" data-lazy-loaded="" data-src="decompile-debug-bsdg/593e6072c52d76c2d1e0c8822483a8d2.svg"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="133b2601454115b10b34d1de30906096">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 762.242px; left: 240px; top: 90px; height: auto;" data-name="text-853d2e" data-block-id="055e1a991adf8e4d482675002717f919"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 130%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>GCC vs LLVM</code></h1></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 320px; height: 320px; left: 960px; top: 0px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="bb1d4ce1b936d909702da7139217b9d8"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="512" data-natural-height="512" data-lazy-loaded="" data-src="decompile-debug-bsdg/d40035efa777d4c44821e2f9414c2622.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 288px; height: 288px; left: -19.9408px; top: 9.5px; min-width: 1px; min-height: 1px;" data-name="Image 2" data-block-id="abf7bc5ce9393b4e8ee7a2776f8d8755"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="150" data-natural-height="150" data-lazy-loaded="" data-src="decompile-debug-bsdg/593e6072c52d76c2d1e0c8822483a8d2.svg"></div></div>
+<div class="sl-block" data-block-type="table" style="height: auto; min-width: 269px; width: 853.939px; left: 213.03px; top: 288px;" data-name="Table 1" data-block-id="f3e2cd15b6630f35d4ce4ee680ad464f"><div class="sl-block-content" data-table-rows="9" data-table-cols="3" style="z-index: 14; font-size: 80%;"><table><tbody>
+<tr>
+<th style="width: 189px;"></th>
+<th>GCC</th>
+<th>LLVM
+</th>
+</tr>
+<tr>
+<td style="width: 189px;">Initial release</td>
+<td>March 22, 1987; 38 years ago</td>
+<td>2003; 23 years ago
+</td>
+</tr>
+<tr>
+<td style="width: 189px;">Original authors</td>
+<td>Richard Stallman</td>
+<td>Chris Lattner, Vikram Adve
+</td>
+</tr>
+<tr>
+<td style="width: 189px;">Stable release</td>
+<td>15.2 / 8 Aug 2025</td>
+<td>21.1.8  / 16 Dec 2025
+</td>
+</tr>
+<tr>
+<td style="width: 189px;">Written in</td>
+<td>C, C++</td>
+<td>C++
+</td>
+</tr>
+<tr>
+<td style="width: 189px;">Languages</td>
+<td>49</td>
+<td>27
+</td>
+</tr>
+<tr>
+<td style="width: 189px;">OS</td>
+<td>Cross-platform</td>
+<td>Cross-platform
+</td>
+</tr>
+<tr>
+<td style="width: 189px;">Size</td>
+<td>~15 million LOC</td>
+<td>~35.56 million LOC
+</td>
+</tr>
+<tr>
+<td style="width: 189px;">License</td>
+<td>GPLv3+ with GCC Runtime Library Exception</td>
+<td>Apache License 2.0 with LLVM Exceptions</td>
+</tr>
+</tbody></table></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="72a6a1cc37727751240cc13376c3ed8c">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 710.506px; left: -292.752px; top: 310px; height: auto;" data-name="text-853d2e" data-block-id="1a9c9c28cf4af69c59c8e5a6b2655e92"><div class="sl-block-style" style="z-index: 10; transform: rotate(-90deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 120%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>GCC vs LLVM</code></h1></div></div></div>
+<div class="sl-block" data-block-type="table" style="height: auto; min-width: 264px; width: 1150.08px; left: 129.92px; top: 16px;" data-name="Table 1" data-block-id="ac3b37853eee6ea3f8566462ae11ba55"><div class="sl-block-content" data-table-rows="10" data-table-cols="3" style="z-index: 11; font-size: 62%;"><table><tbody>
+<tr>
+<th style="width: 184px;">Feature</th>
+<th>GCC</th>
+<th>LLVM</th>
+</tr>
+<tr>
+<td style="width: 184px;">Primary License</td>
+<td>GPLv3 (Copyleft). Ensures derivative works remain open-source.</td>
+<td>Apache 2.0 with LLVM Exceptions (Permissive). Allows for proprietary commercial extensions.
+</td>
+</tr>
+<tr>
+<td style="width: 184px;">Architecture</td>
+<td>Monolithic. Older design with tightly coupled components. Difficult to use its internal parts as separate libraries.</td>
+<td>Modular. Designed as a set of reusable libraries with clear interfaces. Easy to integrate into other tools.
+</td>
+</tr>
+<tr>
+<td style="width: 184px;">Intermediate Representation (IR)</td>
+<td>Uses GIMPLE and RTL internally. These are not designed for external use or tooling.</td>
+<td>Uses LLVM IR, a universal, language-independent, assembly-like language designed for analysis and optimization by external tools.
+</td>
+</tr>
+<tr>
+<td style="width: 184px;">Primary Frontends</td>
+<td>gcc (C), g++ (C++), gfortran (Fortran), Ada, Go, D, Objective-C.</td>
+<td>Clang is the primary frontend for C, C++, and Objective-C. Used as a backend by Rust, Swift, Julia, Ruby, etc.
+</td>
+</tr>
+<tr>
+<td style="width: 184px;">Platform Support</td>
+<td>Extremely broad, including many legacy and niche architectures. The standard for Linux and embedded systems.</td>
+<td>Broad support for modern architectures (x86, ARM, RISC-V, Wasm). The default on macOS, iOS, and widely used in Android NDK.
+</td>
+</tr>
+<tr>
+<td style="width: 184px;">Compilation Speed</td>
+<td>generally slower, especially at higher optimization levels.</td>
+<td>Generally faster, particularly with the Clang frontend. Known for fast, incremental builds.
+</td>
+</tr>
+<tr>
+<td style="width: 184px;">Generated Code Performance</td>
+<td>Mature and highly optimized. Historically had a slight edge in some CPU-intensive benchmarks.</td>
+<td>Highly competitive. Often matches or beats GCC, especially with modern features like advanced vectorization and Link-Time Optimization (LTO).
+</td>
+</tr>
+<tr>
+<td style="width: 184px;">Diagnostics &amp; Tooling</td>
+<td>Traditional error messages. Tooling includes GDB and GNU binutils.</td>
+<td>Superior, human-readable error messages. Rich ecosystem of modular tools like LLDB, Clang Static Analyzer, clang-tidy, and clang-format.
+</td>
+</tr>
+<tr>
+<td style="width: 184px;">Key Strengths</td>
+<td>Maturity, stability, incredibly wide hardware support, and strict adherence to open-source principles.</td>
+<td>Modularity, build speed, excellent diagnostics, modern design, and permissiveness for commercial use.</td>
+</tr>
+</tbody></table></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="5a1e6deb5607cbb3cd927d0913d753ad">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 844.236px; height: 720px; left: 0px; top: 0px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="e127948dbe79976990bd37f190924964"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="1605" data-natural-height="1296" data-crop-x="0" data-crop-y="0" data-crop-width="0.846914" data-crop-height="0.894495" style="left: 0px; top: 0px; width: 997px; height: 805px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/9a4ffcc2bf1996b4e5e4dd4d7953bab8.png"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 418.438px; left: 861.562px; top: 122.5px; height: auto;" data-name="text-d18e72" data-block-id="194e00e348ae87556dbfcbead67470a2"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: left; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text">
+<p style="text-align: center;">FKA "GNU C Compiler"</p>
+
+<p style="text-align: center;">https://gcc.gnu.org/</p>
+</div></div></div>
+<div class="sl-block" data-block-type="table" style="height: auto; min-width: 211px; width: 418.438px; left: 861.562px; top: 233.791px;" data-name="Table 1" data-block-id="64f386173c0c70cce6f82dc45c4ce8db"><div class="sl-block-content" data-table-rows="8" data-table-cols="2" style="z-index: 12; font-size: 70%;" data-table-has-header="false"><table><tbody>
+<tr>
+<td style="width: 171px;">Initial release</td>
+<td>March 22, 1987; 38 years ago</td>
+</tr>
+<tr>
+<td style="width: 171px;">Original author</td>
+<td>Richard Stallman
+</td>
+</tr>
+<tr>
+<td style="width: 171px;">Stable release</td>
+<td>15.2 / 8 Aug 2025
+</td>
+</tr>
+<tr>
+<td style="width: 171px;">Written in</td>
+<td>C, C++
+</td>
+</tr>
+<tr>
+<td style="width: 171px;">Languages</td>
+<td>49</td>
+</tr>
+<tr>
+<td style="width: 171px;">OS</td>
+<td>Cross-platform</td>
+</tr>
+<tr>
+<td style="width: 171px;">Size</td>
+<td>~15 million LOC</td>
+</tr>
+<tr>
+<td style="width: 171px;">License</td>
+<td>GPLv3+ with GCC Runtime Library Exception</td>
+</tr>
+</tbody></table></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="07e6d1dc5d80ef24113786ac834f9405">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="b517a786c3d010254c97ff7b0070e683"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/d9e88df969f2f86b37a6b8fc9e03f177.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="d3658b5cb50ea6bea0d82ec690e5cfed">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="f2a29a7958d4c331640564ca9d8d0341"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/37157c4f7ab3e3b0e0eefdd5716e57ce.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="25a5db5cfd318035a0d4db1f69d2699b">
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280px; height: 596.652px; left: 0px; top: 51.348px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="30d1a66eed79bc2a799c38de8f4d63b7"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2244" data-natural-height="1307" data-crop-x="0" data-crop-y="0" data-crop-width="0.950134" data-crop-height="0.760402" style="left: 0px; top: 0px; width: 1347px; height: 785px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/3b393d773737799622b0cf3806b2ccf0.png"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 600px; height: auto; left: 260px; top: 0px;" data-name="Text 2" data-block-id="92ec52d56455b28a22a82584bdf13318"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: center; z-index: 12;" data-placeholder-text="Text"><p><strong>https://llvm.org/</strong></p></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="f9a4882c051599fbbea4ce289cbff94d">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280px; height: 709.651px; left: 2.84217e-14px; top: 5.2175px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="dd2f0cb874af7bf906411a4c90fe868a"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2435" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/81a9a14748651d7318819394019b4468.webp"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 313.019px; height: 313.019px; left: 480px; top: 118.981px; min-width: 1px; min-height: 1px;" data-name="Image 2" data-block-id="842f50ad718677e0b89dfb9522c6e6ba"><div class="sl-block-style" style="z-index: 11; filter: opacity(100%) drop-shadow(rgba(0, 0, 0, 0.5) 9px 11px 5px);"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="512" data-natural-height="512" data-lazy-loaded="" data-src="decompile-debug-bsdg/d40035efa777d4c44821e2f9414c2622.png"></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="47ab9f54b393b4fb434cc3e2f70239b7">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: -0.13px; top: 0px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="d82edf9082e33867aa76d5f90ef408c2"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/f5e6c84a78bf3b43e451884bd4f56f13.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="9cc859478039143b932776c8c894d659">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="d338ec503385b69a1365f81f00b2b582"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/20830c478cdd0c5dc2d0e9120cc28e69.png"></div></div></section></section><section class="stack" data-id="b8aed6127a9e609042ddb4fd6028ff2e"><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="1cbe10fccb65b70d329b53bf19ebd219">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 560px; left: 360px; top: 20.5px; height: auto;" data-name="text-853d2e" data-block-id="ddee7ce2c75706ef8b0f2b61a468171a"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg); filter: opacity(100%) drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 12px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 11; color: rgb(28, 235, 123); font-size: 200%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><font face="Courier, monospace">LLVM</font></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 640px; left: 320px; top: 569px; height: auto;" data-name="text-d18e72" data-block-id="8081fea4a7b920c4de087aefe6a42efa"><div class="sl-block-style" style="z-index: 12; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 12; text-align: left; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text">
+<p style="text-align:center"><span style="font-size:1.2em">Compiler Infrastructure</span> </p>
+
+<p style="text-align:center"><a href="https://llvm.org/" target="_blank">llvm.org</a></p>
+</div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 512px; height: 512px; left: 368px; top: 104px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="f3ab3e679c19c961ed08c9cbca3a8801"><a class="sl-block-content" style="z-index: 10;" href="https://llvm.org/" target="_blank"><img class="" data-natural-width="512" data-natural-height="512" data-lazy-loaded="" data-src="decompile-debug-bsdg/d40035efa777d4c44821e2f9414c2622.png"></a></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="93c42060a8e04d6662360cb4bfaeb3a7">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="34085160699550931ec0f359f0e49210"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/8557715c26fd4ccd4875f1ec6d81c6f9.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="d9f326e188d31cdb444977d826f2c898">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="ca2b3d2769f15f4c33952fd91f0b2676"><a class="sl-block-content" style="z-index: 10;" href="https://clang.llvm.org/" target="_blank"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/4722ad1bb96de5dbe4d4a5b7caeec88e.webp"></a></div>
+<div class="sl-block" data-block-type="text" style="width: 226.832px; height: auto; left: 46.584px; top: 648px;" data-name="Text 1" data-block-id="ec08357aa8b7a6df51a4c5c64acead3b"><a class="sl-block-style" style="z-index: 11; opacity: 0.8;" href="https://clang.llvm.org/" target="_blank"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: center; z-index: 11; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);" data-placeholder-text="Text"><p><strong>clang.llvm.org</strong></p></div></a></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="f723c10d0dc119e66c79a99f339fb381">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 9.5px; height: auto;" data-name="text-853d2e" data-block-id="aec9fbb7343d034bd7c5f34e74d0c53d"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>Code Examples</code></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 617.241px; left: 80px; top: 191.5px; height: auto;" data-name="text-d18e72" data-block-id="5cecc90a9a6394931d875831a42241f3"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: left; color: rgb(28, 235, 123); font-size: 110%; line-height: 1.95;" data-has-line-height="" data-placeholder-text="Text"><ul>
+	<li><span class="mw-page-title-main">Iterative Fibonacci sequence</span></li>
+	<li>Sum of the two <span style="color:rgb(28, 235, 123)">preceding </span>elements</li>
+	<li>0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, ...</li>
+</ul></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 521px; height: 322.934px; left: 720px; top: 144px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="37fbaacede2ad836db7bde48e4b2fd9f"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="242" data-natural-height="150" data-lazy-loaded="" data-src="decompile-debug-bsdg/b28409810a29488f3e4e501dc499ced8.svg"></div></div>
+<div class="sl-block" data-block-type="math" style="width: auto; height: auto; left: 202px; top: 441.5px;" data-name="Math 1" data-block-id="b35d9ba0e80385047ab6c90935510916"><div class="sl-block-style" style="z-index: 14; filter: opacity(100%) drop-shadow(rgb(40, 236, 130) 0px 0px 11px);"><div class="sl-block-content notranslate" data-math-display="true" style="z-index: 14; color: rgb(40, 236, 130); font-size: 90%;"><div class="math-input">F_0=0,\quad F_1= 1, \\
+[F_n=F_{n-1} + F_{n-2}
+ \\ 
+n &gt; 1]</div></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 521px; left: 720px; top: 619.5px; height: auto;" data-name="Text 2" data-block-id="1e0d42d8d061aa89478e6cff3636e2c8"><div class="sl-block-style" style="z-index: 12; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 12; text-align: right; color: rgb(28, 235, 123); font-size: 75%;" data-placeholder-text="Text">
+<p>https://en.wikipedia.org/wiki/Fibonacci_sequence</p>
+
+<p>Fibonacci spiral by <a href="https://commons.wikimedia.org/wiki/User:Randaum" target="_blank">Randaum</a></p>
+</div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="080537861d60e95d15922e991af5aca7">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1236.17px; height: 720px; left: 21.915px; top: -2.84217e-14px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="f4914b80e3b57febbfdf4b332d0a282d"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2244" data-natural-height="1307" data-lazy-loaded="" data-src="decompile-debug-bsdg/e5cc17e8628a3a325f902ce76432d32e.png"></div></div>
+<div class="sl-block" data-block-type="iframe" data-name="Iframe 1" style="width: 1258.09px; height: 720px; left: 0px; top: 0px;" data-block-id="13100d83f5c6f5cfadf764dc6c7e40d5"><div class="sl-block-content" style="z-index: 11;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" data-preload="true" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-lazy-loaded="" data-src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(fontScale:14,fontUsePx:'0',j:1,lang:___c,selection:(endColumn:2,endLineNumber:30,positionColumn:2,positionLineNumber:30,selectionStartColumn:2,selectionStartLineNumber:30,startColumn:2,startLineNumber:30),source:'%23include+%3Cstdio.h%3E%0A%0A//+Function+to+calculate+the+nth+Fibonacci+number%0Aunsigned+long+long+fib_iterative(int+n)+%7B%0A++++if+(n+%3C%3D+0)+return+0%3B%0A++++if+(n+%3D%3D+1)+return+1%3B%0A%0A++++unsigned+long+long+a+%3D+0%3B+//+F(0)%0A++++unsigned+long+long+b+%3D+1%3B+//+F(1)%0A++++unsigned+long+long+next%3B%0A%0A++++//+Iterate+from+2+up+to+n%0A++++for+(int+i+%3D+2%3B+i+%3C%3D+n%3B+i%2B%2B)+%7B%0A++++++++next+%3D+a+%2B+b%3B%0A++++++++a+%3D+b%3B%0A++++++++b+%3D+next%3B%0A++++%7D%0A%0A++++return+b%3B%0A%7D%0A%0Aint+main()+%7B%0A++++int+n+%3D+10%3B%0A++++unsigned+long+long+result+%3D+fib_iterative(n)%3B%0A%0A++++//+%25llu+is+the+format+specifier+for+unsigned+long+long%0A++++printf(%22Fibonacci+number+at+position+%25d+is:+%25llu%5Cn%22,+n,+result)%3B%0A%0A++++return+0%3B%0A%7D'),l:'5',n:'0',o:'C+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:cg152,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:___c,libs:!(),options:'',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x86-64+gcc+15.2+(Editor+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:100,n:'0',o:'',t:'0')),version:4"></iframe></div></div>
+<div class="sl-block" data-block-type="text" style="width: 323.702px; height: auto; left: 25.662px; top: 675.52px;" data-name="Text 1" data-block-id="b7c93d608af711268f9af8c55ac77373"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: left; z-index: 12; font-size: 50%;" data-placeholder-text="Text"><p><a href="https://godbolt.org/z/Pxxa876Td" target="_blank">https://godbolt.org/z/Pxxa876Td</a></p></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="642b1a7be9b2ad7d246ac5cd29746f09">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1236.17px; height: 720px; left: 21.915px; top: -2.84217e-14px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="8744f61ccdc33b406283ddaa603bc2f4"><a class="sl-block-content" style="z-index: 10;" href="https://godbolt.org/z/qqx3T4cPf" target="_blank"><img class="" data-natural-width="2244" data-natural-height="1307" data-lazy-loaded="" data-src="decompile-debug-bsdg/4be0a6421a29da4c40d7e604c300e58d.png"></a></div>
+<div class="sl-block" data-block-type="iframe" data-name="Iframe 1" style="width: 1280px; height: 720px; left: 0px; top: 0px;" data-block-id="ec6fb2e48c63c9a413d9f7db35d78b1f"><div class="sl-block-content" style="z-index: 11;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" data-preload="true" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-lazy-loaded="" data-src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:32,endLineNumber:6,positionColumn:32,positionLineNumber:6,selectionStartColumn:32,selectionStartLineNumber:6,startColumn:32,startLineNumber:6),source:'%23include+%3Ciostream%3E%0A//+Provides+uint64_t+for+explicit+64-bit+integers%0A%23include+%3Ccstdint%3E+%0A%0A//+Function+to+calculate+the+nth+Fibonacci+number%0Auint64_t+fib_iterative(int+n)+%7B%0A++++if+(n+%3C%3D+0)+return+0%3B%0A++++if+(n+%3D%3D+1)+return+1%3B%0A%0A++++uint64_t+a+%3D+0%3B+//+F(0)%0A++++uint64_t+b+%3D+1%3B+//+F(1)%0A++++%0A++++//+We+use+a+temporary+variable+for+the+swap%0A++++//+Loop+starts+at+2+because+we+already+defined+0+and+1%0A++++for+(int+i+%3D+2%3B+i+%3C%3D+n%3B+%2B%2Bi)+%7B%0A++++++++uint64_t+temp+%3D+a+%2B+b%3B%0A++++++++a+%3D+b%3B%0A++++++++b+%3D+temp%3B%0A++++%7D%0A%0A++++return+b%3B%0A%7D%0A%0Aint+main()+%7B%0A++++int+n+%3D+10%3B%0A++++%0A++++//+std::cout+handles+types+automatically+(no+%25llu+needed)%0A++++std::cout+%3C%3C+%22The+%22+%3C%3C+n+%3C%3C+%22th+Fibonacci+number+is:+%22+%0A++++++++++++++%3C%3C+fib_iterative(n)+%3C%3C+std::endl%3B%0A%0A++++return+0%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:g152,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!(),options:'',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x86-64+gcc+15.2+(Editor+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:100,n:'0',o:'',t:'0')),version:4"></iframe></div></div>
+<div class="sl-block" data-block-type="text" style="width: 366.632px; height: auto; left: 33.368px; top: 676.621px;" data-name="Text 1" data-block-id="88141bb4f18e34b44ddd1f84716d2b1f"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: left; z-index: 12; font-size: 50%;" data-placeholder-text="Text"><p><a href="https://godbolt.org/z/qqx3T4cPf" target="_blank">https://godbolt.org/z/qqx3T4cPf</a></p></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="0b8d4a6b7205ab53e45df7bc6860159b">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="486a10da42f68d90a5c33edeff7080d7"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/a58defaefa4c2ae15216c20d90b62ea6.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="ca003c55fee7d2bda1753eb79ffea22b">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1236.17px; height: 720px; left: 21.915px; top: -2.84217e-14px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="10cbc774b6efb9a2339599dfee33fb7b"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2244" data-natural-height="1307" data-lazy-loaded="" data-src="decompile-debug-bsdg/60af2af3a933cb198fd568ce1936cf87.png"></div></div>
+<div class="sl-block" data-block-type="iframe" data-name="Iframe 1" style="width: 1280px; height: 720px; left: 0px; top: -2.84217e-14px;" data-block-id="678e322b07a7677afe292a99b89341f3"><div class="sl-block-content" style="z-index: 11;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" data-preload="true" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-lazy-loaded="" data-src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(fontScale:14,fontUsePx:'0',j:1,lang:rust,selection:(endColumn:2,endLineNumber:15,positionColumn:2,positionLineNumber:15,selectionStartColumn:2,selectionStartLineNumber:15,startColumn:2,startLineNumber:15),source:'pub+fn+safe_fib(n:+u32)+-%3E+Option%3Cu64%3E+%7B%0A++++if+n+%3D%3D+0+%7B+return+Some(0)%3B+%7D%0A++++if+n+%3D%3D+1+%7B+return+Some(1)%3B+%7D%0A%0A++++let+mut+a:+u64+%3D+0%3B%0A++++let+mut+b:+u64+%3D+1%3B%0A%0A++++for+_+in+2..%3Dn+%7B%0A++++++++//+If+addition+overflows,+return+None%0A++++++++let+next+%3D+a.checked_add(b)%3F%3B%0A++++++++a+%3D+b%3B%0A++++++++b+%3D+next%3B%0A++++%7D%0A++++Some(b)%0A%7D'),l:'5',n:'0',o:'Rust+source+%231',t:'0')),k:50,l:'4',m:100,n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:r1930,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:rust,libs:!(),options:'',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+rustc+1.93.0+(Editor+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:100,n:'0',o:'',t:'0')),version:4"></iframe></div></div>
+<div class="sl-block" data-block-type="text" style="width: 278.569px; height: auto; left: 20.7155px; top: 682.304px;" data-name="Text 1" data-block-id="6aa49f3c45ec6a686b316b6ef664c89c"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: left; z-index: 12; font-size: 50%;" data-placeholder-text="Text"><p><a href="https://godbolt.org/z/1Pj4KejaE" target="_blank">https://godbolt.org/z/1Pj4KejaE</a></p></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="ca2a1d4a46788baf6a50be5b58f35d3e">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="b1b5cef01284998419711d162cd64a18"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/337bd9889145f0d9db0a753ba2b32bcd.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="d6c8b62ff5b10ac91a723baa2cde5b78">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="d9d4916f4e541215d79aad4b95a61f33"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/db44607c5ddde8923b1468d2e0a14777.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="746c52021fdfa910fcf4837ccee3e9c1">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="iframe" data-name="Iframe 1" style="width: 1280px; height: 720px; left: 0px; top: 0px;" data-block-id="0376ba76d86cb13bfb32b6398f89b0cb"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 11;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" data-preload="true" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-lazy-loaded="" data-src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(fontScale:14,fontUsePx:'0',j:1,lang:kotlin,selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:'fun+fibIterative(n:+Int):+Long+%7B%0A++++if+(n+%3C%3D+0)+return+0%0A++++if+(n+%3D%3D+1)+return+1%0A%0A++++var+a+%3D+0L+//+Long+literal%0A++++var+b+%3D+1L%0A++++%0A++++//+Loop+from+2+up+to+n+(inclusive)%0A++++for+(i+in+2..n)+%7B%0A++++++++val+next+%3D+a+%2B+b%0A++++++++a+%3D+b%0A++++++++b+%3D+next%0A++++%7D%0A%0A++++return+b%0A%7D'),l:'5',n:'0',o:'Kotlin+source+%231',t:'0')),k:50,l:'4',m:100,n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:kotlinc2220,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:kotlin,libs:!(),options:'',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+kotlinc+2.2.20+(Editor+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:100,n:'0',o:'',t:'0')),version:4"></iframe></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1236.17px; height: 720px; left: 21.915px; top: -2.84217e-14px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="d87f6b9c62ad740940d3b6b36aa4e802"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2244" data-natural-height="1307" data-lazy-loaded="" data-src="decompile-debug-bsdg/b6e81d2dbf8da56536a4bbf5e5ff299c.png"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 600px; height: auto; left: 21.915px; top: 679.955px;" data-name="Text 1" data-block-id="7b2125b37e0b14389d8bc310cb4b8a0a"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: left; z-index: 12; font-size: 50%;" data-placeholder-text="Text"><p><a href="https://godbolt.org/z/aWK1d18ba" target="_blank">https://godbolt.org/z/aWK1d18ba</a></p></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="5ab6e712c63c580cf15f526de2cb5e1d">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="1177d1dbc591b4c9230ddd26828ee539"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/eb4208ffb61ca6f6bd68088b599775b3.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="359c511d12486b2ed4eb6c48eb93ed57">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="d5b45fcd9b29975bbf463b56ccb00ac7"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/c1f0eb67f7483266bbd086f601f87ea6.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="f2c4be0a8b91a26ae015d1ef3f458d34">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1236.17px; height: 720px; left: 21.915px; top: -2.84217e-14px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="c98cba12991e359c55fb70f476865225"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2244" data-natural-height="1307" data-lazy-loaded="" data-src="decompile-debug-bsdg/db7f42ec1f8642158e1f472cc1893fdb.png"></div></div>
+<div class="sl-block" data-block-type="iframe" data-name="Iframe 1" style="width: 1280px; height: 720px; left: 0px; top: 0px;" data-block-id="ceccb8a8aec9ca71baba41aa0fa3a1d4"><div class="sl-block-content" style="z-index: 11;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" data-preload="true" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-lazy-loaded="" data-src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(fontScale:14,fontUsePx:'0',j:1,lang:julia,selection:(endColumn:29,endLineNumber:14,positionColumn:29,positionLineNumber:14,selectionStartColumn:29,selectionStartLineNumber:14,startColumn:29,startLineNumber:14),source:'function+fib_huge(n::Int)%0A++++if+n+%3C%3D+0+return+BigInt(0)+end%0A++++%0A++++a,+b+%3D+BigInt(0),+BigInt(1)%0A++++%0A++++for+i+in+2:n%0A++++++++a,+b+%3D+b,+a+%2B+b%0A++++end%0A++++return+b%0Aend%0A%0Aprintln(fib_huge(200))+%0A%0Aprecompile(fib_huge,+(Int,))%0A'),l:'5',n:'0',o:'Julia+source+%231',t:'0')),k:50,l:'4',m:100,n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:julia_1_11_2,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:julia,libs:!(),options:'',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+Julia+1.11.2+(Editor+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:100,n:'0',o:'',t:'0')),version:4"></iframe></div></div>
+<div class="sl-block" data-block-type="text" style="width: 280.67px; height: auto; left: 21.915px; top: 670.249px;" data-name="Text 1" data-block-id="3178867a61f0a680f2566c38ccbd93fd"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: left; z-index: 12; font-size: 50%;" data-placeholder-text="Text"><p><a href="https://godbolt.org/z/rYs8rWoEz" target="_blank">https://godbolt.org/z/rYs8rWoEz</a></p></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="6bcdcfab517172848558bc3e4c3eb600">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="2a1e608be4d0e7ad893e9e7ea8e6ef82"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/1a265b11355175a4f0377aa5d5a5d002.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="69de99d465927cd14db77e9d1e748a0f">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1236.17px; height: 720px; left: 21.915px; top: -2.84217e-14px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="980c9cca3df5eaa9b5960a977ff2cd69"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2244" data-natural-height="1307" data-lazy-loaded="" data-src="decompile-debug-bsdg/e949a4e3ea4fc7cf61575a0bd9c37824.png"></div></div>
+<div class="sl-block" data-block-type="iframe" data-name="Iframe 1" style="width: 1280px; height: 720px; left: 0px; top: 0px;" data-block-id="fc6d53caead1fb2b8ec1a59b0dade9a6"><div class="sl-block-content" style="z-index: 11;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" data-preload="true" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-lazy-loaded="" data-src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(fontScale:14,fontUsePx:'0',j:1,lang:swift,selection:(endColumn:2,endLineNumber:8,positionColumn:2,positionLineNumber:8,selectionStartColumn:2,selectionStartLineNumber:8,startColumn:2,startLineNumber:8),source:'func+fibFunctional(_+n:+Int)+-%3E+UInt64+%7B%0A++++guard+n+%3E+1+else+%7B+return+UInt64(n)+%7D%0A++++%0A++++//+We+start+with+(0,+1)+and+accumulate+n-1+times%0A++++return+(2...n).reduce((0,+1))+%7B+(pair,+_)+in%0A++++++++(pair.1,+pair.0+%2B+pair.1)%0A++++%7D.1%0A%7D'),l:'5',n:'0',o:'Swift+source+%231',t:'0')),k:50,l:'4',m:100,n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:swift62,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:swift,libs:!(),options:'',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x86-64+swiftc+6.2+(Editor+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:100,n:'0',o:'',t:'0')),version:4"></iframe></div></div>
+<div class="sl-block" data-block-type="text" style="width: 256.553px; height: auto; left: 21.915px; top: 677.342px;" data-name="Text 1" data-block-id="6cf2f15a2e396f6c605a4011e1caa9d6"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: left; z-index: 12; font-size: 50%;" data-placeholder-text="Text"><p><a href="https://godbolt.org/z/7rzhGxrv6" target="_blank">https://godbolt.org/z/7rzhGxrv6</a></p></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="c318d146c8fdcf2d9145f9c186f757b8">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="4e977a85d33caa1369295a485f3fa04a"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/a158a10717f4dcaae820b73f23878fb9.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="8c0fc1046f8cd6bd272bdcd4b627449c">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="c007587065f8b3ca9cefb8eff3cedf49"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/e3ee6766f1ecb59ff9391d239a17d70d.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="7739ee438f25a6c9f9504133034fb52e">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 244.445px; height: auto; left: 978.459px; top: 62px;" data-name="Text 1" data-block-id="a80d57f6e91e35e914f31bf53bc9442c"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: right; z-index: 11; font-size: 50%;" data-placeholder-text="Text"><p><a href="https://godbolt.org/z/YhT176Whe" target="_blank">https://godbolt.org/z/YhT176Whe</a></p></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1236.17px; height: 720px; left: 21.915px; top: -2.84217e-14px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="733259a94ed84048154a74c0f7d96e5a"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2244" data-natural-height="1307" data-lazy-loaded="" data-src="decompile-debug-bsdg/aeb232b22f3bf5f0b5dfd1432df00490.png"></div></div>
+<div class="sl-block" data-block-type="iframe" style="width: 1280px; height: 720px; left: 0px; top: -2.84217e-14px;" data-name="Iframe 1" data-block-id="fbf0581648a2a41176aec644206a8c9d"><div class="sl-block-content" style="z-index: 12;"><iframe allow="fullscreen; autoplay; accelerometer; geolocation; gyroscope; camera; encrypted-media; microphone; midi" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-preload="true" data-lazy-loaded="" data-src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(fontScale:14,fontUsePx:'0',j:1,lang:zig,selection:(endColumn:15,endLineNumber:1,positionColumn:15,positionLineNumber:1,selectionStartColumn:15,selectionStartLineNumber:1,startColumn:15,startLineNumber:1),source:'//+Iterative+fibonacci+sequence%0Aconst+std+%3D+@import(%22std%22)%3B%0A%0Apub+fn+main()+!!void+%7B%0A++++const+n:+u64+%3D+10%3B%0A++++const+result+%3D+fib_iterative(n)%3B%0A%0A++++//+Print+the+result+to+console%0A++++std.debug.print(%22The+%7Bd%7Dth+Fibonacci+number+is:+%7Bd%7D%5Cn%22,+.%7B+n,+result+%7D)%3B%0A%7D%0A%0Afn+fib_iterative(n:+u64)+u64+%7B%0A++++if+(n+%3C%3D+1)+return+n%3B%0A%0A++++var+a:+u64+%3D+0%3B%0A++++var+b:+u64+%3D+1%3B%0A%0A++++//+Loop+from+2+up+to+n+(inclusive)%0A++++for+(2..n+%2B+1)+%7C_%7C+%7B%0A++++++++const+temp+%3D+a+%2B+b%3B%0A++++++++a+%3D+b%3B%0A++++++++b+%3D+temp%3B%0A++++%7D%0A%0A++++return+b%3B%0A%7D'),l:'5',n:'0',o:'Zig+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:ztrunk,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:zig,libs:!(),options:'',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+zig+trunk+(Editor+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',m:100,n:'0',o:'',t:'0')),version:4"></iframe></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="8f7a7a7d4c45e6687e097edb90bf300f">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="459bcdc157318ebe312996a7f214f4ae"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/be0fb4142abe8d13057f047f7187369a.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="8b10e6e1f4fe45c52c10b48aa2db176a">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="2f9763ed632bfe2e3dfcef0a609d2e35"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/17e55ee2066f81c226cab82dcf490a0b.webp"></div></div></section></section><section class="stack" data-id="ec3d20a5b9e483059352729268d8bfb7"><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="0e96c54e84268354a431922c8889fdf0">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 951.579px; left: 164.21px; top: 235px; height: auto;" data-name="text-853d2e" data-block-id="048e2fcb71942d20da9f679f4b88ee3d"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>Intermediate<br>
+<span style="font-size:0.9em">Representations</span></code></h1></div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="5ff970177035a731d141aca6bf4f6cdd">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="0ef2b09bd66f82c8f7c4495f3ea34a65"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/cdeb5502fc3f86605560a613d9a42d70.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="b11ec54da06c0e3d1e918b3bda23eeee">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="e827ae9840a906e75dd26eba884839d0"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/cc8c89fe84fea6481017402ef467ded3.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="6e1bb958df307e65f200c7a4438baf8d">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280.13px; height: 714.419px; left: 2.84217e-14px; top: 2.7905px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="07ee30d65e2134e494525bd377aa80d8"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2419" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/d1ec96fc1448c16d90d83ca7de9789ea.webp"></div></div></section></section><section class="stack" data-id="f74007ea32b0217c218372171a8ca6dc"><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="da0c2ff891085094c184dbf8254ef324">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 910.85px; left: 184.575px; top: 237px; height: auto;" data-name="text-853d2e" data-block-id="64a2e68287abb9e099f02a9e0fee3897"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 200%; line-height: 0.91;" data-has-line-height="" data-placeholder-text="Text">
+<h1><code>IEEE 754</code></h1>
+
+<h3><code>Floating Point</code></h3>
+</div></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="8fd670f7662a22bb8c57bcb99d19e030">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280px; height: 698.182px; left: 2.84217e-14px; top: 10.909px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="17fff0a45a5cf29dfaf85e7c636a9301"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2475" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/8e7b36b9773c9606f230904e8198da9d.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="3c2f4f89723366955eb4b472d175cc73">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 1280px; height: 698.182px; left: 2.84217e-14px; top: 10.909px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="f9556ddaabb31e85b867082df89b0250"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2475" data-natural-height="1350" data-lazy-loaded="" data-src="decompile-debug-bsdg/ae0d21789a393e7330fa43963539eb16.webp"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="ecbec2871221b0f9dd648d40cb9af2a8">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 720px; height: 263.461px; left: 79.9996px; top: 39.4928px; min-width: 1px; min-height: 1px;" data-name="Image 1" data-block-id="537ccf88e0fa67d8bf6ab65b79cd8450"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg);"><a class="sl-block-content" style="z-index: 10; border-style: solid; border-width: 2px; border-color: rgb(136, 136, 136);" href="https://lukaskollmer.de/ieee-754-visualizer/" target="_blank"><img class="" data-natural-width="1206" data-natural-height="972" data-crop-x="0.006274" data-crop-y="0.195586" data-crop-width="0.966123" data-crop-height="0.43863" style="left: -5px; top: -117px; width: 745px; height: 601px;" data-lazy-loaded="" data-src="decompile-debug-bsdg/f27c595da7dc4a4327c5c2398dfad2d8.png"></a></div></div>
+<div class="sl-block" data-block-type="text" style="width: 386.667px; height: auto; left: 846.666px; top: 133.161px;" data-name="Text 1" data-block-id="c216aa6c7ff52bb83c911dd25fae1334"><div class="sl-block-content" data-placeholder-tag="p" style="text-align: center; z-index: 11; font-size: 80%;" data-placeholder-text="Text">
+<p>The standard for floating points</p>
+
+<p>Established in 1985</p>
+
+<p><a href="https://lukaskollmer.de/ieee-754-visualizer/" target="_blank">lukaskollmer.de/ieee-754-visualizer/</a></p>
+
+<p><a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html" target="_blank">h-schmidt.net/FloatConverter/</a></p>
+
+<p><a href="https://standards.ieee.org/ieee/754/6210/" target="_blank">standards.ieee.org/ieee/754/6210/</a></p>
+
+<p><a href="https://en.wikipedia.org/wiki/IEEE_754" target="_blank">en.wikipedia.org/wiki/IEEE_754</a></p>
+
+<p><a href="https://en.wikipedia.org/wiki/Single-precision_floating-point_format" target="_blank">/wiki/Single-precision</a></p>
+
+<p><a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format" target="_blank">/wiki/Double-precision</a></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 442.476px; left: 818.762px; top: 39.4928px; height: auto;" data-name="text-853d2e" data-block-id="71f6f08c426d81ce2e90814aec08c184"><div class="sl-block-style" style="z-index: 12; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 12; color: rgb(28, 235, 123); line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>IEEE 754</code></h1></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 720px; height: 352.267px; left: 79.9996px; top: 334.576px; min-width: 1px; min-height: 1px;" data-name="Image 2" data-block-id="53d0d85f701805d201583fbbf13ae897"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="838" data-natural-height="410" data-lazy-loaded="" data-src="decompile-debug-bsdg/7929eda003c016c9ed1bc9864c60f89e.png"></div></div></section><section data-background-image="decompile-debug-bsdg/34784c3b9a95b3a03a3e0a9d08b5798c.webp" data-background-opacity="0.52" data-background-transition="fade" data-id="79a3003885672958329f76a0226d654f">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 9.5px; height: auto;" data-name="text-853d2e" data-block-id="98d9a1d624bf30393b3ad8c0f12c30f4"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg); filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 6px);"><div class="sl-block-content monospace-font" data-placeholder-tag="h1" style="z-index: 10; color: rgb(28, 235, 123); font-size: 150%; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><h1><code>Title</code></h1></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 1120px; left: 80px; top: 144px; height: auto;" data-name="text-d18e72" data-block-id="dcc876e3a292b63c07e17d0186b17204"><div class="sl-block-style" style="z-index: 11; filter: drop-shadow(rgba(28, 235, 123, 0.7) 0px 0px 5px);"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 11; text-align: left; color: rgb(28, 235, 123); font-size: 110%;" data-placeholder-text="Text"><ul>
+	<li>Bullet list</li>
+</ul></div></div></div></section></section>
+			</div>
+		</div>
+
+		<script>
+			var SLConfig = {"deck": {"id":3517802,"slug":"decompile-debug-bsdg","title":"Decompile \u0026 Debug","description":"Exploring the relationship between the high level source code we write an the binary machine code that powers our computers. Presented at BSDG on Jan 13, 2026 by Jim McKeeth - CC-BY-NC-SA","width":1280,"height":720,"margin":0.05,"visibility":"all","published_at":"2026-01-14T01:25:05.974Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/841795f8fc14e823f71f4bb0f892eb82/thumb.jpg?1768292437","view_count":2,"user":{"id":289813,"username":"jimmckeeth","name":"Jim McKeeth","description":"","thumbnail_url":"https://media.slid.es/avatars/289813/Jim_Headshot_Tokyo.jpg","account_type":"pro","team_id":null,"settings":{"id":116562,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":false,"default_deck_tag_id":null}},"background_transition":"none","transition":"none","theme_id":null,"theme_font":"helvetica","theme_color":"black-mint","auto_slide_interval":0,"comments_enabled":false,"forking_enabled":false,"rolling_links":false,"center":false,"shuffle":false,"should_loop":false,"share_notes":true,"slide_number":false,"slide_count":88,"rtl":false,"version":2,"collaborative":false,"deck_user_editor_limit":3,"data_updated_at":1769797950274,"font_typekit":null,"font_google":null,"time_limit":null,"navigation_mode":"default","upsizing_enabled":true,"language":"en","notes":{"3e998bcde250e9aa86092a075e37f466":"","10a4b4f2c9b3df66a01f2212dd0a96bf":"","eec1b1a61bbff263d2c1b623b86a4d5a":"","622830d9fad39594e0b36c0c7730eea1":"I went down the rabbit hole of getting this all to work again.\n\nSome resources:\n\n","7800248eeb5211ab10252ea56970554c":"","8e6a7d837e6593c6e54ab1f7856b68b1":"","57de1cd2c3d2282b9c2925ba7abba8a8":"","43d32c5fc457601fd1ef1c4a3af1dc1a":"","a5d8e78d86d0682eaf6a75b7b532a8ac":"","6f5730ceb99b4584e81a80d36362b316":"","6bca49eca8db402bf08a1d2654efcdf8":"","58e323132fd180701a54d6c7ba166d01":"","a29c2a3508f5139b871341d458a4d227":"","dd6b7a806e481e7d5363ce449762fcd0":"","cdd161990cf772dfb9faa3ccf478452d":"","003376452e24f1ac4c103dc186538c5f":"","88c55a38b784dc2278923106647d2bfd":"","994eb73eca13872e13453afe30390cd8":"https://redmonk.com/rstephens/2025/06/18/top20-jan2025/","4093a5d641890924ea29c984a53db82f":"https://redmonk.com/rstephens/2025/06/18/top20-jan2025/\nhttps://redmonk.com/data/","85f08138b470f080a14b2d950a102b79":"https://redmonk.com/sogrady/2025/06/18/language-rankings-1-25/","1843c2bb830f0d73493b83e1f957f3d1":"","75b99dfbde8168f45be0051306c2ab57":"https://tjpalmer.github.io/languish/","fa256730bee2b2e381f71cc30f7dc1ba":"","8cae06866e5c40d5135a8b7167f42173":"","bb99da98d4515af1fc8ee7b7b231aa34":"","d2cae6ae89f386e3d5ec74db58199311":"","dabb0b843c513ec376cb512900a488be":"https://vetusware.com/","991ae3484cd02b00d3cc29b0f10f8a0b":"https://winworldpc.com/product/ms-dos/622","b71045507a744f6090111126831bc52c":"","7ffae006f3cd8f030c227fa459a645c4":"","e48890301e3705093e2549040767733e":"","3e667ff5355228bc265af54315be16a4":"","193535be3df6b3e7ad9f898bfefb0523":"https://github.com/susam/hello","8dd1a1d0dabcf943b2fd86844a665e45":"","4b8ab60024718c72e275e77c6cd3f1af":"","f8fbd8754dc28583814a7adffc21bec4":"Original computer programmers flipped switches and connected wires. The length of the wire mattered. ","e1c6c3d5beb3e5e11969989e30a76e52":"- **Ignition**: V8 first parses JavaScript to an AST and then to bytecode, which is executed by the **Ignition** interpreter. This allows for fast startup.\n- **TurboFan**: As the code runs, V8 identifies \"hot\" functions (executed frequently). The **TurboFan** compiler takes the bytecode and compiles it into highly optimized machine code _while the program is running_. It makes assumptions based on the data types observed so far (e.g., \"input is always an integer\"). See [V8 TurboFan](https://v8.dev/blog/turbofan-jit).\n- **Deoptimization**: If those assumptions are violated (e.g., an object is passed instead of an integer), the optimized code is invalid. The engine performs a \"bailout\" or **Deoptimization**, returning execution to the slower Ignition interpreter. This \"On-Stack Replacement\" is a technological marvel but a [debugging nightmare](https://v8.dev/blog/react-cliff).","58113587c9b239913dfa8ade9f3dda97":"Debug runs in protected mode\nhttps://en.wikipedia.org/wiki/Debug_(command)","7d091c3ff5d0e82ec32ebf2420234518":"","b5dfcb392bedae133aff2195a2e34d98":"Why investigate? ","a24d3a88301f70621e1e472ba2c15270":"","749bda242c0f2c2b09fdfced5b42161a":"Why understand elements we probably will never use?","d2440f2a4ca0d3069981f9cdf2839f53":"Popularized by Joel Spolsky\n\n\"All non-trivial abstractions, to some degree, are leaky.\"\n\nhttps://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/\n\nA leaky abstraction in software development refers to a design flaw where an abstraction, intended to simplify and hide the underlying complexity of a system, fails to completely do so. This results in some of the implementation details becoming exposed or 'leaking' through the abstraction, forcing users to have knowledge of these underlying complexities to effectively use or troubleshoot the system.\n\nhttps://en.wikipedia.org/wiki/Leaky_abstraction","a5aefdd764333513c89682cb0665ed22":"","7ee9ad4e30af26e4214895b658bd9929":"console.log(\"The basic log\");\n\n// Group related logs to keep the console tidy\nconsole.group(\"User Transaction\");\nconsole.log(\"User: Alice\");\nconsole.log(\"Item: Sword of Truth\");\nconsole.groupEnd();\n\n// Display arrays of objects as a clean table\nconst users = [\n  { name: \"Alice\", role: \"Mage\", hp: 100 },\n  { name: \"Bob\", role: \"Warrior\", hp: 150 }\n];\nconsole.table(users);\n\n// Only logs if the condition is false\nconsole.assert(users[0].hp \u003e 0, \"User is dead!\", users[0]);\n\n// Print a stack trace\nconsole.trace();"}}};
+
+
+			// Use local fonts
+			SLConfig.fonts_url = 'lib/fonts/';
+		</script>
+
+		<script src="lib/reveal.js"></script>
+		<script src="lib/reveal-plugins.js"></script>
+		<script src="lib/offline.js"></script>
+
+		<!-- Initialize the presentation -->
+		<script>
+			Reveal.initialize({
+				width: 1280,
+				height: 720,
+				margin: 0.05,
+				
+
+				hash: true,
+				controls: true,
+				progress: true,
+				mouseWheel: false,
+				showNotes: true,
+				slideNumber: false,
+				fragmentInURL: true,
+
+				autoSlide: 0,
+				autoSlideStoppable: true,
+
+				autoAnimateMatcher: SL.deck.AutoAnimate.matcher,
+
+				scrollActivationWidth: null,
+
+				center: false,
+				shuffle: false,
+				loop: false,
+				rtl: false,
+				navigationMode: "default",
+
+				transition: "none",
+				backgroundTransition: "none",
+
+				highlight: {
+					escapeHTML: false
+				},
+
+				plugins: [ RevealZoom, RevealNotes, RevealMarkdown, RevealHighlight ]
+			});
+		</script>
+
+		
+
+
+	</body>
+</html>
